@@ -1,0 +1,4 @@
+[core]
+    remote = geos
+['remote "geos"']
+    url = ../ssh geos

@@ -1,0 +1,48 @@
+---
+title: "EFP_DE"
+author: "Negin Katal"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+# Load required packages
+library(data.table)
+library(dplyr)
+library(janitor)
+library(randomForest)
+library(ggpubr)
+
+```
+
+Read the input data
+
+```{r}
+EFPN <- read.table("MigliavaccaEcosystemfunctionsReprWorkflow/data/InputDataMigliavacca2021.csv", 
+                   header = TRUE, sep = ",")
+
+# Convert P from mm/month to mm/year
+EFPN$P <- EFPN$P * 12
+
+```
+```{r}
+# Define your sites of interest
+selected_sites <- c("DE-Meh", "DE-Hai", "ZA-Kru", "IT-Tor", "FR-Pue", "DE-Tha")
+
+# Filter only those sites
+EFPN_sel <- subset(EFPN, SITE_ID %in% selected_sites)
+
+
+```
+```{r}
+
+```
+

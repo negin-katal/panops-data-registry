@@ -1,0 +1,181 @@
+# clean the working directory
+rm(list = ls())
+
+# lead the libraries
+library(data.table)
+library(dplyr)
+library(purrr)
+library(lubridate)
+library(bigleaf)
+library(tidyr)
+library(broom)
+library(REddyProc)
+library(stringr)
+library(plyr)
+library(broom)
+library(sf)
+library(lutz)
+
+### Function for calculating the timezone
+TimeZoneCalculatorFLUXNET <- function(lat = lat, long = long) {
+  
+  print('Calculation of Time zone')
+  
+  aaa <- tz_lookup_coords(lat, lon, method = "accurate", warn = FALSE)
+  
+  dfout <- tz_offset(as.POSIXct("2018-01-01 12:00:00", tz = tz_lookup_coords(-0.000500, 51.476852)), aaa)
+  
+  TimeZone_h.n<-dfout$utc_offset_h  
+  return(TimeZone_h.n)
+  
+}
+### function for calculation the EFP
+EFPcalc_V02 <- function(flux_de) {
+  
+  
+  # -- Filter data: growing season, good quality, daytime, enough light
+  GSfilt <- 0.3
+  
+  dat.filtered <- filter.data(
+    data.frame(flux_de),
+    quality.control = TRUE,
+    filter.growseas = TRUE,
+    filter.precip = FALSE,
+    GPP = "GPP_NT",
+    doy = "doy",
+    year = "year",
+    tGPP = GSfilt,
+    precip = "P",
+    tprecip = 0.1,
+    precip.hours = 24,
+    records.per.hour = 2,
+    vars.qc = c("TA", "H", "LE", "NEE", "VPD"),
+    quality.ext = "_QC",
+    good.quality = 1
+  )
+  
+  # -- Select high-light and turbulent conditions
+  aaa <- subset(dat.filtered, SW_IN > 200 & USTAR > 0.2)
+  
+  # -- Calculate uWUE and ETmax
+  EFPsOut <- WUE.metrics(
+    aaa,
+    GPP = "GPP_NT",
+    NEE = "NEE",
+    LE = "LE",
+    VPD = "VPD_kPa",
+    Tair = "TA",
+    constants = bigleaf.constants()
+  )
+  
+  EFPsOut$ETmax <- quantile(aaa$ET, 0.95, na.rm = TRUE)
+  
+  # -- Calculate GPPsat and NEPmax using 5-day moving windows
+  dat.filtered$FiveDaySeq <- rep(1:ceiling(nrow(dat.filtered) / (48 * 5)),
+                                 each = 48 * 5, length.out = nrow(dat.filtered))
+  
+  zzz <- data.frame(
+    NEE = dat.filtered$NEE,
+    PPFD = dat.filtered$PPFD_IN_FROM_SWIN,
+    Reco = dat.filtered$RECO_NT,
+    FiveDaySeq = dat.filtered$FiveDaySeq
+  )
+  
+  myLRC <- function(datafilt) {
+    if (sum(is.na(datafilt$NEE)) / length(datafilt$NEE) >= 0.8) return(NA)
+    tryCatch({
+      fitLRC <- light.response(datafilt, NEE = "NEE", Reco = "Reco", PPFD = "PPFD", PPFD_ref = 2000)
+      return(tidy(fitLRC)$estimate[2])  # alpha
+    }, error = function(e) {
+      return(NA)
+    })
+  }
+  
+  outGPPsat <- unlist(by(zzz, zzz$FiveDaySeq, myLRC), use.names = FALSE)
+  
+  EFPsOut$GPPsat <- quantile(outGPPsat, 0.90, na.rm = TRUE)
+  
+  EFPsOut$NEPmax <- quantile(
+    na.omit(subset(zzz, PPFD > 200 * 2.11)$NEE * -1),
+    0.99
+  )
+  
+  return(data.frame(t(EFPsOut[c("uWUE", "ETmax", "GPPsat", "NEPmax")])))
+}
+
+#### read the data
+### Half-hourly flux data for German Forest sites
+flux_de <- fread("/mnt/gsdata/teaching/bsc_geomatik_II_geographie/WS_2025/02_Klimaextreme/Flux_DE_HH/flux_de_hh.csv")
+### Meta data of the towers
+tower_meta <- fread("/mnt/gsdata/teaching/bsc_geomatik_II_geographie/WS_2025/02_Klimaextreme/Flux_DE_HH/tower_meta_DE.csv")
+
+
+safeEFPcalc <- purrr::possibly(EFPcalc_V02, otherwise = NA)
+
+# Initialize results list
+efp_results_list <- list()
+
+# Loop over each site 
+for (this_site in unique(tower_meta$SITE_ID)) {
+  message("Processing site: ", this_site)
+  
+  # Extract metadata
+  site_info <- tower_meta %>% filter(SITE_ID == this_site)
+  
+  # Skip if any location info is missing
+  if (any(is.na(site_info$LOCATION_ELEV), is.na(site_info$LOCATION_LAT), is.na(site_info$LOCATION_LONG))) {
+    warning("Missing location info for site ", this_site, "; skipping.")
+    next
+  }
+  
+  lat <- as.numeric(site_info$LOCATION_LAT)
+  lon <- as.numeric(site_info$LOCATION_LONG)
+  elevation <- as.numeric(site_info$LOCATION_ELEV)
+  
+  # Compute timezone
+  TimeZone <- TimeZoneCalculatorFLUXNET(lat = lat, long = lon)
+  
+  # Subset flux data
+  flux_df <- flux_de %>% filter(siteID == this_site)
+  
+  # Skip if no data
+  if (nrow(flux_df) == 0) {
+    warning("No data for site ", this_site, "; skipping.")
+    next
+  }
+  
+  # Adjust variables
+  flux_df <- flux_df %>%
+    mutate(
+      ET = LE.to.ET(LE, TA) * 1800,
+      precip_mm = P,
+      VPD_kPa = VPD / 10,
+      PPFD_IN_FROM_SWIN = SW_IN * 2.11,
+      DateTime = DateTime + minutes(15)
+    )
+  
+  # Loop over each year for this site
+  for (yr in unique(flux_df$year)) {
+    message("  → Calculating EFPs for year: ", yr)
+    
+    dat_year <- filter(flux_df, year == yr)
+    
+    efp_result <- safeEFPcalc(dat_year)
+    
+    if (!is.null(efp_result) && is.data.frame(efp_result)) {
+      efp_result$SITE_ID <- this_site
+      efp_result$year <- yr
+      efp_results_list[[paste0(this_site, "_", yr)]] <- efp_result
+    }
+  }
+}
+
+# Combine all valid results
+efp_results_list_df <- efp_results_list[sapply(efp_results_list, is.data.frame)]
+efp_all <- bind_rows(efp_results_list_df)
+
+# Join with metadata
+efp_with_meta <- left_join(efp_all, tower_meta, by = "SITE_ID")
+
+# Save to file
+fwrite(efp_with_meta, "/mnt/gsdata/teaching/bsc_geomatik_II_geographie/WS_2025/02_Klimaextreme/Flux_DE_HH/efp_DE_yearly.csv", row.names = FALSE)
