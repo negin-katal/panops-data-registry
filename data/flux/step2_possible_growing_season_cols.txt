@@ -1,0 +1,2 @@
+GSmax
+gsmax_mean

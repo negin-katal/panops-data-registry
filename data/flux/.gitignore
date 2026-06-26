@@ -7,3 +7,9 @@
 /plant_trait/
 HH_flux.zip
 **/.DS_Store
+.claude/
+/derived_tables
+/deadwood_forestloss_output
+/merged_sites_subset
+/merged_sites_subset_renamed
+/hh_flux4Dheed

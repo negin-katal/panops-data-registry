@@ -1,0 +1,15 @@
+Leaf C
+Leaf N (mass)
+Leaf width
+Leaf C/N ratio
+Leaf P
+Leaf area (3112)
+Leaf area
+Leaf area (3114)
+SLA
+Leaf thickness
+Leaf N (area)
+Leaf dry mass
+Rooting depth
+Leaf delta 15N
+deadwood_mean_pct_500m

@@ -1,0 +1,89 @@
+\begin{table}[htbp]
+\centering
+\caption{Leave-one-site-out random forest performance for four ecosystem
+functional properties (EFPs), evaluated on a \emph{unified} benchmark of
+166 sites and 644 site-years --- the set of site-years with complete
+24-month predictor data. Unlike the main benchmark (Table~\ref{tab:RF_LOSO_v2}),
+both the 12-month and 24-month window models here are evaluated on the
+identical set of rows, so differences in $R^2$ across windows reflect only
+the change in predictor information (addition of lag-2 climate/disturbance/memory
+terms), not a change in the underlying sample. Each cell shows $R^2$ (RMSE).
+Bold values indicate the best $R^2$ per EFP within each panel. Panels~A--B use
+anomaly z-score EFP memory (M05--M08); Panels~C--D use raw previous-year EFP
+values as memory predictors. All panels include monthly precipitation 5th and
+95th percentiles ($P_\mathrm{p05}$, $P_\mathrm{p95}$) among the climate
+predictors.}
+\label{tab:RF_LOSO_24mbench}
+\footnotesize
+\begin{tabular}{llcccccc}
+\toprule
+Model & Predictors & $n$ &
+  GPPsat & NEPmax & ETmax & uWUE \\
+  & & &
+  ($\mu$mol m$^{-2}$ s$^{-1}$) &
+  ($\mu$mol m$^{-2}$ s$^{-1}$) &
+  (mm d$^{-1}$) &
+  (g C mm$^{-1}$) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel A: 12-month window (no lag-2) --- anomaly EFP memory --- 644 site-years, 166 sites}} \\
+\midrule
+M01 & C                 & \multirow{8}{*}{644} & 0.338 (8.35) & 0.328 (7.94) & 0.311 (0.064) & 0.102 (1.67) \\
+M02 & C + D             &                      & 0.519 (7.12) & 0.483 (6.96) & 0.339 (0.062) & 0.146 (1.61) \\
+M03 & C + T             &                      & 0.501 (7.23) & 0.497 (6.84) & \textbf{0.459} (0.057) & 0.189 (1.57) \\
+M04 & C + T + D         &                      & 0.555 (6.85) & 0.530 (6.63) & 0.450 (0.057) & 0.198 (1.56) \\
+M05 & C + M             &                      & 0.327 (8.41) & 0.320 (7.98) & 0.307 (0.064) & 0.081 (1.69) \\
+M06 & C + D + M         &                      & 0.520 (7.12) & 0.489 (6.92) & 0.334 (0.063) & 0.142 (1.62) \\
+M07 & C + T + M         &                      & 0.504 (7.21) & 0.499 (6.83) & 0.458 (0.057) & 0.179 (1.58) \\
+M08 & C + T + D + M     &                      & \textbf{0.561} (6.81) & \textbf{0.537} (6.59) & 0.454 (0.057) & \textbf{0.194} (1.57) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel B: 24-month window (with lag-2) --- anomaly EFP memory --- 644 site-years, 166 sites}} \\
+\midrule
+M01 & C                 & \multirow{8}{*}{644} & 0.344 (8.30) & 0.326 (7.96) & 0.318 (0.063) & 0.102 (1.67) \\
+M02 & C + D             &                      & 0.518 (7.13) & 0.472 (7.03) & 0.325 (0.063) & 0.118 (1.64) \\
+M03 & C + T             &                      & 0.502 (7.22) & 0.490 (6.89) & \textbf{0.461} (0.056) & 0.193 (1.57) \\
+M04 & C + T + D         &                      & 0.559 (6.82) & 0.533 (6.62) & 0.441 (0.058) & 0.205 (1.56) \\
+M05 & C + M             &                      & 0.344 (8.29) & 0.323 (7.95) & 0.304 (0.064) & 0.092 (1.68) \\
+M06 & C + D + M         &                      & 0.517 (7.14) & 0.477 (7.01) & 0.319 (0.063) & 0.121 (1.64) \\
+M07 & C + T + M         &                      & 0.504 (7.21) & 0.496 (6.85) & 0.457 (0.057) & \textbf{0.213} (1.55) \\
+M08 & C + T + D + M     &                      & \textbf{0.560} (6.82) & \textbf{0.533} (6.62) & 0.446 (0.057) & 0.188 (1.57) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel C: 12-month window (no lag-2) --- raw-lag EFP memory --- 644 site-years, 166 sites}} \\
+\midrule
+M01 & C                 & \multirow{8}{*}{644} & 0.338 (8.35) & 0.328 (7.94) & 0.311 (0.064) & 0.102 (1.67) \\
+M02 & C + D             &                      & 0.519 (7.12) & 0.483 (6.96) & 0.339 (0.062) & 0.146 (1.61) \\
+M03 & C + T             &                      & 0.501 (7.23) & 0.497 (6.84) & 0.459 (0.057) & 0.189 (1.57) \\
+M04 & C + T + D         &                      & 0.555 (6.85) & 0.530 (6.63) & 0.450 (0.057) & 0.198 (1.56) \\
+M05 & C + M             &                      & \textbf{0.818} (4.40) & \textbf{0.841} (3.88) & \textbf{0.707} (0.042) & \textbf{0.666} (1.05) \\
+M06 & C + D + M         &                      & 0.792 (4.83) & 0.793 (4.58) & 0.635 (0.048) & 0.531 (1.26) \\
+M07 & C + T + M         &                      & 0.802 (4.67) & 0.818 (4.23) & 0.657 (0.045) & 0.628 (1.16) \\
+M08 & C + T + D + M     &                      & 0.774 (5.03) & 0.777 (4.71) & 0.616 (0.049) & 0.519 (1.29) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel D: 24-month window (with lag-2) --- raw-lag EFP memory --- 644 site-years, 166 sites}} \\
+\midrule
+M01 & C                 & \multirow{8}{*}{644} & 0.344 (8.30) & 0.326 (7.96) & 0.318 (0.063) & 0.102 (1.67) \\
+M02 & C + D             &                      & 0.518 (7.13) & 0.472 (7.03) & 0.325 (0.063) & 0.118 (1.64) \\
+M03 & C + T             &                      & 0.502 (7.22) & 0.490 (6.89) & \textbf{0.461} (0.056) & 0.193 (1.57) \\
+M04 & C + T + D         &                      & 0.559 (6.82) & 0.533 (6.62) & 0.441 (0.058) & 0.205 (1.56) \\
+M05 & C + M             &                      & \textbf{0.838} (4.14) & \textbf{0.856} (3.69) & \textbf{0.734} (0.040) & \textbf{0.677} (1.03) \\
+M06 & C + D + M         &                      & 0.822 (4.46) & 0.821 (4.23) & 0.681 (0.045) & 0.593 (1.19) \\
+M07 & C + T + M         &                      & 0.834 (4.25) & 0.841 (3.91) & 0.711 (0.042) & 0.640 (1.11) \\
+M08 & C + T + D + M     &                      & 0.811 (4.60) & 0.809 (4.36) & 0.663 (0.046) & 0.587 (1.21) \\
+\bottomrule
+\end{tabular}
+\vspace{2pt}
+\begin{minipage}{\linewidth}
+\footnotesize
+\textit{Note:} Predictor abbreviations: C = Climate (monthly TA, VPD,
+SW$_\mathrm{IN}$ mean/5th/95th percentile; P mean, sum, $P_\mathrm{p05}$,
+$P_\mathrm{p95}$); T = Traits (hydraulic, leaf, root); D = Disturbance
+(mortality intensity, deadwood, forest loss at 100--500\,m buffers); M = EFP
+memory. Panels~A--B: M uses z-score anomalies of GPPsat, NEPmax, ETmax, uWUE
+from the preceding year(s). Panels~C--D: M uses raw EFP values from the
+preceding year(s) (lag-1 for the 12-month panel; lag-1 and lag-2 for the
+24-month panel). Unlike Table~\ref{tab:RF_LOSO_v2}, here \emph{all four
+panels share the same $n=644$ benchmark} (the 24-month complete-case set),
+so within each memory type (anomaly or raw-lag), Panel~A vs.\ B and Panel~C
+vs.\ D isolate the marginal effect of adding lag-2 predictor information at
+fixed sample size. RMSE in native units in parentheses.
+\end{minipage}
+\end{table}

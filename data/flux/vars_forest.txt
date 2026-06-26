@@ -1,0 +1,5 @@
+forest_mean_pct_500m.x
+deadwood_mean_pct_500m
+loss_area_frac_500m
+loss_mean_pp_500m
+loss_sum_pp_500m

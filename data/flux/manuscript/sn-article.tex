@@ -1,0 +1,1218 @@
+%Version 3.1 December 2024
+% See section 11 of the User Manual for version history
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                 %%
+%% Please do not use \input{...} to include other tex files.       %%
+%% Submit your LaTeX manuscript as one .tex document.              %%
+%%                                                                 %%
+%% All additional figures and files should be attached             %%
+%% separately and not embedded in the \TeX\ document itself.       %%
+%%                                                                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%\documentclass[referee,sn-basic]{sn-jnl}% referee option is meant for double line spacing
+
+%%=======================================================%%
+%% to print line numbers in the margin use lineno option %%
+%%=======================================================%%
+
+%%\documentclass[lineno,pdflatex,sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+
+%%=========================================================================================%%
+%% the documentclass is set to pdflatex as default. You can delete it if not appropriate.  %%
+%%=========================================================================================%%
+
+%%\documentclass[sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+
+%%Note: the following reference styles support Namedate and Numbered referencing. By default the style follows the most common style. To switch between the options you can add or remove Numbered in the optional parenthesis. 
+%%The option is available for: sn-basic.bst, sn-chicago.bst%  
+ 
+%%\documentclass[pdflatex,sn-nature]{sn-jnl}% Style for submissions to Nature Portfolio journals
+\documentclass[pdflatex,sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+%%\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}% Math and Physical Sciences Numbered Reference Style
+%%\documentclass[pdflatex,sn-mathphys-ay]{sn-jnl}% Math and Physical Sciences Author Year Reference Style
+%%\documentclass[pdflatex,sn-aps]{sn-jnl}% American Physical Society (APS) Reference Style
+%%\documentclass[pdflatex,sn-vancouver-num]{sn-jnl}% Vancouver Numbered Reference Style
+%%\documentclass[pdflatex,sn-vancouver-ay]{sn-jnl}% Vancouver Author Year Reference Style
+%%\documentclass[pdflatex,sn-apa]{sn-jnl}% APA Reference Style
+%%\documentclass[pdflatex,sn-chicago]{sn-jnl}% Chicago-based Humanities Reference Style
+
+%%%% Standard Packages
+%%<additional latex packages if required can be included here>
+
+\usepackage{graphicx}%
+\usepackage{multirow}%
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage{amsthm}%
+\usepackage{mathrsfs}%
+\usepackage[title]{appendix}%
+\usepackage{xcolor}%
+\usepackage{textcomp}%
+\usepackage{manyfoot}%
+\usepackage{booktabs}%
+\usepackage{algorithm}%
+\usepackage{algorithmicx}%
+\usepackage{algpseudocode}%
+\usepackage{listings}%
+\usepackage{booktabs,rotating}
+%%%%
+
+%%%%%=============================================================================%%%%
+%%%%  Remarks: This template is provided to aid authors with the preparation
+%%%%  of original research articles intended for submission to journals published 
+%%%%  by Springer Nature. The guidance has been prepared in partnership with 
+%%%%  production teams to conform to Springer Nature technical requirements. 
+%%%%  Editorial and presentation requirements differ among journal portfolios and 
+%%%%  research disciplines. You may find sections in this template are irrelevant 
+%%%%  to your work and are empowered to omit any such section if allowed by the 
+%%%%  journal you intend to submit to. The submission guidelines and policies 
+%%%%  of the journal take precedence. A detailed User Manual is available in the 
+%%%%  template package for technical guidance.
+%%%%%=============================================================================%%%%
+
+%% as per the requirement new theorem styles can be included as shown below
+\theoremstyle{thmstyleone}%
+\newtheorem{theorem}{Theorem}%  meant for continuous numbers
+%%\newtheorem{theorem}{Theorem}[section]% meant for sectionwise numbers
+%% optional argument [theorem] produces theorem numbering sequence instead of independent numbers for Proposition
+\newtheorem{proposition}[theorem]{Proposition}% 
+%%\newtheorem{proposition}{Proposition}% to get separate numbers for theorem and proposition etc.
+
+\theoremstyle{thmstyletwo}%
+\newtheorem{example}{Example}%
+\newtheorem{remark}{Remark}%
+
+\theoremstyle{thmstylethree}%
+\newtheorem{definition}{Definition}%
+
+\raggedbottom
+%%\unnumbered% uncomment this for unnumbered level heads
+
+\begin{document}
+
+\title[Article Title]{Assessing the role of tree mortality in shaping ecosystem functional properties}
+
+
+
+%%=============================================================%%
+%% GivenName	-> \fnm{Joergen W.}
+%% Particle	-> \spfx{van der} -> surname prefix
+%% FamilyName	-> \sur{Ploeg}
+%% Suffix	-> \sfx{IV}
+%% \author*[1,2]{\fnm{Joergen W.} \spfx{van der} \sur{Ploeg} 
+%%  \sfx{IV}}\email{iauthor@gmail.com}
+%%=============================================================%%
+
+\author*[1,2]{\fnm{Negin} \sur{Katal}}\email{negin.katal@geosense.uni-freiburg.de}
+
+\author[2,3]{\fnm{Second} \sur{Author}}\email{iiauthor@gmail.com}
+% \equalcont{These authors contributed equally to this work.}
+
+\author[1,2]{\fnm{Teja} \sur{Kattenborn}}\email{teja.kattenborn@geosense.uni-freiburg.de}
+% \equalcont{These authors contributed equally to this work.}
+
+\affil*[1]{\orgdiv{Department}, \orgname{Organization}, \orgaddress{\street{Street}, \city{City}, \postcode{100190}, \state{State}, \country{Country}}}
+
+\affil[2]{\orgdiv{Department}, \orgname{Organization}, \orgaddress{\street{Street}, \city{City}, \postcode{10587}, \state{State}, \country{Country}}}
+
+\affil[3]{\orgdiv{Department}, \orgname{Organization}, \orgaddress{\street{Street}, \city{City}, \postcode{610101}, \state{State}, \country{Country}}}
+
+%%==================================%%
+%% Sample for unstructured abstract %%
+%%==================================%%
+
+\abstract{EGU Abstract:
+Tree mortality is increasing globally due to climate extremes, disturbances, and biotic stressors, with profound consequences for ecosystem carbon cycling. However, the extent to which spatial patterns and temporal dynamics of tree mortality influence the functioning of ecosystems as a whole remains poorly quantified. 
+In this study, we investigate how tree mortality impacts  key ecosystem functional properties, focusing on light-saturated gross primary productivity (GPPsat) and maximum net ecosystem production (NEPmax). Ecosystem functional properties were derived from long-term, half-hourly eddy covariance measurements across a range of forest ecosystems. Spatially explicit information on forest cover and tree mortality was obtained from satellite-based predictions of the deadtrees.earth initiative, which integrates drone-based observations with Earth observation data to produce multitemporal mortality and forest cover estimates at global  scale.
+We assessed whether including tree mortality information in addition to environmental drives improves the explanation and prediction of global and site-level variability in the flux-derived ecosystem functional properties; GPPsat and NEPmax. Model performance and variable importance patterns were compared between scenarios with and without forest cover and mortality dynamics to quantify the added explanatory power.
+This study aims to provide the first systematic assessment of how spatially explicit tree mortality information contributes to ecosystem functional properties derived from eddy covariance data, and to evaluate whether integrating tree mortality observations can improve our understanding of the controls of ecosystem productivity and carbon balance under ongoing climate change.
+}
+
+
+\keywords{ecosystem functioning, tree mortality, eddy covariance, deadtrees.earth}
+
+%%\pacs[JEL Classification]{D8, H51}
+
+%%\pacs[MSC Classification]{35A01, 65L10, 65L12, 65L20, 65L70}
+
+\maketitle
+
+\section{Introduction}\label{sec1}
+Terrestrial ecosystems play a fundamental role in regulating global carbon, water, and energy balances through complex interactions between vegetation structure, physiological processes, and environmental drivers (\cite{bonan2008forests, fisher2018vegetation}). Forest ecosystems, in particular, represent critical components of the global climate system, storing approximately 45\% of terrestrial carbon and influencing regional precipitation patterns through evapotranspiration processes (\cite{pan2011large, ellison2017trees}). The functional properties of these ecosystems, including carbon sequestration rates, water use efficiency, and energy partitioning, are intrinsically linked to vegetation characteristics such as leaf area index, canopy structure, and plant functional traits (\cite{wright2004worldwide, diazGlobalSpectrumPlant2016}). However, increasing frequencies of drought, heat stress, and biotic disturbances under changing climatic conditions have led to widespread tree mortality events globally, fundamentally altering ecosystem structure and potentially disrupting these critical ecosystem services (\cite{allen2010global, anderegg2013consequences}).
+
+Tree mortality represents a key ecological process that can dramatically reshape ecosystem functional properties through multiple pathways. Following mortality events, immediate changes occur in canopy structure and leaf area, directly affecting light interception, evapotranspiration rates, and carbon uptake capacity (\cite{hicke2012effects, edburg2012cascading}). These structural changes cascade through the ecosystem, influencing soil microclimate, decomposition rates, and nutrient cycling patterns (\cite{breshears2005regional, adams2009temperature}). Furthermore, the replacement of dead trees by understory vegetation or different plant functional types can lead to long-term shifts in ecosystem functioning, as different vegetation types exhibit distinct physiological characteristics and resource use strategies (\cite{hartmann2018research, hammond2022global}). The magnitude and direction of these changes likely depend on the dominant vegetation type affected, as coniferous and deciduous forests, grasslands, and shrublands exhibit fundamentally different functional trait profiles and responses to disturbance (\cite{franklin1987tree, flower2015responses}).
+
+Despite the recognized importance of tree mortality for ecosystem functioning, significant knowledge gaps persist regarding the quantitative relationships between mortality events and subsequent changes in carbon, water, and energy balances across different vegetation types. Traditional ecological studies have been limited by the spatial and temporal scales of field observations, making it challenging to capture the full spectrum of mortality impacts across diverse ecosystems (\cite{mcdowell2008mechanisms, larson2012tree }). Moreover, the lack of comprehensive datasets linking tree mortality events to plant functional traits has hindered our ability to predict ecosystem responses and develop mechanistic understanding of post-mortality functional changes (\cite{breshears2005regional}). This data limitation has been particularly pronounced for understanding how different plant functional trait combinations influence the magnitude and trajectory of ecosystem recovery following mortality events.
+
+Recent advances in remote sensing technology, machine learning algorithms, and crowd-sourced data collection have opened unprecedented opportunities to address these knowledge gaps at landscape to global scales. The emergence of citizen science platforms and collaborative monitoring networks has dramatically increased the availability of field observations, enabling researchers to document mortality events across diverse ecosystems with greater spatial and temporal resolution than previously possible. In this context, the deadtrees.earth platform represents a significant advancement in mortality monitoring capabilities, providing a standardized framework for collecting and sharing tree mortality data across multiple vegetation types and geographical regions. This platform integrates crowd-sourced field observations with remote sensing data, creating comprehensive datasets that enable large-scale analyses of mortality patterns and their ecosystem consequences.
+
+Building upon these technological advances, recent modeling efforts have begun to incorporate plant functional trait data to better predict ecosystem responses to environmental changes. Notably, Lusk et al. (\cite{lusk2026crowdsourced}) demonstrated how integrating plant functional trait databases with mortality observations can improve predictions of post-disturbance ecosystem functioning, revealing that trait diversity and functional redundancy play critical roles in determining ecosystem resilience following tree mortality events. Their work highlighted the importance of considering plant functional trait composition when assessing vulnerability to mortality and predicting subsequent ecosystem changes, providing a mechanistic framework for understanding functional consequences across different vegetation types.
+
+Given these recent advances in data availability and modeling approaches, there is now an unprecedented opportunity to comprehensively assess the impacts of tree mortality on ecosystem functional properties across diverse vegetation types. The central questions driving this research are: What are the quantitative impacts of tree mortality on ecosystem carbon, water, and energy balances? Do these impacts vary systematically among different vegetation types based on their functional trait composition? And can we identify vegetation types that exhibit greater sensitivity or resilience?
+ 
+
+\section{Results}\label{sec2}
+
+\subsection{Overview of expected patterns}
+
+We expect ecosystem functional properties (EFPs) to vary substantially across sites and years, reflecting differences in climate, vegetation characteristics, and disturbance intensity. In particular, we expect light-saturated gross primary productivity (GPP$_{sat}$) and maximum net ecosystem production (NEP$_{max}$) to decline with increasing tree mortality and canopy disturbance, although the magnitude of this response will likely vary among sites and forest types.
+
+We further expect that models including forest cover and mortality-related variables will outperform models based only on meteorological and plant trait predictors. This improvement is anticipated to be strongest at sites with marked mortality events or strong temporal variation in canopy condition.
+
+\subsection{Spatial and temporal variation in ecosystem functional properties}
+
+Across the global network of forest eddy covariance sites, annual values of GPP$_{sat}$, NEP$_{max}$, ET$_{max}$, and uWUE are expected to show pronounced spatial variability. Part of this variability will likely be associated with broad climatic gradients, while another part may reflect structural ecosystem differences captured by community-weighted mean plant traits and forest cover.
+
+We also expect interannual variation within sites, particularly in years affected by disturbance, drought, or canopy decline. Sites experiencing stronger forest cover loss or deadwood accumulation are expected to exhibit reduced productivity and carbon uptake capacity relative to less disturbed years.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{fig1_site_map_EFP_distributions}
+\caption{\textbf{Study sites and ecosystem functional property distributions.}
+(\textbf{a}) Global distribution of 184 eddy covariance sites coloured by IGBP land-cover class.
+(\textbf{b--e}) Distributions of annual ecosystem functional properties across IGBP classes:
+gross primary productivity at light saturation (GPP$_{sat}$),
+maximum net ecosystem production (NEP$_{max}$),
+maximum evapotranspiration (ET$_{max}$),
+and underlying water-use efficiency (uWUE).
+Horizontal violins show the full distribution; inner boxplots indicate the interquartile range and median.}
+\label{fig:efp_overview}
+\end{figure}
+
+\subsection{Patterns in forest cover, mortality, and deadwood metrics}
+
+Forest cover and mortality-related variables are expected to show strong heterogeneity among sites. Some sites will likely show relatively stable canopy conditions, whereas others may exhibit clear year-to-year decreases in forest cover or increases in deadwood fraction within the 500~m tower buffer.
+
+Among the disturbance indicators, we expect the most informative variables to be those capturing both the extent and intensity of canopy loss and deadwood accumulation, such as \texttt{loss\_area\_frac\_500m}, \texttt{loss\_sum\_pp\_500m}, and \texttt{deadwood\_increase\_sum\_pp\_500m}. These variables are expected to provide complementary information about recent mortality dynamics around the flux towers.
+
+\begin{figure}[ht]
+\centering
+\fbox{\rule{0pt}{2.2in}\rule{0.9\linewidth}{0pt}}
+\caption{Placeholder for a figure showing examples of forest cover, loss, and deadwood metrics around selected eddy covariance sites. This figure may later include maps, buffer summaries, or time series of disturbance indicators.}
+\label{fig:mortality_metrics}
+\end{figure}
+
+\subsection{Expected model performance across predictor sets}
+
+We expect Random Forest models that include only meteorological variables (M1) to explain part of the variation in EFPs, especially for productivity-related variables that are strongly linked to climatic conditions. Adding plant traits (M2) is expected to improve performance by accounting for structural and physiological differences among ecosystems.
+
+The strongest model performance is expected for models that additionally include forest cover and disturbance variables (M3). If tree mortality provides meaningful explanatory information beyond climate and trait variation, then M3 should show higher R$^2$ and lower RMSE than M1 and M2. This improvement is expected to be particularly visible for GPP$_{sat}$ and NEP$_{max}$, which are closely tied to canopy condition and carbon uptake.
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{tables/table_RF_LOSO_results_24mbench.tex}
+%%%%%%%%%%%%%%%% No wetland — auto-synced from table_RF_LOSO_24mbench_noWET.tex
+\input{tables/table_RF_LOSO_24mbench_noWET}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[htbp]
+\centering
+\caption{Leave-one-site-out random forest performance for four ecosystem
+functional properties (EFPs). Models differ in predictor composition and in the
+length of the climate memory window anchored at the centre of the growing season
+(CGS): 12-month window (Year$-$1 to CGS of Year~0) and 24-month window
+(Year$-$2 to CGS of Year~0). Each cell shows $R^2$ (RMSE). Bold values indicate
+the best $R^2$ per EFP within each panel. All models within a panel are evaluated
+on the same benchmark set to ensure comparability.}
+\label{tab:RF_LOSO}
+\small
+\begin{tabular}{llcccccc}
+\toprule
+Model & Predictors & $n$ &
+  GPPsat & NEPmax & ETmax & uWUE \\
+  & & &
+  ($\mu$mol m$^{-2}$ s$^{-1}$) &
+  ($\mu$mol m$^{-2}$ s$^{-1}$) &
+  (mm d$^{-1}$) &
+  (g C mm$^{-1}$) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel A: 12-month climate window (Year$-$1 $\rightarrow$ CGS of Year~0) --- 860 site-years, 175 sites}} \\
+\midrule
+M01 & Climate                          & \multirow{8}{*}{860} & 0.356 (8.29) & 0.359 (7.93) & 0.316 (0.064) & 0.168 (1.57) \\
+M02 & Climate + Disturbance            &                      & 0.528 (7.08) & 0.508 (6.94) & 0.338 (0.063) & 0.170 (1.57) \\
+M03 & Climate + Traits                 &                      & 0.503 (7.25) & 0.498 (6.98) & 0.470 (0.056) & 0.256 (1.49) \\
+M04 & Climate + Traits + Disturbance   &                      & \textbf{0.569} (6.78) & \textbf{0.549} (6.64) & 0.462 (0.057) & 0.258 (1.49) \\
+M05 & Climate + EFP memory             &                      & 0.360 (8.23) & 0.358 (7.91) & 0.315 (0.064) & 0.148 (1.59) \\
+M06 & Climate + Disturbance + Memory   &                      & 0.531 (7.08) & 0.502 (6.98) & 0.334 (0.063) & 0.175 (1.56) \\
+M07 & Climate + Traits + Memory        &                      & 0.504 (7.24) & 0.502 (6.96) & \textbf{0.470} (0.056) & 0.243 (1.50) \\
+M08 & Climate + Traits + Dist.\ + Mem. &                      & \textbf{0.569} (6.78) & 0.546 (6.66) & 0.462 (0.057) & 0.238 (1.51) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel B: 24-month climate window (Year$-$2 $\rightarrow$ CGS of Year~0) --- 678 site-years, 175 sites}} \\
+\midrule
+M01 & Climate                          & \multirow{8}{*}{678} & 0.359 (8.18) & 0.346 (7.92) & 0.298 (0.063) & 0.124 (1.62) \\
+M02 & Climate + Disturbance            &                      & 0.521 (7.08) & 0.488 (6.99) & 0.320 (0.062) & 0.140 (1.59) \\
+M03 & Climate + Traits                 &                      & 0.515 (7.12) & 0.495 (6.93) & 0.452 (0.056) & 0.196 (1.54) \\
+M04 & Climate + Traits + Disturbance   &                      & \textbf{0.568} (6.73) & \textbf{0.548} (6.58) & 0.445 (0.057) & 0.194 (1.54) \\
+M05 & Climate + EFP memory             &                      & 0.353 (8.20) & 0.347 (7.88) & 0.298 (0.063) & 0.112 (1.62) \\
+M06 & Climate + Disturbance + Memory   &                      & 0.523 (7.07) & 0.495 (6.96) & 0.320 (0.062) & 0.142 (1.59) \\
+M07 & Climate + Traits + Memory        &                      & 0.507 (7.16) & 0.505 (6.86) & \textbf{0.452} (0.056) & \textbf{0.218} (1.52) \\
+M08 & Climate + Traits + Dist.\ + Mem. &                      & 0.574 (6.70) & 0.543 (6.61) & 0.445 (0.057) & 0.177 (1.56) \\
+\bottomrule
+\end{tabular}
+\vspace{2pt}
+\begin{minipage}{\linewidth}
+\footnotesize
+\textit{Note:} $n$ = number of site-year pairs in the benchmark set (identical for
+all models within a panel). Climate predictors are aggregated as a rolling mean
+(or sum for precipitation) over the window ending at CGS of Year~0.
+Disturbance includes mortality intensity, deadwood, and forest loss at 100--500\,m
+buffers for the same window as climate. EFP memory = z-score anomalies of
+GPPsat, NEPmax, ETmax, and uWUE from the preceding year(s). Traits are
+time-invariant functional traits (hydraulic, leaf, and root). RMSE in native
+units given in parentheses.
+\end{minipage}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsection{Expected contribution of tree mortality variables}
+
+We expect the inclusion of mortality-related predictors to increase model explanatory power, although the magnitude of improvement will likely differ across response variables. The strongest contribution is expected for GPP$_{sat}$ and NEP$_{max}$, because tree mortality directly alters canopy structure, photosynthetic capacity, and stand-level carbon balance.
+
+Variable importance analyses are expected to show that meteorological predictors remain dominant overall, but that mortality-related variables become particularly influential at disturbed sites or in years following canopy loss. This would support the hypothesis that tree mortality contributes meaningful additional information for explaining ecosystem functioning beyond climate and plant traits alone.
+
+\begin{figure}[ht]
+\centering
+\fbox{\rule{0pt}{2.2in}\rule{0.9\linewidth}{0pt}}
+\caption{Placeholder for variable importance plots comparing meteorological, trait, and mortality predictors across ecosystem functional properties.}
+\label{fig:varimp}
+\end{figure}
+
+\subsection{Expected site-level heterogeneity}
+
+The effect of tree mortality is not expected to be uniform across all sites. Instead, we anticipate strong site-level heterogeneity depending on background climate, vegetation type, disturbance history, and resilience capacity. Some sites may show clear reductions in GPP$_{sat}$ or NEP$_{max}$ following canopy loss, whereas other sites may exhibit weaker or delayed responses.
+
+This heterogeneity is expected to highlight that the role of mortality depends not only on the amount of canopy loss itself, but also on the broader environmental and ecological context in which mortality occurs.
+
+\begin{figure}[ht]
+\centering
+\fbox{\rule{0pt}{2.2in}\rule{0.9\linewidth}{0pt}}
+\caption{Placeholder for site-level model evaluation results, for example leave-one-site-out performance or site-specific response patterns to tree mortality.}
+\label{fig:site_level}
+\end{figure}
+
+%%%%%%%%
+\begin{table}[htbp]
+\centering
+\caption{Leave-one-site-out random forest performance for four ecosystem
+functional properties (EFPs) after removing sites with faulty mortality data
+(166 sites, 816 site-years at 12-month window, 644 site-years at 24-month
+window). Models differ in predictor composition and in the length of the
+climate memory window anchored at the centre of the growing season (CGS):
+12-month window (Year$-$1 to CGS of Year~0) and 24-month window (Year$-$2
+to CGS of Year~0). Each cell shows $R^2$ (RMSE). Bold values indicate the
+best $R^2$ per EFP within each panel. All models within a panel are evaluated
+on the same benchmark set. Panels~A--B use anomaly z-score EFP memory
+(M05--M08); Panels~C--D use raw previous-year EFP values as memory predictors.
+All panels include monthly precipitation 5th and 95th percentiles
+($P_\mathrm{p05}$, $P_\mathrm{p95}$) among the climate predictors.}
+\label{tab:RF_LOSO_v2}
+\footnotesize
+\begin{tabular}{llcccccc}
+\toprule
+Model & Predictors & $n$ &
+  GPPsat & NEPmax & ETmax & uWUE \\
+  & & &
+  ($\mu$mol m$^{-2}$ s$^{-1}$) &
+  ($\mu$mol m$^{-2}$ s$^{-1}$) &
+  (mm d$^{-1}$) &
+  (g C mm$^{-1}$) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel A: 12-month window --- anomaly EFP memory --- 816 site-years, 166 sites}} \\
+\midrule
+M01 & C                 & \multirow{8}{*}{816} & 0.347 (8.35) & 0.344 (7.95) & 0.329 (0.064) & 0.168 (1.59) \\
+M02 & C + D             &                      & 0.528 (7.11) & 0.500 (6.94) & 0.343 (0.063) & 0.168 (1.59) \\
+M03 & C + T             &                      & 0.499 (7.30) & 0.489 (6.99) & 0.466 (0.057) & 0.222 (1.54) \\
+M04 & C + T + D         &                      & 0.559 (6.87) & 0.541 (6.64) & \textbf{0.469} (0.057) & \textbf{0.260} (1.51) \\
+M05 & C + M             &                      & 0.349 (8.33) & 0.345 (7.93) & 0.330 (0.064) & 0.141 (1.62) \\
+M06 & C + D + M         &                      & 0.527 (7.12) & 0.498 (6.96) & 0.351 (0.063) & 0.187 (1.57) \\
+M07 & C + T + M         &                      & 0.488 (7.37) & 0.487 (7.00) & 0.466 (0.057) & 0.231 (1.53) \\
+M08 & C + T + D + M     &                      & \textbf{0.563} (6.85) & \textbf{0.546} (6.61) & 0.465 (0.057) & 0.250 (1.52) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel B: 24-month window --- anomaly EFP memory --- 644 site-years, 166 sites}} \\
+\midrule
+M01 & C                 & \multirow{8}{*}{644} & 0.344 (8.30) & 0.326 (7.96) & 0.318 (0.063) & 0.102 (1.67) \\
+M02 & C + D             &                      & 0.518 (7.13) & 0.472 (7.03) & 0.325 (0.063) & 0.118 (1.64) \\
+M03 & C + T             &                      & 0.502 (7.22) & 0.490 (6.89) & \textbf{0.461} (0.057) & 0.193 (1.57) \\
+M04 & C + T + D         &                      & 0.559 (6.82) & 0.533 (6.62) & 0.441 (0.058) & 0.205 (1.56) \\
+M05 & C + M             &                      & 0.344 (8.29) & 0.323 (7.95) & 0.304 (0.064) & 0.092 (1.68) \\
+M06 & C + D + M         &                      & 0.517 (7.14) & 0.477 (7.01) & 0.319 (0.063) & 0.121 (1.64) \\
+M07 & C + T + M         &                      & 0.504 (7.21) & 0.496 (6.85) & 0.457 (0.057) & \textbf{0.213} (1.55) \\
+M08 & C + T + D + M     &                      & \textbf{0.560} (6.82) & \textbf{0.533} (6.62) & 0.446 (0.057) & 0.188 (1.57) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel C: 12-month window --- raw-lag EFP memory --- 816 site-years, 166 sites}} \\
+\midrule
+M01 & C                 & \multirow{8}{*}{816} & 0.347 (8.35) & 0.344 (7.95) & 0.329 (0.064) & 0.168 (1.59) \\
+M02 & C + D             &                      & 0.528 (7.11) & 0.500 (6.94) & 0.343 (0.063) & 0.168 (1.59) \\
+M03 & C + T             &                      & 0.499 (7.30) & 0.489 (6.99) & 0.466 (0.057) & 0.222 (1.54) \\
+M04 & C + T + D         &                      & 0.559 (6.87) & 0.541 (6.64) & \textbf{0.469} (0.057) & 0.260 (1.51) \\
+M05 & C + M             &                      & \textbf{0.796} (4.68) & \textbf{0.801} (4.38) & 0.682 (0.044) & \textbf{0.691} (1.01) \\
+M06 & C + D + M         &                      & 0.784 (4.96) & 0.771 (4.85) & 0.625 (0.049) & 0.590 (1.20) \\
+M07 & C + T + M         &                      & 0.782 (4.90) & 0.780 (4.66) & 0.640 (0.047) & 0.631 (1.15) \\
+M08 & C + T + D + M     &                      & 0.767 (5.14) & 0.754 (5.00) & 0.607 (0.050) & 0.562 (1.25) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel D: 24-month window --- raw-lag EFP memory --- 644 site-years, 166 sites}} \\
+\midrule
+M01 & C                 & \multirow{8}{*}{644} & 0.344 (8.30) & 0.326 (7.96) & 0.318 (0.063) & 0.102 (1.67) \\
+M02 & C + D             &                      & 0.518 (7.13) & 0.472 (7.03) & 0.325 (0.063) & 0.118 (1.64) \\
+M03 & C + T             &                      & 0.502 (7.22) & 0.490 (6.89) & \textbf{0.461} (0.056) & 0.193 (1.57) \\
+M04 & C + T + D         &                      & 0.559 (6.82) & 0.533 (6.62) & 0.441 (0.058) & 0.205 (1.56) \\
+M05 & C + M             &                      & \textbf{0.838} (4.14) & \textbf{0.856} (3.69) & 0.734 (0.040) & \textbf{0.677} (1.03) \\
+M06 & C + D + M         &                      & 0.822 (4.46) & 0.821 (4.23) & 0.681 (0.045) & 0.593 (1.19) \\
+M07 & C + T + M         &                      & 0.834 (4.25) & 0.841 (3.91) & 0.711 (0.042) & 0.640 (1.11) \\
+M08 & C + T + D + M     &                      & 0.811 (4.60) & 0.809 (4.36) & 0.663 (0.046) & 0.587 (1.21) \\
+\bottomrule
+\end{tabular}
+\vspace{2pt}
+\begin{minipage}{\linewidth}
+\footnotesize
+\textit{Note:} Predictor abbreviations: C = Climate (monthly TA, VPD,
+SW$_\mathrm{IN}$ mean/5th/95th percentile; P mean, sum, $P_\mathrm{p05}$,
+$P_\mathrm{p95}$); T = Traits (hydraulic, leaf, root); D = Disturbance
+(mortality intensity, deadwood, forest loss at 100--500\,m buffers); M = EFP
+memory. Panels~A--B: M uses z-score anomalies of GPPsat, NEPmax, ETmax, uWUE
+from the preceding year(s). Panels~C--D: M uses raw EFP values from the
+preceding year(s) (lag-1 for 12-month; lag-1 and lag-2 for 24-month).
+$n$ = benchmark site-years (same for all 8 models within a panel).
+RMSE in native units in parentheses.
+\end{minipage}
+\end{table}
+
+
+
+\subsection{Interim interpretation}
+
+Taken together, the expected results support the working hypothesis that tree mortality is an important but spatially variable control on ecosystem functioning. While meteorological conditions and plant functional traits are expected to explain a substantial share of variation in EFPs, forest cover and mortality dynamics are likely to provide additional explanatory power, especially for productivity- and carbon-balance-related properties.
+
+These anticipated findings would suggest that integrating remotely sensed mortality information into flux-based analyses can improve our understanding of how forest disturbance shapes ecosystem functioning under ongoing environmental change.
+
+
+%%=============================================%%
+%% For presentation purpose, we have included  %%
+%% \bigskip command. Please ignore this.       %%
+%%=============================================%%
+% \bigskip
+% \begin{verbatim}
+% \begin{table}[<placement-specifier>]
+% \caption{<table-caption>}\label{<table-label>}%
+% \begin{tabular}{@{}llll@{}}
+% \toprule
+% Column 1 & Column 2 & Column 3 & Column 4\\
+% \midrule
+% row 1 & data 1 & data 2	 & data 3 \\
+% row 2 & data 4 & data 5\footnotemark[1] & data 6 \\
+% row 3 & data 7 & data 8	 & data 9\footnotemark[2]\\
+% \botrule
+% \end{tabular}
+% \footnotetext{Source: This is an example of table footnote. 
+% This is an example of table footnote.}
+% \footnotetext[1]{Example for a first table footnote.
+% This is an example of table footnote.}
+% \footnotetext[2]{Example for a second table footnote. 
+% This is an example of table footnote.}
+% \end{table}
+% \end{verbatim}
+% \bigskip
+%%=============================================%%
+%% For presentation purpose, we have included  %%
+%% \bigskip command. Please ignore this.       %%
+%%=============================================%%
+
+
+
+\section{Methods}\label{sec11}
+
+
+\subsection*{Study design and data sources}
+
+This study aims to assess the role of tree mortality in shaping ecosystem functional properties (EFPs) across a global network of eddy covariance flux tower sites. We combined flux-derived ecosystem metrics with meteorological variables, plant trait information, and remotely sensed forest cover and disturbance data.
+
+Eddy covariance data were obtained from multiple networks, including FLUXNET, ICOS, AmeriFlux, NEON, and OzFlux. We selected sites for which both flux and forest mortality data were available for the period 2017–2025. Sites were retained if they provided at least three years of valid observations within this time window, resulting in a total of 104 unique sites distributed across multiple biome types.
+
+\subsection*{Ecosystem functional properties}
+
+Ecosystem functional properties (EFPs) were derived from half-hourly eddy covariance flux data following established approaches by \cite{musavi2015imprint} and \cite{migliavacca2021three}. We calculated annual estimates of:
+\begin{itemize}
+\item Light-saturated gross primary productivity (GPP${sat}$),
+\item Maximum net ecosystem production (NEP${max}$),
+\item Maximum evapotranspiration (ET$_{max}$),
+\item Underlying water use efficiency (uWUE).
+\end{itemize}
+
+For each site, EFPs were computed on a yearly basis using data aggregated around the center of the growing season. Predictor variables were derived using meteorological conditions preceding the growing season peak, capturing ecosystem responses to antecedent environmental conditions.
+
+\subsection*{Meteorological variables}
+
+Meteorological drivers were derived from eddy covariance observations, including:
+\begin{itemize}
+\item Vapor pressure deficit (VPD),
+\item Air temperature,
+\item Precipitation,
+\item Shortwave radiation.
+\end{itemize}
+
+For each variable, monthly statistics were computed, including mean values as well as upper and lower quantiles. These metrics were calculated for the period preceding the center of the growing season and used as predictors in the modeling framework.
+
+\subsection*{Plant trait data}
+
+Plant functional traits were obtained from the global dataset planttraits.earth (\cite{lusk2026crowdsourced}). For each flux tower site, we extracted community-weighted mean (CWM) trait values around each flux tower. These traits represent static ecosystem properties and were included as predictors to capture structural and physiological differences among ecosystems.
+
+\subsection*{Forest cover and disturbance metrics}
+
+Spatially explicit information on forest cover and disturbance was derived from Sentinel-2–based predictions provided by the deadtrees.earth platform (\cite{mosig2026deadtrees}). Data were accessed as site-specific data cubes stored in Zarr format, each representing a spatial grid centered on a flux tower location.
+
+Forest cover values ranged from 0 to 255 and were rescaled to percentage values (0–100\%). All spatial analyses were performed in the local Universal Transverse Mercator (UTM) projection associated with each site.
+
+For each site, a circular buffer with a radius of 500 m was defined around the tower location. Pixels within this buffer were identified based on their UTM coordinates, and annual forest cover was calculated as the mean percentage cover across all pixels within the buffer.
+
+To quantify forest disturbance, year-to-year changes in forest cover were calculated at the pixel level. A disturbance event was defined as a decrease in forest cover exceeding 20 percentage points between consecutive years. Only decreases above this threshold were retained.
+
+The following variables were derived to characterize forest structure and disturbance:
+
+\begin{itemize}
+\item \textbf{Forest cover:}
+\begin{itemize}
+\item \texttt{forest_mean_pct_500m}: mean forest cover (%) within the 500 m buffer.
+\end{itemize}
+\item \textbf{Forest loss metrics (thresholded at 20 percentage points):}
+\begin{itemize}
+    \item \texttt{loss\_area\_frac\_500m}: fraction of pixels within the buffer experiencing a decrease in forest cover greater than 20 percentage points between consecutive years,
+    \item \texttt{loss\_mean\_pp\_500m}: mean magnitude of forest cover loss (percentage points) across disturbed pixels,
+    \item \texttt{loss\_sum\_pp\_500m}: total magnitude of forest cover loss summed across all pixels in the buffer.
+\end{itemize}
+
+\item \textbf{Deadwood metrics:}
+\begin{itemize}
+    \item \texttt{deadwood\_mean\_pct\_500m}: mean fraction of deadwood (\%) within the 500 m buffer,
+    \item \texttt{deadwood\_increase\_area\_frac\_500m}: fraction of pixels showing an increase in deadwood above a threshold of 20 percentage points,
+    \item \texttt{deadwood\_increase\_mean\_pp\_500m}: mean magnitude of deadwood increase (percentage points) across affected pixels,
+    \item \texttt{deadwood\_increase\_sum\_pp\_500m}: total magnitude of deadwood increase summed across all pixels within the buffer.
+\end{itemize}
+\end{itemize}
+Forest loss metrics were derived from year-to-year decreases in forest cover exceeding 20 percentage points at the pixel level, while deadwood increase metrics were computed analogously based on increases in the deadwood fraction.
+
+Together, these variables capture both the extent and intensity of canopy loss and deadwood accumulation around each flux tower site, providing complementary indicators of forest disturbance dynamics.
+
+\subsection*{Modeling framework}
+
+We used Random Forest models to quantify the contribution of meteorological conditions, plant traits, and forest disturbance to the variability of ecosystem functional properties. Models were trained separately for each EFP.
+
+Three model configurations were evaluated:
+\begin{itemize}
+\item \textbf{M1}: meteorological variables only,
+\item \textbf{M2}: meteorological variables and plant traits,
+\item \textbf{M3}: meteorological variables, plant traits, and forest cover and disturbance metrics.
+\end{itemize}
+
+The response variables were the annual EFPs (GPP${sat}$, NEP${max}$, ET$_{max}$, and uWUE).
+
+\subsection*{Model training and validation}
+
+Model performance was evaluated using a combination of data splitting and cross-validation strategies. The dataset was randomly split into training (80\%) and testing (20\%) subsets. In addition, we implemented a leave-one-site-out cross-validation approach to assess model generalizability across sites.
+
+Model performance was quantified using the coefficient of determination (R$^2$) and root mean square error (RMSE).
+
+\subsection*{Assessment of mortality effects}
+
+To evaluate the contribution of tree mortality, we compared model performance between configurations with and without disturbance information. Differences in performance were quantified as:
+%\Delta R^2 = R^2_{M3} - R^2_{baseline}
+
+where the baseline model corresponds to either M1 or M2.
+
+Positive values of $\Delta R^2$ indicate an improvement in predictive performance when including forest mortality variables, whereas negative values indicate reduced performance.
+
+Site-level analyses were conducted to assess spatial heterogeneity in model performance and to identify ecosystem types in which tree mortality plays a stronger role in shaping ecosystem functional properties.
+
+
+
+
+% \begin{enumerate}[1.]
+% \item Approval: a statement which confirms that all experimental protocols were approved by a named institutional and/or licensing committee. Please identify the approving body in the methods section
+
+% \item Accordance: a statement explicitly saying that the methods were carried out in accordance with the relevant guidelines and regulations
+
+% \item Informed consent (for experiments involving humans or human tissue samples): include a statement confirming that informed consent was obtained from all participants and/or their legal guardian/s
+% \end{enumerate}
+
+
+\section{Discussion}\label{sec12}
+
+
+\section{Conclusion}\label{sec13}
+
+
+
+\backmatter
+
+\bmhead{Supplementary information}
+
+If your article has accompanying supplementary file/s please state so here. 
+
+Authors reporting data from electrophoretic gels and blots should supply the full unprocessed scans for key as part of their Supplementary information. This may be requested by the editorial team/s if it is missing.
+
+Please refer to Journal-level guidance for any specific requirements.
+
+\bmhead{Acknowledgements}
+
+
+
+\section*{Declarations}
+
+
+
+\begin{itemize}
+\item Funding
+\item Conflict of interest/Competing interests (check journal-specific guidelines for which heading to use)
+\item Ethics approval and consent to participate
+\item Consent for publication
+\item Data availability 
+\item Materials availability
+\item Code availability 
+\item Author contribution
+\end{itemize}
+
+\noindent
+If any of the sections are not relevant to your manuscript, please include the heading and write `Not applicable' for that section. 
+
+%%===================================================%%
+%% For presentation purpose, we have included        %%
+%% \bigskip command. Please ignore this.             %%
+%%===================================================%%
+\bigskip
+\begin{flushleft}%
+Editorial Policies for:
+
+\bigskip\noindent
+Springer journals and proceedings: \url{https://www.springer.com/gp/editorial-policies}
+
+\bigskip\noindent
+Nature Portfolio journals: \url{https://www.nature.com/nature-research/editorial-policies}
+
+\bigskip\noindent
+\textit{Scientific Reports}: \url{https://www.nature.com/srep/journal-policies/editorial-policies}
+
+\bigskip\noindent
+BMC journals: \url{https://www.biomedcentral.com/getpublished/editorial-policies}
+\end{flushleft}
+
+\begin{appendices}
+
+\section{Section title of first appendix}\label{secA1}
+
+An appendix contains supplementary information that is not an essential part of the text itself but which may be helpful in providing a more comprehensive understanding of the research problem or it is information that is too cumbersome to be included in the body of the paper.
+
+%%=============================================%%
+%% For submissions to Nature Portfolio Journals %%
+%% please use the heading ``Extended Data''.   %%
+%%=============================================%%
+
+%%=============================================================%%
+%% Sample for another appendix section			       %%
+%%=============================================================%%
+
+%% \section{Example of another appendix section}\label{secA2}%
+%% Appendices may be used for helpful, supporting or essential material that would otherwise 
+%% clutter, break up or be distracting to the text. Appendices can consist of sections, figures, 
+%% tables and equations etc.
+
+\end{appendices}
+
+%%===========================================================================================%%
+%% If you are submitting to one of the Nature Portfolio journals, using the eJP submission   %%
+%% system, please include the references within the manuscript file itself. You may do this  %%
+%% by copying the reference list from your .bbl file, paste it into the main manuscript .tex %%
+%% file, and delete the associated \verb+\bibliography+ commands.                            %%
+%%===========================================================================================%%
+
+\bibliography{sn-bibliography}% common bib file
+%% if required, the content of .bbl file can be included here once bbl is generated
+%%\input sn-article.bbl
+
+
+
+\begin{table}[ht]
+\caption{\textbf{Model performance (Random Forest) across ecosystem functional properties (EFPs)} using 3-year datasets with 24-month meteorological lags. Models include meteorological predictors (Meteo), plant traits (Traits), multibuffer deadwood disturbance variables (Deadwood$_{\mathrm{MB}}$), and ecosystem memory (Memory; lagged anomalies). The table reports the number of predictors, number of sites, root mean square error (RMSE), and coefficient of determination ($R^2$). Best-performing models for each response are shown in bold.}
+\centering
+\begin{tabular}{llcccc}
+\toprule
+Response & Model & Predictors & Sites & RMSE & $R^2$ \\
+\midrule
+
+\textbf{ETmax} \\
+& Meteo & 288 & 52 & 0.0616 & 0.391 \\
+& Meteo + Traits & 309 & 52 & 0.0627 & 0.369 \\
+& Meteo + Deadwood$_{\mathrm{MB}}$ & 328 & 52 & \textbf{0.0613} & \textbf{0.397} \\
+& Meteo + Traits + Deadwood$_{\mathrm{MB}}$ & 349 & 52 & 0.0622 & 0.381 \\
+& Meteo + Deadwood$_{\mathrm{MB}}$ + Memory & 336 & 52 & 0.0617 & 0.389 \\
+& Meteo + Traits + Deadwood$_{\mathrm{MB}}$ + Memory & 357 & 52 & 0.0621 & 0.382 \\
+& Meteo + Traits + Memory & 317 & 52 & 0.0629 & 0.366 \\
+
+\midrule
+
+\textbf{GPPsat} \\
+& Meteo & 288 & 52 & 8.49 & 0.501 \\
+& Meteo + Traits & 309 & 52 & 8.50 & 0.498 \\
+& Meteo + Deadwood$_{\mathrm{MB}}$ & 328 & 52 & \textbf{7.78} & \textbf{0.585} \\
+& Meteo + Traits + Deadwood$_{\mathrm{MB}}$ & 349 & 52 & 7.98 & 0.563 \\
+& Meteo + Deadwood$_{\mathrm{MB}}$ + Memory & 336 & 52 & 7.84 & 0.579 \\
+& Meteo + Traits + Deadwood$_{\mathrm{MB}}$ + Memory & 357 & 52 & 7.83 & 0.557 \\
+& Meteo + Traits + Memory & 317 & 52 & 8.50 & 0.499 \\
+
+\midrule
+
+\textbf{NEPmax} \\
+& Meteo & 288 & 52 & 8.12 & 0.490 \\
+& Meteo + Traits & 309 & 52 & 7.96 & 0.509 \\
+& Meteo + Deadwood$_{\mathrm{MB}}$ & 328 & 52 & 7.44 & 0.574 \\
+& Meteo + Traits + Deadwood$_{\mathrm{MB}}$ & 349 & 52 & 7.47 & 0.570 \\
+& Meteo + Deadwood$_{\mathrm{MB}}$ + Memory & 336 & 52 & 7.54 & 0.562 \\
+& Meteo + Traits + Deadwood$_{\mathrm{MB}}$ + Memory & 357 & 52 & \textbf{7.40} & \textbf{0.579} \\
+& Meteo + Traits + Memory & 317 & 52 & 7.89 & 0.517 \\
+
+\midrule
+
+\textbf{uWUE} \\
+& Meteo & 288 & 52 & 1.000 & 0.440 \\
+& Meteo + Traits & 309 & 52 & 1.007 & 0.433 \\
+& Meteo + Deadwood$_{\mathrm{MB}}$ & 328 & 52 & 0.995 & 0.446 \\
+& Meteo + Traits + Deadwood$_{\mathrm{MB}}$ & 349 & 52 &\textbf{ 0.985 }& \textbf{0.459} \\
+& Meteo + Deadwood$_{\mathrm{MB}}$ + Memory & 336 & 52 & 0.999 & 0.441 \\
+& Meteo + Traits + Deadwood$_{\mathrm{MB}}$ + Memory & 357 & 52 & 0.994 & 0.450 \\
+& Meteo + Traits + Memory & 317 & 52 & 1.004 & 0.437 \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+
+\begin{table}[htbp]
+\small
+\caption{Model performance (Random Forest) across ecosystem functional properties (EFPs) using 3-year datasets with 24-month meteorological lags. Models include meteorological predictors (Meteo), plant traits (Traits), multibuffer deadwood disturbance variables (Deadwood\textsubscript{MB}), and ecosystem memory (Memory; lagged anomalies). The table reports the number of predictors, RMSE, and $R^2$ for all 52 sites and for the subset of 25 high-disturbance sites ($\geq$2 percentage points mortality in at least one year). Best-performing models for each response are shown in bold.}
+\label{tab:model_performance}
+\centering
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{0.85}    % tighter row spacing
+\begin{tabular}{llc rr rr}
+\toprule
+& & & \multicolumn{2}{c}{\textbf{All sites} ($n = 52$)} & \multicolumn{2}{c}{\textbf{High-disturbance} ($n = 25$)} \\
+\cmidrule(lr){4-5} \cmidrule(lr){6-7}
+Response & Model & Pred. & RMSE & $R^2$ & RMSE & $R^2$ \\
+\midrule
+
+\textbf{ETmax} \\
+ & Meteo                                          & 288 & 0.0616 & 0.391 & 0.0593 & 0.275 \\
+ & Meteo + Traits                                 & 309 & 0.0627 & 0.369 & 0.0591 & 0.274 \\
+ & Meteo + Deadwood\textsubscript{MB}             & 328 & \textbf{0.0613} & \textbf{0.397} & \textbf{0.0589} & \textbf{0.281} \\
+ & Meteo + Traits + Deadwood\textsubscript{MB}    & 349 & 0.0622 & 0.381 & 0.0598 & 0.266 \\
+ & Meteo + Deadwood\textsubscript{MB} + Memory    & 336 & 0.0617 & 0.389 & 0.0596 & 0.265 \\
+ & Meteo + Traits + Deadwood\textsubscript{MB} + Memory & 357 & 0.0621 & 0.382 & 0.0593 & 0.273 \\
+ & Meteo + Traits + Memory                        & 317 & 0.0629 & 0.366 & 0.0594 & 0.271 \\
+
+\midrule
+\textbf{GPPsat} \\
+ & Meteo                                          & 288 & 8.49 & 0.501 & 8.86 & 0.282 \\
+ & Meteo + Traits                                 & 309 & 8.50 & 0.498 & 8.87 & 0.281 \\
+ & Meteo + Deadwood\textsubscript{MB}             & 328 & \textbf{7.78} & \textbf{0.585} & \textbf{8.61} & \textbf{0.318} \\
+ & Meteo + Traits + Deadwood\textsubscript{MB}    & 349 & 7.98 & 0.563 & 8.64 & 0.312 \\
+ & Meteo + Deadwood\textsubscript{MB} + Memory    & 336 & 7.84 & 0.579 & 8.63 & 0.314 \\
+ & Meteo + Traits + Deadwood\textsubscript{MB} + Memory & 357 & 7.83 & 0.557 & 8.70 & 0.303 \\
+ & Meteo + Traits + Memory                        & 317 & 8.50 & 0.499 & 8.83 & 0.288 \\
+
+\midrule
+\textbf{NEPmax} \\
+ & Meteo                                          & 288 & 8.12 & 0.490 & 8.33 & 0.259 \\
+ & Meteo + Traits                                 & 309 & 7.96 & 0.509 & 8.47 & 0.344 \\
+ & Meteo + Deadwood\textsubscript{MB}             & 328 & 7.44 & 0.574 & 8.29 & 0.372 \\
+ & Meteo + Traits + Deadwood\textsubscript{MB}    & 349 & 7.47 & 0.570 & 8.35 & 0.362 \\
+ & Meteo + Deadwood\textsubscript{MB} + Memory    & 336 & 7.54 & 0.562 & 8.46 & 0.345 \\
+ & Meteo + Traits + Deadwood\textsubscript{MB} + Memory & 357 & \textbf{7.40} & \textbf{0.579} & \textbf{8.24} & \textbf{0.379} \\
+ & Meteo + Traits + Memory                        & 317 & 7.89 & 0.517 & 8.45 & 0.346 \\
+
+\midrule
+\textbf{uWUE} \\
+ & Meteo                                          & 288 & 1.000 & 0.440 & 0.867 & 0.400 \\
+ & Meteo + Traits                                 & 309 & 1.007 & 0.433 & 0.904 & 0.356 \\
+ & Meteo + Deadwood\textsubscript{MB}             & 328 & 0.995 & 0.446 & 0.870 & 0.392 \\
+ & Meteo + Traits + Deadwood\textsubscript{MB}    & 349 & \textbf{0.985} & \textbf{0.459} & 0.878 & 0.382 \\
+ & Meteo + Deadwood\textsubscript{MB} + Memory    & 336 & 0.999 & 0.441 & \textbf{0.853} & \textbf{0.416} \\
+ & Meteo + Traits + Deadwood\textsubscript{MB} + Memory & 357 & 0.994 & 0.450 & 0.890 & 0.365 \\
+ & Meteo + Traits + Memory                        & 317 & 1.004 & 0.437 & 0.908 & 0.350 \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[htbp]
+\footnotesize
+\caption{Model performance (Random Forest) across ecosystem functional properties (EFPs)
+using 3-year datasets with 24-month meteorological lags ($n_{\text{rows}} = 156$,
+$n_{\text{sites}} = 52$). Models include meteorological predictors (Meteo), plant traits
+(Traits), lagged disturbance variables (Disturbance\textsubscript{Lag}), ecosystem functional properties memory
+(Memory), and forest cover information (Context). Best-performing model per response (highest $R^2$)
+is shown in bold.}
+\label{tab:model_performance_full}
+\centering
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{0.88}
+\begin{tabular}{l l r r r}
+\toprule
+Response & Model & Pred. & RMSE & $R^2$ \\
+\midrule
+
+\textbf{ETmax} \\
+ & Meteo                                                                 & 288 & 0.0616 & 0.391 \\
+ & Meteo + Disturbance\textsubscript{Lag}                                & 428 & 0.0530 & 0.309 \\
+ & Meteo + Traits                                                        & 309 & 0.0627 & 0.369 \\
+ & Meteo + Traits + Disturbance\textsubscript{Lag}                       & 449 & 0.0536 & 0.299 \\
+ & \textbf{Meteo + Memory}                                               & 296 & \textbf{0.0612} & \textbf{0.399} \\
+ & Meteo + Memory + Disturbance\textsubscript{Lag}                       & 436 & 0.0531 & 0.306 \\
+ & Meteo + Traits + Memory                                               & 317 & 0.0629 & 0.366 \\
+ & Meteo + Traits + Disturbance\textsubscript{Lag} + Memory              & 457 & 0.0532 & 0.307 \\
+ & Meteo + Traits + Disturbance\textsubscript{Lag} + Memory + Context    & 462 & 0.0533 & 0.304 \\
+
+\midrule
+\textbf{GPPsat} \\
+ & Meteo                                                                 & 288 &  8.49 & 0.501 \\
+ & Meteo + Disturbance\textsubscript{Lag}                                & 428 &  8.40 & 0.468 \\
+ & Meteo + Traits                                                        & 309 &  8.50 & 0.498 \\
+ & \textbf{Meteo + Traits + Disturbance\textsubscript{Lag}}              & 449 & \textbf{7.91} & \textbf{0.529} \\
+ & Meteo + Memory                                                        & 296 &  8.55 & 0.493 \\
+ & Meteo + Memory + Disturbance\textsubscript{Lag}                       & 436 &  8.10 & 0.508 \\
+ & Meteo + Traits + Memory                                               & 317 &  8.50 & 0.499 \\
+ & Meteo + Traits + Disturbance\textsubscript{Lag} + Memory              & 457 &  7.96 & 0.523 \\
+ & Meteo + Traits + Disturbance\textsubscript{Lag} + Memory + Context    & 462 &  8.01 & 0.517 \\
+
+\midrule
+\textbf{NEPmax} \\
+ & Meteo                                                                 & 288 &  8.12 & 0.490 \\
+ & Meteo + Disturbance\textsubscript{Lag}                                & 428 &  6.63 & 0.563 \\
+ & Meteo + Traits                                                        & 309 &  7.96 & 0.509 \\
+ & \textbf{Meteo + Traits + Disturbance\textsubscript{Lag}}              & 449 & \textbf{6.23} & \textbf{0.615} \\
+ & Meteo + Memory                                                        & 296 &  8.24 & 0.476 \\
+ & Meteo + Memory + Disturbance\textsubscript{Lag}                       & 436 &  6.52 & 0.577 \\
+ & Meteo + Traits + Memory                                               & 317 &  7.89 & 0.517 \\
+ & Meteo + Traits + Disturbance\textsubscript{Lag} + Memory              & 457 &  6.30 & 0.604 \\
+ & Meteo + Traits + Disturbance\textsubscript{Lag} + Memory + Context    & 462 &  6.28 & 0.607 \\
+
+\midrule
+\textbf{uWUE} \\
+ & Meteo                                                                 & 288 & 1.000 & 0.440 \\
+ & Meteo + Disturbance\textsubscript{Lag}                                & 428 & 0.885 & 0.567 \\
+ & Meteo + Traits                                                        & 309 & 1.007 & 0.433 \\
+ & Meteo + Traits + Disturbance\textsubscript{Lag}                       & 449 & 0.848 & 0.607 \\
+ & Meteo + Memory                                                        & 296 & 1.002 & 0.437 \\
+ & Meteo + Memory + Disturbance\textsubscript{Lag}                       & 436 & 0.871 & 0.582 \\
+ & Meteo + Traits + Memory                                               & 317 & 1.004 & 0.437 \\
+ & \textbf{Meteo + Traits + Disturbance\textsubscript{Lag} + Memory}     & 457 & \textbf{0.824} & \textbf{0.632} \\
+ & Meteo + Traits + Disturbance\textsubscript{Lag} + Memory + Context    & 462 & 0.843 & 0.607 \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table*}[htbp]
+\centering
+\caption{
+Model performance (Random Forest) across ecosystem functional properties (EFPs) using the final clean dataset with continuous 3-year records and complete disturbance information ($n_{\mathrm{rows}} = 209$, $n_{\mathrm{sites}} = 83$). Models include meteorological predictors (Meteo), plant traits (Traits), ecosystem memory (Memory), disturbance variables including current and lagged disturbance ($t$, $t-1$, $t-2$; Disturbance), and forest context (Context). Best-performing model per response (highest $R^2$) is shown in bold.
+}
+\label{tab:rf_final_83sites}
+\small
+\begin{tabular}{llcccc}
+\toprule
+Response & Model & Pred. & RMSE & $R^2$ \\
+\midrule
+
+\textbf{ETmax} \\
+& Meteo & 338 & 0.0607 & 0.367 \\
+& Meteo + Disturbance & 393 & 0.0608 & 0.362 \\
+& Meteo + Traits & 359 & 0.0617 & 0.329 \\
+& Meteo + Traits + Disturbance & 414 & 0.0625 & 0.314 \\
+& Meteo + Memory & 342 & \textbf{0.0599} & \textbf{0.380} \\
+& Meteo + Memory + Disturbance & 397 & 0.0609 & 0.362 \\
+& Meteo + Traits + Memory & 363 & 0.0620 & 0.323 \\
+& Meteo + Traits + Disturbance + Memory & 418 & 0.0609 & 0.342 \\
+& Meteo + Traits + Disturbance + Memory + Context & 423 & 0.0602 & 0.354 \\
+
+\midrule
+
+\textbf{GPPsat} \\
+& Meteo & 338 & 9.00 & 0.443 \\
+& Meteo + Disturbance & 393 & 9.05 & 0.436 \\
+& Meteo + Traits & 359 & 9.20 & 0.426 \\
+& Meteo + Traits + Disturbance & 414 & 9.06 & 0.443 \\
+& Meteo + Memory & 342 & 8.97 & 0.447 \\
+& Meteo + Memory + Disturbance & 397 & 9.15 & 0.426 \\
+& Meteo + Traits + Memory & 363 & 9.00 & 0.449 \\
+& Meteo + Traits + Disturbance + Memory & 418 & 9.27 & 0.417 \\
+& Meteo + Traits + Disturbance + Memory + Context & 423 & \textbf{8.72} & \textbf{0.484} \\
+
+\midrule
+
+\textbf{NEPmax} \\
+& Meteo & 338 & 7.61 & 0.493 \\
+& Meteo + Disturbance & 393 & 7.61 & 0.492 \\
+& Meteo + Traits & 359 & 7.43 & 0.494 \\
+& Meteo + Traits + Disturbance & 414 & 7.47 & 0.489 \\
+& Meteo + Memory & 342 & 7.61 & 0.493 \\
+& Meteo + Memory + Disturbance & 397 & 7.63 & 0.490 \\
+& Meteo + Traits + Memory & 363 & 7.40 & 0.499 \\
+& Meteo + Traits + Disturbance + Memory & 418 & 7.51 & 0.484 \\
+& Meteo + Traits + Disturbance + Memory + Context & 423 & \textbf{6.88} & \textbf{0.569} \\
+
+\midrule
+
+\textbf{uWUE} \\
+& Meteo & 338 & 1.126 & 0.386 \\
+& Meteo + Disturbance & 393 & 1.149 & 0.361 \\
+& Meteo + Traits & 359 & 1.143 & 0.387 \\
+& Meteo + Traits + Disturbance & 414 & 1.147 & 0.382 \\
+& Meteo + Memory & 342 & 1.117 & 0.397 \\
+& Meteo + Memory + Disturbance & 397 & 1.144 & 0.366 \\
+& Meteo + Traits + Memory & 363 & \textbf{1.113} & \textbf{0.417} \\
+& Meteo + Traits + Disturbance + Memory & 418 & 1.125 & 0.404 \\
+& Meteo + Traits + Disturbance + Memory + Context & 423 & 1.139 & 0.391 \\
+
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table*}[htbp]
+\centering
+\caption{
+Model performance (Random Forest) across ecosystem functional properties (EFPs) using the clean subset of the original study sites with continuous 3-year records and complete disturbance information ($n_{\mathrm{rows}} = 99$, $n_{\mathrm{sites}} = 38$). Models include meteorological predictors (Meteo), plant traits (Traits), ecosystem memory (Memory), disturbance variables including current and lagged disturbance ($t$, $t-1$, $t-2$; Disturbance), and forest context (Context). Best-performing model per response (highest $R^2$) is shown in bold.
+}
+\label{tab:rf_clean_52sites}
+\small
+\begin{tabular}{llcccc}
+\toprule
+Response & Model & Pred. & RMSE & $R^2$ \\
+\midrule
+
+\textbf{ETmax} \\
+& Meteo & 338 & \textbf{0.0601} & \textbf{0.361} \\
+& Meteo + Disturbance & 393 & 0.0609 & 0.343 \\
+& Meteo + Traits & 359 & 0.0617 & 0.329 \\
+& Meteo + Traits + Disturbance & 414 & 0.0625 & 0.314 \\
+& Meteo + Memory & 342 & 0.0602 & 0.356 \\
+& Meteo + Memory + Disturbance & 397 & 0.0615 & 0.334 \\
+& Meteo + Traits + Memory & 363 & 0.0620 & 0.323 \\
+& Meteo + Traits + Disturbance + Memory & 418 & 0.0609 & 0.342 \\
+& Meteo + Traits + Disturbance + Memory + Context & 423 & 0.0602 & 0.354 \\
+
+\midrule
+
+\textbf{GPPsat} \\
+& Meteo & 338 & 9.36 & 0.409 \\
+& Meteo + Disturbance & 393 & 9.30 & 0.413 \\
+& Meteo + Traits & 359 & 9.20 & 0.426 \\
+& Meteo + Traits + Disturbance & 414 & 9.06 & 0.443 \\
+& Meteo + Memory & 342 & 9.21 & 0.426 \\
+& Meteo + Memory + Disturbance & 397 & 9.41 & 0.401 \\
+& Meteo + Traits + Memory & 363 & 9.00 & 0.449 \\
+& Meteo + Traits + Disturbance + Memory & 418 & 9.27 & 0.417 \\
+& Meteo + Traits + Disturbance + Memory + Context & 423 & \textbf{8.72} & \textbf{0.484} \\
+
+\midrule
+
+\textbf{NEPmax} \\
+& Meteo & 338 & 7.42 & 0.496 \\
+& Meteo + Disturbance & 393 & 7.56 & 0.476 \\
+& Meteo + Traits & 359 & 7.43 & 0.494 \\
+& Meteo + Traits + Disturbance & 414 & 7.47 & 0.489 \\
+& Meteo + Memory & 342 & 7.57 & 0.476 \\
+& Meteo + Memory + Disturbance & 397 & 7.54 & 0.479 \\
+& Meteo + Traits + Memory & 363 & 7.40 & 0.499 \\
+& Meteo + Traits + Disturbance + Memory & 418 & 7.51 & 0.484 \\
+& Meteo + Traits + Disturbance + Memory + Context & 423 & \textbf{6.88} & \textbf{0.569} \\
+
+\midrule
+
+\textbf{uWUE} \\
+& Meteo & 338 & 1.158 & 0.369 \\
+& Meteo + Disturbance & 393 & 1.177 & 0.349 \\
+& Meteo + Traits & 359 & 1.143 & 0.387 \\
+& Meteo + Traits + Disturbance & 414 & 1.147 & 0.382 \\
+& Meteo + Memory & 342 & 1.165 & 0.361 \\
+& Meteo + Memory + Disturbance & 397 & 1.157 & 0.369 \\
+& Meteo + Traits + Memory & 363 & \textbf{1.113} & \textbf{0.417} \\
+& Meteo + Traits + Disturbance + Memory & 418 & 1.125 & 0.404 \\
+& Meteo + Traits + Disturbance + Memory + Context & 423 & 1.139 & 0.391 \\
+
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table}[htbp]
+\footnotesize
+\caption{Model performance (Random Forest) across ecosystem functional 
+properties (EFPs) using datasets from 2016--2024 with 24-month meteorological 
+lags centred on the growing season ($n_{\text{rows}} = 209$, $n_{\text{sites}} = 83$). 
+Models include meteorological predictors (Meteo), plant traits (Traits), 
+disturbance variables at $t$, $t-1$, and $t-2$ (Disturbance), ecosystem memory 
+(Memory; lagged EFP anomalies), and forest cover context (Context). 
+Best-performing model per response variable (highest $R^2$) is shown in bold.}
+\label{tab:loso_rf_83sites}
+\centering
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{0.88}
+\begin{tabular}{l l r r r}
+\toprule
+Response & Model & Pred. & RMSE & $R^2$ \\
+\midrule
+
+\textbf{ETmax} \\
+ & Meteo                                                             & 288 & 0.0602 & 0.374 \\
+ & Meteo + Disturbance                                               & 393 & 0.0609 & 0.362 \\
+ & Meteo + Traits                                                    & 309 & 0.0609 & 0.347 \\
+ & Meteo + Traits + Disturbance                                      & 414 & 0.0617 & 0.330 \\
+ & \textbf{Meteo + Memory}                                           & \textbf{296} & \textbf{0.0416} & \textbf{0.428} \\
+ & Meteo + Memory + Disturbance                                      & 401 & 0.0421 & 0.412 \\
+ & Meteo + Traits + Memory                                           & 317 & 0.0426 & 0.318 \\
+ & Meteo + Traits + Disturbance + Memory                             & 422 & 0.0418 & 0.346 \\
+ & Meteo + Traits + Disturbance + Memory + Context                   & 427 & 0.0414 & 0.356 \\
+
+\midrule
+\textbf{GPPsat} \\
+ & Meteo                                                             & 288 &  8.83 & 0.463 \\
+ & Meteo + Disturbance                                               & 393 &  9.12 & 0.429 \\
+ & Meteo + Traits                                                    & 309 &  8.99 & 0.420 \\
+ & Meteo + Traits + Disturbance                                      & 414 &  9.25 & 0.421 \\
+ & Meteo + Memory                                                    & 296 &  9.01 & 0.287 \\
+ & Meteo + Memory + Disturbance                                      & 401 &  8.80 & 0.316 \\
+ & Meteo + Traits + Memory                                           & 317 &  9.14 & 0.250 \\
+ & Meteo + Traits + Disturbance + Memory                             & 422 &  8.80 & 0.296 \\
+ & \textbf{Meteo + Traits + Disturbance + Memory + Context}          & \textbf{427} & \textbf{7.71} & \textbf{0.468} \\
+
+\midrule
+\textbf{NEPmax} \\
+ & \textbf{Meteo}                                                    & \textbf{288} & \textbf{7.50} & \textbf{0.507} \\
+ & Meteo + Disturbance                                               & 393 &  7.65 & 0.488 \\
+ & Meteo + Traits                                                    & 309 &  7.33 & 0.508 \\
+ & Meteo + Traits + Disturbance                                      & 414 &  7.48 & 0.488 \\
+ & Meteo + Memory                                                    & 296 &  8.69 & 0.287 \\
+ & Meteo + Memory + Disturbance                                      & 401 &  8.82 & 0.264 \\
+ & Meteo + Traits + Memory                                           & 317 &  8.70 & 0.200 \\
+ & Meteo + Traits + Disturbance + Memory                             & 422 &  8.60 & 0.212 \\
+ & Meteo + Traits + Disturbance + Memory + Context                   & 427 &  7.32 & 0.420 \\
+
+\midrule
+\textbf{uWUE} \\
+ & Meteo                                                             & 288 & 1.124 & 0.390 \\
+ & Meteo + Disturbance                                               & 393 & 1.151 & 0.360 \\
+ & Meteo + Traits                                                    & 309 & 1.127 & 0.404 \\
+ & Meteo + Traits + Disturbance                                      & 414 & 1.145 & 0.383 \\
+ & Meteo + Memory                                                    & 296 & 1.034 & 0.305 \\
+ & Meteo + Memory + Disturbance                                      & 401 & 1.010 & 0.339 \\
+ & Meteo + Traits + Memory                                           & 317 & 1.020 & 0.330 \\
+ & Meteo + Traits + Disturbance + Memory                             & 422 & 1.016 & 0.337 \\
+ & \textbf{Meteo + Traits + Disturbance + Memory + Context}          & \textbf{427} & \textbf{0.918} & \textbf{0.495} \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+%%%% with forest cover
+\begin{table}[htbp]
+\footnotesize
+\caption{Model performance (Random Forest) across ecosystem functional
+properties (EFPs) using datasets from 2016--2024 with 24-month meteorological
+lags centred on the growing season ($n_{\text{rows}} = 209$,
+$n_{\text{sites}} = 83$). Models include meteorological predictors (Meteo),
+plant traits (Traits), disturbance variables at $t$, $t-1$, and $t-2$
+(Disturbance), and ecosystem memory (Memory; lagged EFP anomalies).
+Best-performing model per response variable (highest $R^2$) is shown in bold.}
+\label{tab:loso_rf_83sites}
+\centering
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{0.88}
+\begin{tabular}{l l r r r}
+\toprule
+Response & Model & Pred. & RMSE & $R^2$ \\
+\midrule
+
+\textbf{ETmax} \\
+ & Meteo                                             & 288 & 0.0602 & 0.374 \\
+ & Meteo + Disturbance                               & 398 & 0.0592 & 0.393 \\
+ & Meteo + Traits                                    & 309 & 0.0609 & 0.347 \\
+ & Meteo + Traits + Disturbance                      & 419 & 0.0604 & 0.350 \\
+ & \textbf{Meteo + Memory}                           & \textbf{296} & \textbf{0.0416} & \textbf{0.428} \\
+ & Meteo + Memory + Disturbance                      & 406 & 0.0428 & 0.392 \\
+ & Meteo + Traits + Memory                           & 317 & 0.0426 & 0.318 \\
+ & Meteo + Traits + Disturbance + Memory             & 427 & 0.0414 & 0.357 \\
+
+\midrule
+\textbf{GPPsat} \\
+ & Meteo                                             & 288 &  8.83 & 0.463 \\
+ & \textbf{Meteo + Disturbance}                      & \textbf{398} & \textbf{8.42} & \textbf{0.512} \\
+ & Meteo + Traits                                    & 309 &  8.99 & 0.452 \\
+ & Meteo + Traits + Disturbance                      & 419 &  8.58 & 0.499 \\
+ & Meteo + Memory                                    & 296 &  9.01 & 0.287 \\
+ & Meteo + Memory + Disturbance                      & 406 &  7.70 & 0.489 \\
+ & Meteo + Traits + Memory                           & 317 &  9.14 & 0.250 \\
+ & Meteo + Traits + Disturbance + Memory             & 427 &  7.93 & 0.434 \\
+
+\midrule
+\textbf{NEPmax} \\
+ & Meteo                                             & 288 &  7.50 & 0.507 \\
+ & \textbf{Meteo + Disturbance}                      & \textbf{398} & \textbf{6.97} & \textbf{0.576} \\
+ & Meteo + Traits                                    & 309 &  7.33 & 0.508 \\
+ & Meteo + Traits + Disturbance                      & 419 &  6.91 & 0.565 \\
+ & Meteo + Memory                                    & 296 &  8.69 & 0.287 \\
+ & Meteo + Memory + Disturbance                      & 406 &  7.68 & 0.438 \\
+ & Meteo + Traits + Memory                           & 317 &  8.70 & 0.200 \\
+ & Meteo + Traits + Disturbance + Memory             & 427 &  7.56 & 0.379 \\
+
+\midrule
+\textbf{uWUE} \\
+ & Meteo                                             & 288 & 1.124 & 0.390 \\
+ & Meteo + Disturbance                               & 398 & 1.164 & 0.346 \\
+ & Meteo + Traits                                    & 309 & 1.127 & 0.404 \\
+ & Meteo + Traits + Disturbance                      & 419 & 1.142 & 0.387 \\
+ & Meteo + Memory                                    & 296 & 1.034 & 0.305 \\
+ & \textbf{Meteo + Memory + Disturbance}             & \textbf{406} & \textbf{0.928} & \textbf{0.474} \\
+ & Meteo + Traits + Memory                           & 317 & 1.020 & 0.330 \\
+ & Meteo + Traits + Disturbance + Memory             & 427 & 0.929 & 0.478 \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+\begin{table*}[htbp]
+\centering
+\caption{Random Forest model performance using disturbance products including forest cover, forest loss, deadwood, and lagged disturbance at $t-1$ and $t-2$. Best-performing model per response based on $R^2$ is shown in bold.}
+\label{tab:rf_forest_included}
+\small
+\begin{tabular}{llccc}
+\toprule
+Response & Model & Pred. & RMSE & $R^2$ \\
+\midrule
+
+\textbf{ETmax} \\
+& Meteo & 288 & 0.0592 & 0.403 \\
+& Meteo + Disturbance & 309 & 0.0604 & 0.381 \\
+& Meteo + Traits & 309 & 0.0608 & 0.376 \\
+& Meteo + Traits + Disturbance & 330 & 0.0617 & 0.355 \\
+& \textbf{Meteo + Memory} & \textbf{296} & \textbf{0.0587} & \textbf{0.413} \\
+& Meteo + Memory + Disturbance & 317 & 0.0603 & 0.384 \\
+& Meteo + Traits + Memory & 317 & 0.0605 & 0.377 \\
+& Meteo + Traits + Disturbance + Memory & 338 & 0.0617 & 0.355 \\
+& Meteo + Traits + Disturbance + Memory + Context & 339 & 0.0615 & 0.359 \\
+
+\midrule
+
+\textbf{GPPsat} \\
+& Meteo & 288 & 8.90 & 0.482 \\
+& Meteo + Disturbance & 309 & 8.86 & 0.487 \\
+& Meteo + Traits & 309 & 8.77 & 0.496 \\
+& Meteo + Traits + Disturbance & 330 & 8.74 & 0.500 \\
+& Meteo + Memory & 296 & 8.91 & 0.481 \\
+& Meteo + Memory + Disturbance & 317 & 8.78 & 0.496 \\
+& Meteo + Traits + Memory & 317 & 8.68 & 0.507 \\
+& Meteo + Traits + Disturbance + Memory & 338 & 8.82 & 0.491 \\
+& \textbf{Meteo + Traits + Disturbance + Memory + Context} & \textbf{339} & \textbf{8.66} & \textbf{0.509} \\
+
+\midrule
+
+\textbf{NEPmax} \\
+& Meteo & 288 & 8.31 & 0.488 \\
+& Meteo + Disturbance & 309 & 8.23 & 0.497 \\
+& \textbf{Meteo + Traits} & \textbf{309} & \textbf{8.00} & \textbf{0.523} \\
+& Meteo + Traits + Disturbance & 330 & 8.03 & 0.519 \\
+& Meteo + Memory & 296 & 8.29 & 0.489 \\
+& Meteo + Memory + Disturbance & 317 & 8.26 & 0.494 \\
+& Meteo + Traits + Memory & 317 & 8.11 & 0.511 \\
+& Meteo + Traits + Disturbance + Memory & 338 & 8.04 & 0.518 \\
+& Meteo + Traits + Disturbance + Memory + Context & 339 & 8.01 & 0.523 \\
+
+\midrule
+
+\textbf{uWUE} \\
+& Meteo & 288 & 1.031 & 0.429 \\
+& Meteo + Disturbance & 309 & 1.020 & 0.441 \\
+& Meteo + Traits & 309 & 1.026 & 0.435 \\
+& Meteo + Traits + Disturbance & 330 & 1.025 & 0.438 \\
+& Meteo + Memory & 296 & 1.021 & 0.441 \\
+& Meteo + Memory + Disturbance & 317 & 1.011 & 0.452 \\
+& \textbf{Meteo + Traits + Memory} & \textbf{317} & \textbf{1.014} & \textbf{0.453} \\
+& Meteo + Traits + Disturbance + Memory & 338 & 1.016 & 0.448 \\
+& Meteo + Traits + Disturbance + Memory + Context & 339 & 1.027 & 0.435 \\
+
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table*}[htbp]
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{0.88}
+\centering
+\caption{Random Forest performance using meteorology (24-month lags), plant traits, EFP anomaly memory, and disturbance (including forest cover and lagged deadwood at $t$, $t-1$, $t-2$). Best model per response (highest $R^2$) in bold.}
+\label{tab:rf_deadwood_lag12_forest}
+\small
+\begin{tabular}{llccc}
+\toprule
+Response & Model & Pred. & RMSE & $R^2$ \\
+\midrule
+
+\textbf{ETmax} \\
+& Meteo & 288 & 0.0592 & 0.403 \\
+& Meteo + Disturbance & 310 & 0.0603 & 0.385 \\
+& Meteo + Traits & 309 & 0.0606 & 0.376 \\
+& Meteo + Traits + Disturbance & 331 & 0.0616 & 0.357 \\
+& \textbf{Meteo + Memory} & \textbf{296} & \textbf{0.0587} & \textbf{0.413} \\
+& Meteo + Memory + Disturbance & 318 & 0.0594 & 0.400 \\
+& Meteo + Traits + Memory & 317 & 0.0605 & 0.377 \\
+& Meteo + Traits + Disturbance + Memory & 339 & 0.0613 & 0.361 \\
+
+\midrule
+
+\textbf{GPPsat} \\
+& Meteo & 288 & 8.90 & 0.482 \\
+& Meteo + Disturbance & 310 & 8.70 & 0.505 \\
+& Meteo + Traits & 309 & 8.77 & 0.496 \\
+& \textbf{Meteo + Traits + Disturbance} & \textbf{331} & \textbf{8.68} & \textbf{0.507} \\
+& Meteo + Memory & 296 & 8.91 & 0.481 \\
+& Meteo + Memory + Disturbance & 318 & 8.62 & 0.515 \\
+& Meteo + Traits + Memory & 317 & 8.68 & 0.507 \\
+& Meteo + Traits + Disturbance + Memory & 339 & 8.67 & 0.508 \\
+
+\midrule
+
+\textbf{NEPmax} \\
+& Meteo & 288 & 8.31 & 0.488 \\
+& Meteo + Disturbance & 310 & 8.16 & 0.507 \\
+& Meteo + Traits & 309 & 8.00 & 0.523 \\
+& \textbf{Meteo + Traits + Disturbance} & \textbf{331} & \textbf{7.96} & \textbf{0.528} \\
+& Meteo + Memory & 296 & 8.29 & 0.489 \\
+& Meteo + Memory + Disturbance & 318 & 8.17 & 0.504 \\
+& Meteo + Traits + Memory & 317 & 8.11 & 0.511 \\
+& Meteo + Traits + Disturbance + Memory & 339 & 8.02 & 0.522 \\
+
+\midrule
+
+\textbf{uWUE} \\
+& Meteo & 288 & 1.031 & 0.429 \\
+& Meteo + Disturbance & 310 & 1.026 & 0.435 \\
+& Meteo + Traits & 309 & 1.026 & 0.435 \\
+& Meteo + Traits + Disturbance & 331 & 1.020 & 0.443 \\
+& Meteo + Memory & 296 & 1.021 & 0.441 \\
+& Meteo + Memory + Disturbance & 318 & 1.014 & 0.441 \\
+& \textbf{Meteo + Traits + Memory} & \textbf{317} & \textbf{1.011} & \textbf{0.453} \\
+& Meteo + Traits + Disturbance + Memory & 339 & 1.025 & 0.437 \\
+
+\bottomrule
+\end{tabular}
+\end{table*}
+
+
+
+
+
+\end{document}

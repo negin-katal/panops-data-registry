@@ -1,0 +1,21 @@
+P12_mean
+P50_mean
+P88_mean
+rdmax_mean
+WUE_mean
+Leaf C
+Leaf N (mass)
+Leaf width
+Leaf C/N ratio
+Leaf P
+Stem conduit density
+Stem conduit diameter
+Leaf area
+SLA
+SSD
+Leaf thickness
+Leaf N (area)
+Leaf dry mass
+Rooting depth
+Leaf delta 15N
+gsmax_mean

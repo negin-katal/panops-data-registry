@@ -1,0 +1,8 @@
+nohup: ignoring input
+Workspace loaded.
+Warning message:
+In fwrite(shap_by_igbp, "derived_tables/grouped_shap_by_igbp_FINAL.csv") :
+  Input has no columns; doing nothing.
+If you intended to overwrite the file at derived_tables/grouped_shap_by_igbp_FINAL.csv with an empty one, please use file.remove first.
+
+Done.

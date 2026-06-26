@@ -1,0 +1,4 @@
+forest_mean_pct_500m.x
+loss_area_frac_500m
+loss_mean_pp_500m
+loss_sum_pp_500m

@@ -1,0 +1,75 @@
+\begin{table}[htbp]
+\centering
+\caption{Leave-one-site-out random forest performance for four ecosystem
+functional properties (EFPs). Models differ in predictor composition and in the
+length of the climate memory window anchored at the centre of the growing season
+(CGS): 12-month window (Year$-$1 to CGS of Year~0) and 24-month window
+(Year$-$2 to CGS of Year~0). Each cell shows $R^2$ (RMSE). Bold values indicate
+the best $R^2$ per EFP within each panel. All models within a panel are evaluated
+on the same benchmark set to ensure comparability. Panels A--B use anomaly
+z-score EFP memory (M05--M08); Panels C--D repeat M05--M08 with raw
+previous-year EFP values as memory predictors (same benchmark sets).}
+\label{tab:RF_LOSO}
+\small
+\begin{tabular}{llcccccc}
+\toprule
+Model & Predictors & $n$ &
+  GPPsat & NEPmax & ETmax & uWUE \\
+  & & &
+  ($\mu$mol m$^{-2}$ s$^{-1}$) &
+  ($\mu$mol m$^{-2}$ s$^{-1}$) &
+  (mm d$^{-1}$) &
+  (g C mm$^{-1}$) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel A: 12-month window --- anomaly EFP memory --- 882 site-years, 179 sites}} \\
+\midrule
+M01 & Climate                          & \multirow{8}{*}{882} & 0.350 (8.28) & 0.352 (7.94) & 0.303 (0.064) & 0.194 (1.53) \\
+M02 & Climate + Disturbance            &                      & 0.520 (7.09) & 0.502 (6.95) & 0.332 (0.062) & 0.182 (1.54) \\
+M03 & Climate + Traits                 &                      & 0.506 (7.18) & 0.497 (6.95) & \textbf{0.465} (0.056) & 0.240 (1.49) \\
+M04 & Climate + Traits + Disturbance   &                      & \textbf{0.566} (6.75) & \textbf{0.556} (6.56) & 0.462 (0.056) & \textbf{0.245} (1.49) \\
+M05 & Climate + EFP memory             &                      & 0.351 (8.24) & 0.355 (7.90) & 0.303 (0.064) & 0.174 (1.55) \\
+M06 & Climate + Disturbance + Memory   &                      & 0.520 (7.10) & 0.502 (6.95) & 0.339 (0.062) & 0.194 (1.53) \\
+M07 & Climate + Traits + Memory        &                      & 0.504 (7.19) & 0.499 (6.95) & 0.461 (0.056) & 0.232 (1.50) \\
+M08 & Climate + Traits + Dist.\ + Mem. &                      & \textbf{0.566} (6.76) & 0.554 (6.58) & 0.459 (0.056) & 0.243 (1.49) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel B: 24-month window --- anomaly EFP memory --- 696 site-years, 179 sites}} \\
+\midrule
+M01 & Climate                          & \multirow{8}{*}{696} & 0.347 (8.21) & 0.339 (7.94) & 0.288 (0.064) & 0.128 (1.60) \\
+M02 & Climate + Disturbance            &                      & 0.508 (7.11) & 0.484 (6.98) & 0.316 (0.062) & 0.131 (1.58) \\
+M03 & Climate + Traits                 &                      & 0.506 (7.12) & 0.498 (6.87) & \textbf{0.456} (0.056) & 0.193 (1.53) \\
+M04 & Climate + Traits + Disturbance   &                      & \textbf{0.563} (6.73) & 0.544 (6.57) & 0.442 (0.056) & 0.195 (1.53) \\
+M05 & Climate + EFP memory             &                      & 0.344 (8.21) & 0.339 (7.89) & 0.285 (0.064) & 0.110 (1.61) \\
+M06 & Climate + Disturbance + Memory   &                      & 0.508 (7.12) & 0.488 (6.96) & 0.309 (0.063) & 0.134 (1.58) \\
+M07 & Climate + Traits + Memory        &                      & 0.514 (7.07) & 0.508 (6.81) & 0.452 (0.056) & \textbf{0.221} (1.51) \\
+M08 & Climate + Traits + Dist.\ + Mem. &                      & 0.560 (6.75) & \textbf{0.549} (6.54) & 0.441 (0.056) & 0.188 (1.53) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel C: 12-month window --- raw-lag EFP memory (M05--M08 only; M01--M04 identical to Panel A)}} \\
+\midrule
+M05 & Climate + EFP memory             & \multirow{4}{*}{882} & \textbf{0.789} (4.72) & \textbf{0.799} (4.43) & \textbf{0.675} (0.044) & \textbf{0.689} (1.00) \\
+M06 & Climate + Disturbance + Memory   &                      & 0.782 (4.91) & 0.776 (4.80) & 0.633 (0.048) & 0.591 (1.17) \\
+M07 & Climate + Traits + Memory        &                      & 0.788 (4.79) & 0.787 (4.61) & 0.640 (0.046) & 0.651 (1.10) \\
+M08 & Climate + Traits + Dist.\ + Mem. &                      & 0.765 (5.09) & 0.762 (4.93) & 0.600 (0.049) & 0.549 (1.23) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel D: 24-month window --- raw-lag EFP memory (M05--M08 only; M01--M04 identical to Panel B)}} \\
+\midrule
+M05 & Climate + EFP memory             & \multirow{4}{*}{696} & \textbf{0.827} (4.22) & \textbf{0.851} (3.76) & \textbf{0.729} (0.040) & \textbf{0.660} (1.02) \\
+M06 & Climate + Disturbance + Memory   &                      & 0.810 (4.53) & 0.817 (4.29) & 0.680 (0.044) & 0.587 (1.16) \\
+M07 & Climate + Traits + Memory        &                      & 0.824 (4.31) & 0.844 (3.89) & 0.704 (0.041) & 0.647 (1.07) \\
+M08 & Climate + Traits + Dist.\ + Mem. &                      & 0.802 (4.64) & 0.808 (4.39) & 0.662 (0.045) & 0.577 (1.18) \\
+\bottomrule
+\end{tabular}
+\vspace{2pt}
+\begin{minipage}{\linewidth}
+\footnotesize
+\textit{Note:} $n$ = number of site-year pairs in the benchmark set (identical for
+all models within a panel). Climate predictors are aggregated as a rolling mean
+(or sum for precipitation) over the window ending at CGS of Year~0.
+Disturbance includes mortality intensity, deadwood, and forest loss at 100--500\,m
+buffers for the same window as climate. EFP memory in Panels A--B = z-score
+anomalies of GPPsat, NEPmax, ETmax, and uWUE from the preceding year(s);
+in Panels C--D = raw (unstandardised) EFP values from the preceding year(s)
+(lag-1 for 12-month window; lag-1 and lag-2 for 24-month window).
+Traits are time-invariant functional traits (hydraulic, leaf, and root).
+RMSE in native units given in parentheses.
+\end{minipage}
+\end{table}
