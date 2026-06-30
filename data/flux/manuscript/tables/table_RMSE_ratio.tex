@@ -1,0 +1,27 @@
+\begin{sidewaystable}[p]
+\centering
+\caption{RMSE ratio (with D / without D) per biome and EFP. \textbf{Bold} $< 1$: D improved; \textit{italic} $> 1$: D worsened. Anomaly memory, 24-month window.}
+\label{tab:rmse_ratio}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{l|cccc|cccc|cccc|cccc}
+\toprule
+Biome & \multicolumn{4}{c|}{C vs C$+$D} & \multicolumn{4}{c|}{C$+$T vs C$+$T$+$D} & \multicolumn{4}{c|}{C$+$M vs C$+$D$+$M} & \multicolumn{4}{c|}{C$+$T$+$M vs C$+$T$+$D$+$M} \\
+ & GPP$_\mathrm{sat}$ & NEP$_\mathrm{max}$ & ET$_\mathrm{max}$ & uWUE & GPP$_\mathrm{sat}$ & NEP$_\mathrm{max}$ & ET$_\mathrm{max}$ & uWUE & GPP$_\mathrm{sat}$ & NEP$_\mathrm{max}$ & ET$_\mathrm{max}$ & uWUE & GPP$_\mathrm{sat}$ & NEP$_\mathrm{max}$ & ET$_\mathrm{max}$ & uWUE \\
+\midrule
+ENF & \textbf{0.858} & \textbf{0.869} & \textbf{0.964} & \textbf{0.866} & \textbf{0.923} & \textbf{0.949} & \textit{1.051} & \textbf{0.956} & \textbf{0.883} & \textbf{0.891} & \textbf{0.968} & \textbf{0.892} & \textbf{0.935} & \textbf{0.954} & \textit{1.027} & \textbf{0.976} \\
+EBF & \textit{1.332} & \textit{1.149} & \textbf{0.718} & \textit{1.101} & \textit{1.433} & \textit{1.157} & \textbf{0.782} & \textit{1.026} & \textit{1.218} & \textit{1.107} & \textbf{0.692} & \textit{1.118} & \textit{1.309} & \textit{1.262} & \textbf{0.769} & \textit{1.068} \\
+DNF & \textit{1.024} & \textit{1.060} & \textit{1.389} & \textit{1.052} & \textbf{0.992} & \textit{1.004} & \textit{1.044} & \textbf{0.976} & \textbf{0.939} & \textbf{0.995} & \textit{1.183} & \textit{1.017} & \textbf{0.997} & \textbf{0.984} & \textit{1.086} & \textit{1.038} \\
+DBF & \textbf{0.967} & \textbf{0.931} & \textit{1.079} & \textbf{0.890} & \textbf{0.966} & \textbf{0.940} & \textbf{0.995} & \textbf{0.961} & \textbf{0.956} & \textbf{0.925} & \textit{1.084} & \textbf{0.929} & \textbf{0.949} & \textbf{0.926} & \textbf{0.990} & \textbf{0.982} \\
+MF & \textbf{0.607} & \textbf{0.527} & \textbf{0.825} & \textit{1.027} & \textbf{0.843} & \textbf{0.876} & \textbf{0.936} & \textit{1.198} & \textbf{0.600} & \textbf{0.555} & \textbf{0.858} & \textit{1.224} & \textbf{0.884} & \textbf{0.876} & \textbf{0.955} & \textit{1.081} \\
+CSH & \textbf{0.772} & \textbf{0.774} & \textbf{0.918} & \textbf{0.937} & \textit{1.266} & \textit{1.260} & \textbf{0.979} & \textit{1.105} & \textbf{0.793} & \textbf{0.798} & \textbf{0.955} & \textbf{0.892} & \textit{1.237} & \textit{1.244} & \textit{1.022} & \textit{1.109} \\
+OSH & \textbf{0.937} & \textbf{0.906} & \textit{1.016} & \textbf{0.994} & \textbf{0.925} & \textbf{0.938} & \textit{1.054} & \textit{1.002} & \textbf{0.931} & \textbf{0.852} & \textit{1.059} & \textbf{0.982} & \textbf{0.910} & \textbf{0.936} & \textit{1.069} & \textbf{0.994} \\
+WSA & \textbf{0.843} & \textit{1.022} & \textbf{0.975} & \textit{1.124} & \textit{1.046} & \textit{1.078} & \textbf{0.972} & \textit{1.071} & \textbf{0.866} & \textit{1.042} & \textbf{0.931} & \textit{1.189} & \textit{1.015} & \textit{1.099} & \textbf{0.922} & \textit{1.033} \\
+SAV & \textbf{0.894} & \textbf{0.940} & \textit{1.129} & \textit{1.108} & \textit{1.100} & \textit{1.027} & \textit{1.125} & \textbf{0.966} & \textbf{0.984} & \textit{1.027} & \textit{1.125} & \textit{1.041} & \textit{1.064} & \textit{1.066} & \textit{1.091} & 1.001 \\
+WET & \textbf{0.922} & \textbf{0.967} & \textbf{0.934} & \textbf{0.989} & \textbf{0.975} & \textit{1.020} & \textbf{0.955} & \textit{1.041} & \textbf{0.905} & \textbf{0.940} & \textbf{0.933} & \textbf{0.926} & \textbf{0.993} & \textit{1.017} & \textbf{0.987} & \textit{1.032} \\
+\midrule
+All & \textbf{0.899} & \textbf{0.905} & \textbf{0.978} & \textbf{0.955} & \textbf{0.966} & \textbf{0.981} & \textit{1.005} & \textbf{0.999} & \textbf{0.901} & \textbf{0.904} & \textbf{0.983} & \textbf{0.950} & \textbf{0.969} & \textbf{0.983} & \textit{1.004} & \textit{1.008} \\
+\bottomrule
+\end{tabular}
+\end{sidewaystable}
