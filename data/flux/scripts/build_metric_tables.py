@@ -220,51 +220,54 @@ def fmt_ratio(r):
         return rf"\textit{{{s}}}"
     return s
 
-# Build columns: for each pair we have n_efp EFP columns
-pair_headers = []
-for _,_,lbl in PAIRS:
-    pair_headers.append(rf"\multicolumn{{{n_efp}}}{{c|}}{{{lbl}}}")
-pair_headers[-1] = pair_headers[-1].replace("c|","c")  # last no bar
+# 2×2 layout: Panels A/B on top row, C/D on bottom row, each in a minipage
+efp_header = " & ".join(EFP_LABELS[e] for e in EFP_ORDER)
+col_str = "l" + "c" * n_efp
 
-efp_sub = " & ".join([EFP_LABELS[e] for e in EFP_ORDER] * len(PAIRS))
+def make_panel(base_mk, dist_mk, pair_lbl, panel_letter):
+    lines = []
+    lines.append(r"\footnotesize")
+    lines.append(r"\setlength{\tabcolsep}{3.5pt}")
+    lines.append(r"\renewcommand{\arraystretch}{1.06}")
+    lines.append(rf"\begin{{tabular}}{{{col_str}}}")
+    lines.append(r"\toprule")
+    lines.append(
+        rf"\multicolumn{{{n_efp + 1}}}{{l}}{{\textit{{Panel {panel_letter}: {pair_lbl}}}}} \\"
+    )
+    lines.append(r"\midrule")
+    lines.append(r"Biome & " + efp_header + r" \\")
+    lines.append(r"\midrule")
+    for igbp in IGBP_ORDER:
+        row_cells = [igbp]
+        for efp in EFP_ORDER:
+            row_cells.append(fmt_ratio(igbp_ratio(base_mk, dist_mk, efp, igbp)))
+        lines.append(" & ".join(row_cells) + r" \\")
+    lines.append(r"\midrule")
+    all_cells = [r"\textit{All}"]
+    for efp in EFP_ORDER:
+        all_cells.append(fmt_ratio(igbp_ratio(base_mk, dist_mk, efp, None)))
+    lines.append(" & ".join(all_cells) + r" \\")
+    lines.append(r"\bottomrule")
+    lines.append(r"\end{tabular}")
+    return "\n".join(lines)
 
 ratio_lines = []
-ratio_lines.append(r"\begin{sidewaystable}[p]")
+ratio_lines.append(r"\begin{table}[htbp]")
 ratio_lines.append(r"\centering")
-ratio_lines.append(r"""\caption{RMSE ratio (with D / without D) per biome and EFP (v2 data,
-anomaly memory, 24-month window). \textbf{Bold} $<1$: D improved prediction;
-\textit{italic} $>1$: D worsened prediction. WUE added alongside uWUE.}""")
+ratio_lines.append(r"""\caption{RMSE ratio (RMSE with D / RMSE without D) per biome and EFP
+(v2 data, anomaly memory, 24-month window). \textbf{Bold} $<1$: D improved;
+\textit{italic} $>1$: D worsened. `---' = no data after quality control.}""")
 ratio_lines.append(r"\label{tab:rmse_ratio_v2}")
-ratio_lines.append(r"\scriptsize")
-ratio_lines.append(r"\setlength{\tabcolsep}{4pt}")
-ratio_lines.append(r"\renewcommand{\arraystretch}{1.05}")
-col_str = "l|" + "|".join(["c"*n_efp]*len(PAIRS))
-ratio_lines.append(rf"\begin{{tabular}}{{{col_str}}}")
-ratio_lines.append(r"\toprule")
-ratio_lines.append("Biome & " + " & ".join(pair_headers) + r" \\")
-ratio_lines.append("  & " + efp_sub + r" \\")
-ratio_lines.append(r"\midrule")
-
-for igbp in IGBP_ORDER:
-    row_cells = [igbp]
-    for base_mk, dist_mk, _ in PAIRS:
-        for efp in EFP_ORDER:
-            ratio = igbp_ratio(base_mk, dist_mk, efp, igbp)
-            row_cells.append(fmt_ratio(ratio))
-    ratio_lines.append(" & ".join(row_cells) + r" \\")
-
-# All sites row
-ratio_lines.append(r"\midrule")
-all_cells = ["All"]
-for base_mk, dist_mk, _ in PAIRS:
-    for efp in EFP_ORDER:
-        ratio = igbp_ratio(base_mk, dist_mk, efp, None)
-        all_cells.append(fmt_ratio(ratio))
-ratio_lines.append(" & ".join(all_cells) + r" \\")
-
-ratio_lines.append(r"\bottomrule")
+# Outer 2-column tabular guarantees side-by-side layout
+ratio_lines.append(r"\begin{tabular}{@{}p{0.48\linewidth}@{\hspace{0.04\linewidth}}p{0.48\linewidth}@{}}")
+# Row 1: Panel A (left), Panel B (right)
+ratio_lines.append(make_panel(*PAIRS[0], "A") + " &")
+ratio_lines.append(make_panel(*PAIRS[1], "B") + r" \\[1.4em]")
+# Row 2: Panel C (left), Panel D (right)
+ratio_lines.append(make_panel(*PAIRS[2], "C") + " &")
+ratio_lines.append(make_panel(*PAIRS[3], "D") + r" \\")
 ratio_lines.append(r"\end{tabular}")
-ratio_lines.append(r"\end{sidewaystable}")
+ratio_lines.append(r"\end{table}")
 
 out2 = f"{TABLE}/table_RMSE_ratio_v2.tex"
 with open(out2, "w") as f:
