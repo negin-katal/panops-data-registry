@@ -36,29 +36,26 @@ EFP_UNITS <- c(
   WUE    = "WUE  (g C mm⁻¹)"
 )
 
-# Shared colour ramp: green (low) → orange → red (high)
-MORT_LOW  <- "#1A9641"   # green  = low mortality
-MORT_MID  <- "#FDAE61"   # orange = mid
-MORT_HIGH <- "#D7191C"   # red    = high mortality
-
+# Shared colour ramp: blue (low) → white (at threshold) → red (high)
+# Red only starts appearing after threshold value
 DIST_META <- list(
   abs_mort = list(
     col   = "abs_mort",
     label = "Absolute Mortality\n(deadwood 500m, %)",
-    low = MORT_LOW, mid = MORT_MID, high = MORT_HIGH,
-    mid_v = 10
+    low = "#1B4965", mid = "#F5F5F5", high = "#C41E3A",
+    mid_v = 20  # red starts after 20%
   ),
   rel_mort = list(
     col   = "rel_mort",
     label = "Relative Mortality\n(deadwood / forest × 100, %)",
-    low = MORT_LOW, mid = MORT_MID, high = MORT_HIGH,
-    mid_v = 10
+    low = "#1B4965", mid = "#F5F5F5", high = "#C41E3A",
+    mid_v = 40  # red starts after 40%
   ),
   rel_dist = list(
     col   = "rel_dist",
     label = "Relative Disturbance\n((deadwood + loss×100) / (forest + loss×100), %)",
-    low = MORT_LOW, mid = MORT_MID, high = MORT_HIGH,
-    mid_v = 20
+    low = "#1B4965", mid = "#F5F5F5", high = "#C41E3A",
+    mid_v = 20  # red starts after 20%
   )
 )
 
