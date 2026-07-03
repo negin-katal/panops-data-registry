@@ -23,13 +23,14 @@ EFP_LABELS <- c(
   GPPsat = expression(GPP[sat]~~(mu*mol~m^{-2}~s^{-1})),
   NEPmax = expression(NEP[max]~~(mu*mol~m^{-2}~s^{-1})),
   ETmax  = expression(ET[max]~~(mm~d^{-1})),
-  uWUE   = expression(uWUE~~(g~C~mm^{-1}))
+  uWUE   = expression(uWUE~~(g~C~mm^{-1})),
+  WUE    = expression(WUE~~(g~C~mm^{-1}))
 )
 
 # ── 1) Load data ──────────────────────────────────────────────────────────────
 dt <- read.csv(EFP_FILE, check.names = FALSE)
 dt <- dt[, c("SITE_ID","YEAR","IGBP","LOCATION_LAT","LOCATION_LONG",
-             "GPPsat","NEPmax","ETmax","uWUE")]
+             "GPPsat","NEPmax","ETmax","uWUE","WUE")]
 
 # Clip extreme outliers (>99th percentile per EFP) for display
 clip99 <- function(x) { q <- quantile(x, 0.99, na.rm=TRUE); ifelse(x > q, NA, x) }
@@ -37,6 +38,7 @@ dt$GPPsat <- clip99(dt$GPPsat)
 dt$NEPmax <- clip99(dt$NEPmax)
 dt$ETmax  <- clip99(dt$ETmax)
 dt$uWUE   <- clip99(dt$uWUE)
+dt$WUE    <- clip99(dt$WUE)
 
 dt$IGBP <- factor(dt$IGBP, levels = IGBP_ORDER)
 
@@ -116,17 +118,17 @@ p_gpp  <- make_violin("GPPsat", "b")
 p_nep  <- make_violin("NEPmax", "c")
 p_et   <- make_violin("ETmax",  "d")
 p_uwue <- make_violin("uWUE",   "e")
+p_wue  <- make_violin("WUE",    "f")
 
 # ── 4) Compose layout ─────────────────────────────────────────────────────────
-# Map on top spanning full width; 4 EFP violins in 2x2 grid below
+# Map full width on top; all 5 EFPs same size in single row below
 layout <- "
-AAAA
-BBCC
-DDEE
+AAAAA
+BCDEF
 "
 
-fig1 <- p_map + p_gpp + p_nep + p_et + p_uwue +
-  plot_layout(design = layout, heights = c(1.6, 1, 1)) &
+fig1 <- p_map + p_gpp + p_nep + p_et + p_uwue + p_wue +
+  plot_layout(design = layout, heights = c(1.4, 1)) &
   theme(plot.background = element_rect(fill = "#0D1117", colour = NA))
 
 # ── 5) Save ───────────────────────────────────────────────────────────────────
