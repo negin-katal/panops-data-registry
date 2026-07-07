@@ -1,0 +1,101 @@
+\begin{table}[htbp]
+\centering
+\caption{RMSE ratio (RMSE with D / RMSE without D) per biome and EFP
+(v2 data, anomaly memory, 24-month window). \textbf{Bold} $<1$: D improved;
+\textit{italic} $>1$: D worsened. `---' = no data after quality control.}
+\label{tab:rmse_ratio_v2}
+\begin{tabular}{@{}p{0.48\linewidth}@{\hspace{0.04\linewidth}}p{0.48\linewidth}@{}}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.06}
+\begin{tabular}{lccccc}
+\toprule
+\multicolumn{6}{l}{\textit{Panel A: C vs C$+$D}} \\
+\midrule
+Biome & GPP$_\mathrm{sat}$ & NEP$_\mathrm{max}$ & ET$_\mathrm{max}$ & uWUE & WUE \\
+\midrule
+ENF & \textbf{0.843} & \textbf{0.950} & \textbf{0.939} & \textbf{0.873} & \textbf{0.815} \\
+EBF & \textit{1.217} & \textit{1.133} & \textbf{0.902} & \textit{1.070} & \textit{1.217} \\
+DNF & --- & --- & --- & --- & --- \\
+DBF & \textbf{0.979} & \textbf{0.953} & \textit{1.121} & \textbf{0.817} & \textbf{0.918} \\
+MF & \textbf{0.614} & \textbf{0.559} & \textbf{0.826} & \textbf{0.832} & \textbf{0.731} \\
+CSH & \textbf{0.779} & \textbf{0.730} & \textbf{0.917} & \textit{1.156} & \textbf{0.861} \\
+OSH & \textbf{0.928} & \textbf{0.859} & \textbf{0.921} & \textit{1.098} & \textit{1.082} \\
+WSA & \textbf{0.936} & \textit{1.141} & \textit{1.117} & \textit{1.105} & \textit{1.130} \\
+SAV & \textbf{0.854} & \textbf{0.901} & \textit{1.170} & \textit{1.048} & \textbf{0.884} \\
+WET & \textbf{0.928} & \textbf{0.942} & \textbf{0.965} & \textbf{0.906} & \textbf{0.974} \\
+\midrule
+\textit{All} & \textbf{0.901} & \textbf{0.925} & \textbf{0.982} & \textbf{0.958} & \textbf{0.959} \\
+\bottomrule
+\end{tabular} &
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.06}
+\begin{tabular}{lccccc}
+\toprule
+\multicolumn{6}{l}{\textit{Panel B: C$+$T vs C$+$T$+$D}} \\
+\midrule
+Biome & GPP$_\mathrm{sat}$ & NEP$_\mathrm{max}$ & ET$_\mathrm{max}$ & uWUE & WUE \\
+\midrule
+ENF & \textbf{0.897} & \textbf{0.948} & \textit{1.006} & \textbf{0.911} & \textbf{0.878} \\
+EBF & \textit{1.333} & \textit{1.089} & \textbf{0.919} & \textbf{0.949} & \textbf{0.951} \\
+DNF & --- & --- & --- & --- & --- \\
+DBF & \textbf{0.966} & \textbf{0.973} & \textit{1.056} & \textbf{0.928} & \textbf{0.958} \\
+MF & \textbf{0.821} & \textbf{0.801} & \textit{1.002} & \textit{1.050} & \textit{1.216} \\
+CSH & \textit{1.265} & \textit{1.283} & \textit{1.012} & \textit{1.314} & \textit{1.055} \\
+OSH & \textbf{0.944} & \textbf{0.953} & \textit{1.038} & \textit{1.038} & \textit{1.040} \\
+WSA & \textbf{0.989} & \textit{1.033} & \textbf{0.929} & \textit{1.049} & \textit{1.094} \\
+SAV & \textit{1.068} & \textit{1.058} & \textit{1.112} & \textit{1.031} & \textit{1.025} \\
+WET & \textbf{0.989} & \textbf{0.990} & \textit{1.079} & \textbf{0.969} & \textit{1.013} \\
+\midrule
+\textit{All} & \textbf{0.956} & \textbf{0.971} & \textit{1.037} & \textbf{0.983} & \textbf{0.987} \\
+\bottomrule
+\end{tabular} \\[1.4em]
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.06}
+\begin{tabular}{lccccc}
+\toprule
+\multicolumn{6}{l}{\textit{Panel C: C$+$M vs C$+$D$+$M}} \\
+\midrule
+Biome & GPP$_\mathrm{sat}$ & NEP$_\mathrm{max}$ & ET$_\mathrm{max}$ & uWUE & WUE \\
+\midrule
+ENF & \textbf{0.866} & \textbf{0.980} & \textbf{0.938} & \textbf{0.894} & \textbf{0.830} \\
+EBF & \textit{1.080} & \textit{1.056} & \textbf{0.861} & \textit{1.022} & \textit{1.149} \\
+DNF & --- & --- & --- & --- & --- \\
+DBF & \textbf{0.943} & \textbf{0.924} & \textit{1.102} & \textbf{0.856} & \textbf{0.922} \\
+MF & \textbf{0.618} & \textbf{0.569} & \textbf{0.882} & \textbf{0.956} & \textbf{0.830} \\
+CSH & \textbf{0.791} & \textbf{0.745} & \textbf{0.964} & \textit{1.150} & \textbf{0.894} \\
+OSH & \textbf{0.943} & \textbf{0.846} & \textbf{0.959} & \textit{1.109} & \textit{1.067} \\
+WSA & \textbf{0.962} & \textit{1.097} & \textit{1.084} & \textit{1.087} & \textit{1.160} \\
+SAV & \textbf{0.957} & \textit{1.019} & \textit{1.238} & \textit{1.025} & \textbf{0.839} \\
+WET & \textbf{0.919} & \textbf{0.958} & \textbf{0.982} & \textbf{0.902} & \textbf{0.941} \\
+\midrule
+\textit{All} & \textbf{0.902} & \textbf{0.934} & \textbf{0.994} & \textbf{0.963} & \textbf{0.948} \\
+\bottomrule
+\end{tabular} &
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.06}
+\begin{tabular}{lccccc}
+\toprule
+\multicolumn{6}{l}{\textit{Panel D: C$+$T$+$M vs C$+$T$+$D$+$M}} \\
+\midrule
+Biome & GPP$_\mathrm{sat}$ & NEP$_\mathrm{max}$ & ET$_\mathrm{max}$ & uWUE & WUE \\
+\midrule
+ENF & \textbf{0.888} & \textbf{0.955} & \textit{1.008} & \textbf{0.914} & \textbf{0.882} \\
+EBF & \textit{1.189} & \textit{1.018} & \textbf{0.844} & \textbf{0.973} & \textbf{0.966} \\
+DNF & --- & --- & --- & --- & --- \\
+DBF & \textbf{0.958} & \textbf{0.959} & \textit{1.044} & \textbf{0.938} & \textbf{0.973} \\
+MF & \textbf{0.778} & \textbf{0.823} & \textbf{0.966} & \textit{1.091} & \textit{1.214} \\
+CSH & \textit{1.321} & \textit{1.317} & \textit{1.081} & \textit{1.311} & \textit{1.071} \\
+OSH & \textbf{0.961} & \textbf{0.935} & \textit{1.064} & \textit{1.049} & \textit{1.055} \\
+WSA & \textbf{0.970} & \textit{1.005} & \textbf{0.922} & \textit{1.053} & \textit{1.140} \\
+SAV & \textit{1.025} & \textit{1.086} & \textit{1.112} & \textit{1.058} & \textbf{0.997} \\
+WET & \textbf{0.983} & \textbf{0.995} & \textit{1.081} & \textbf{0.963} & \textit{1.024} \\
+\midrule
+\textit{All} & \textbf{0.949} & \textbf{0.973} & \textit{1.038} & \textbf{0.988} & \textbf{0.998} \\
+\bottomrule
+\end{tabular} \\
+\end{tabular}
+\end{table}
