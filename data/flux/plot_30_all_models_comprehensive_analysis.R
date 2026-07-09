@@ -227,16 +227,16 @@ for(i in 1:nrow(model_info)) {
       geom_jitter(width = 0.2, alpha = 0.3, size = 1, colour = AXIS_COL) +
       stat_summary(fun = mean, geom = "point", colour = "white", size = 2) +
       scale_fill_manual(values = abs_mort_cols) +
-      facet_wrap(~response, scales = "free_y") +
+      facet_wrap(~response, scales = "free_y", nrow = 1) +
       labs(title = paste("Delta RMSE vs Absolute Mortality -", w),
            x = "Absolute Mortality (%)",
            y = paste(model_info$model_label[i], "\n(with D - without D)")) +
       dark_theme
 
     ggsave(file.path(out_dir, sprintf("01_delta_RMSE_vs_abs_mortality_%s.png", w)), p1,
-           width = 200, height = 150, units = "mm", dpi = 300, bg = DARK_BG)
+           width = 400, height = 120, units = "mm", dpi = 300, bg = DARK_BG)
     ggsave(file.path(out_dir, sprintf("01_delta_RMSE_vs_abs_mortality_%s.pdf", w)), p1,
-           width = 200, height = 150, units = "mm", bg = DARK_BG)
+           width = 400, height = 120, units = "mm", bg = DARK_BG)
 
     # ---- Plot 2: Delta RMSE vs Relative Mortality ----
     p2 <- ggplot(delta_w[!is.na(rel_mort_tier)],
@@ -246,7 +246,7 @@ for(i in 1:nrow(model_info)) {
       geom_jitter(width = 0.2, alpha = 0.3, size = 1, colour = AXIS_COL) +
       stat_summary(fun = mean, geom = "point", colour = "white", size = 2) +
       scale_fill_manual(values = rel_mort_cols) +
-      facet_wrap(~response, scales = "free_y") +
+      facet_wrap(~response, scales = "free_y", nrow = 1) +
       labs(title = paste("Delta RMSE vs Relative Mortality -", w),
            x = "Relative Mortality (%)",
            y = paste(model_info$model_label[i], "\n(with D - without D)")) +
@@ -265,7 +265,7 @@ for(i in 1:nrow(model_info)) {
       geom_jitter(width = 0.2, alpha = 0.3, size = 1, colour = AXIS_COL) +
       stat_summary(fun = mean, geom = "point", colour = "white", size = 2) +
       scale_fill_manual(values = rel_dist_cols) +
-      facet_wrap(~response, scales = "free_y") +
+      facet_wrap(~response, scales = "free_y", nrow = 1) +
       labs(title = paste("Delta RMSE vs Relative Disturbance -", w),
            x = "Relative Disturbance (%)",
            y = paste(model_info$model_label[i], "\n(with D - without D)")) +
@@ -284,7 +284,7 @@ for(i in 1:nrow(model_info)) {
       geom_jitter(width = 0.2, alpha = 0.3, size = 1, colour = AXIS_COL) +
       stat_summary(fun = mean, geom = "point", colour = "white", size = 2) +
       scale_fill_manual(values = tree_cover_cols) +
-      facet_wrap(~response, scales = "free_y") +
+      facet_wrap(~response, scales = "free_y", nrow = 1) +
       labs(title = paste("Delta RMSE vs Tree Cover -", w),
            x = "Tree Cover (%)",
            y = paste(model_info$model_label[i], "\n(with D - without D)")) +
@@ -306,7 +306,7 @@ for(i in 1:nrow(model_info)) {
         geom_jitter(width = 0.2, alpha = 0.3, size = 1, colour = AXIS_COL) +
         stat_summary(fun = mean, geom = "point", colour = "white", size = 2) +
         scale_fill_manual(values = abs_mort_cols) +
-        facet_wrap(~response, scales = "free_y") +
+        facet_wrap(~response, scales = "free_y", nrow = 1) +
         labs(title = paste("Disturbance SHAP vs Absolute Mortality -", w),
              x = "Absolute Mortality (%)", y = "Mean |SHAP|") +
         dark_theme
@@ -323,7 +323,7 @@ for(i in 1:nrow(model_info)) {
         geom_jitter(width = 0.2, alpha = 0.3, size = 1, colour = AXIS_COL) +
         stat_summary(fun = mean, geom = "point", colour = "white", size = 2) +
         scale_fill_manual(values = rel_mort_cols) +
-        facet_wrap(~response, scales = "free_y") +
+        facet_wrap(~response, scales = "free_y", nrow = 1) +
         labs(title = paste("Disturbance SHAP vs Relative Mortality -", w),
              x = "Relative Mortality (%)", y = "Mean |SHAP|") +
         dark_theme
@@ -340,7 +340,7 @@ for(i in 1:nrow(model_info)) {
         geom_jitter(width = 0.2, alpha = 0.3, size = 1, colour = AXIS_COL) +
         stat_summary(fun = mean, geom = "point", colour = "white", size = 2) +
         scale_fill_manual(values = rel_dist_cols) +
-        facet_wrap(~response, scales = "free_y") +
+        facet_wrap(~response, scales = "free_y", nrow = 1) +
         labs(title = paste("Disturbance SHAP vs Relative Disturbance -", w),
              x = "Relative Disturbance (%)", y = "Mean |SHAP|") +
         dark_theme
@@ -357,7 +357,7 @@ for(i in 1:nrow(model_info)) {
         geom_jitter(width = 0.2, alpha = 0.3, size = 1, colour = AXIS_COL) +
         stat_summary(fun = mean, geom = "point", colour = "white", size = 2) +
         scale_fill_manual(values = tree_cover_cols) +
-        facet_wrap(~response, scales = "free_y") +
+        facet_wrap(~response, scales = "free_y", nrow = 1) +
         labs(title = paste("Disturbance SHAP vs Tree Cover -", w),
              x = "Tree Cover (%)", y = "Mean |SHAP|") +
         dark_theme
