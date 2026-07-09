@@ -101,7 +101,7 @@ make_shap_plot <- function(tier_col, tier_name, x_label) {
     geom_boxplot(width = 0.18, outlier.shape = NA, colour = "white", fill = NA, linewidth = 0.35) +
     stat_summary(fun = median, geom = "point", colour = "white", size = 1.2) +
     scale_fill_manual(values = TIER_COLS, guide = "none") +
-    facet_wrap(~response, nrow = 1) +
+    facet_wrap(~response, nrow = 1, scales = "free_y") +
     labs(
       title = paste0("Mean |SHAP| of Disturbance group by ", tier_name, " (M04, 24m)"),
       subtitle = "C+T+D model | Mean absolute SHAP values for disturbance variables",
