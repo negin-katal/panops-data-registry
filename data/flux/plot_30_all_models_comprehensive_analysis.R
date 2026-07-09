@@ -175,10 +175,10 @@ dark_theme <- theme_bw(base_size = 9) +
 # ============================================================
 
 model_info <- data.table(
-  mod = c("M01", "M02", "M03", "M04", "M05", "M06", "M07", "M08"),
-  pair = c("M01_vs_M02", "M01_vs_M02", "M03_vs_M04", "M03_vs_M04",
-           "M05_vs_M06", "M05_vs_M06", "M07_vs_M08", "M07_vs_M08"),
-  has_shap = c(FALSE, FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE)
+  mod = c("M02", "M04", "M06", "M08"),
+  pair = c("M01_vs_M02", "M03_vs_M04", "M05_vs_M06", "M07_vs_M08"),
+  model_label = c("M02 - M01", "M04 - M03", "M06 - M05", "M08 - M07"),
+  has_shap = c(TRUE, TRUE, TRUE, TRUE)
 )
 
 for(i in 1:nrow(model_info)) {
@@ -229,7 +229,8 @@ for(i in 1:nrow(model_info)) {
       scale_fill_manual(values = abs_mort_cols) +
       facet_wrap(~response, scales = "free_y") +
       labs(title = paste("Delta RMSE vs Absolute Mortality -", w),
-           x = "Absolute Mortality (%)", y = expression(Delta*"RMSE")) +
+           x = "Absolute Mortality (%)",
+           y = paste(model_info$model_label[i], "\n(with D - without D)")) +
       dark_theme
 
     ggsave(file.path(out_dir, sprintf("01_delta_RMSE_vs_abs_mortality_%s.png", w)), p1,
@@ -247,7 +248,8 @@ for(i in 1:nrow(model_info)) {
       scale_fill_manual(values = rel_mort_cols) +
       facet_wrap(~response, scales = "free_y") +
       labs(title = paste("Delta RMSE vs Relative Mortality -", w),
-           x = "Relative Mortality (%)", y = expression(Delta*"RMSE")) +
+           x = "Relative Mortality (%)",
+           y = paste(model_info$model_label[i], "\n(with D - without D)")) +
       dark_theme
 
     ggsave(file.path(out_dir, sprintf("02_delta_RMSE_vs_rel_mortality_%s.png", w)), p2,
@@ -265,7 +267,8 @@ for(i in 1:nrow(model_info)) {
       scale_fill_manual(values = rel_dist_cols) +
       facet_wrap(~response, scales = "free_y") +
       labs(title = paste("Delta RMSE vs Relative Disturbance -", w),
-           x = "Relative Disturbance (%)", y = expression(Delta*"RMSE")) +
+           x = "Relative Disturbance (%)",
+           y = paste(model_info$model_label[i], "\n(with D - without D)")) +
       dark_theme
 
     ggsave(file.path(out_dir, sprintf("03_delta_RMSE_vs_rel_disturbance_%s.png", w)), p3,
@@ -283,7 +286,8 @@ for(i in 1:nrow(model_info)) {
       scale_fill_manual(values = tree_cover_cols) +
       facet_wrap(~response, scales = "free_y") +
       labs(title = paste("Delta RMSE vs Tree Cover -", w),
-           x = "Tree Cover (%)", y = expression(Delta*"RMSE")) +
+           x = "Tree Cover (%)",
+           y = paste(model_info$model_label[i], "\n(with D - without D)")) +
       dark_theme
 
     ggsave(file.path(out_dir, sprintf("04_delta_RMSE_vs_tree_cover_%s.png", w)), p4,
