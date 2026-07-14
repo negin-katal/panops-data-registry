@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flux vs Mortality - Results Exploration Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .tagline {
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            color: #999;
+            font-size: 1em;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .hub-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .hub-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            text-decoration: none;
+            color: #333;
+        }
+        
+        .hub-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+        }
+        
+        .hub-card.main {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            grid-column: span 2;
+        }
+        
+        @media (max-width: 768px) {
+            .hub-card.main {
+                grid-column: span 1;
+            }
+        }
+        
+        .hub-card.main:hover {
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.3);
+        }
+        
+        .hub-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .hub-card h3 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+        
+        .hub-card.main h3 {
+            color: white;
+            font-size: 1.6em;
+        }
+        
+        .hub-card p {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        
+        .hub-card.main p {
+            color: rgba(255,255,255,0.95);
+        }
+        
+        .hub-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+            font-weight: 600;
+            align-self: flex-start;
+        }
+        
+        .hub-card.main .hub-link {
+            background: white;
+            color: #667eea;
+        }
+        
+        .hub-link:hover {
+            background: #764ba2;
+        }
+        
+        .hub-card.main .hub-link:hover {
+            background: #f0f0f0;
+        }
+        
+        .features-section {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+        
+        .features-section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .feature-item {
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+        }
+        
+        .feature-item h4 {
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+        
+        .feature-item p {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .key-stats {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            border: 2px solid #667eea33;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .stat-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        footer {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            color: #666;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .breadcrumb {
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .breadcrumb a {
+            color: white;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="breadcrumb">
+            🏠 <a href="https://negin-katal.github.io/">Home</a> / 
+            <a href="https://negin-katal.github.io/fluxVSmortality/">Flux vs Mortality</a> / 
+            Results Hub
+        </div>
+        
+        <header>
+            <h1>🔬 Flux vs Mortality: Results Exploration Hub</h1>
+            <p class="tagline">Interactive Analysis of Disturbance Impact on Ecosystem Functional Properties</p>
+            <p class="description">
+                Comprehensive analysis exploring how disturbance metrics influence Random Forest predictions of carbon and water flux dynamics across 164 eddy covariance flux tower sites.
+            </p>
+        </header>
+        
+        <div class="hub-grid">
+            <!-- MAIN REPORT -->
+            <a href="disturbance_report.html" class="hub-card main">
+                <div class="hub-icon">📊</div>
+                <h3>Main Analysis Report</h3>
+                <p>Comprehensive interactive report with 5-part analysis: categorization method selection, SHAP importance analysis, Delta RMSE analysis, dose-response curves, and IGBP confounding check. Includes expandable sections, interactive comparisons, and cross-metric validation.</p>
+                <span class="hub-link">Explore Report →</span>
+            </a>
+            
+            <!-- QUICK SUMMARY -->
+            <a href="#summary" class="hub-card">
+                <div class="hub-icon">⚡</div>
+                <h3>Quick Summary</h3>
+                <p>Key findings at a glance: carbon fluxes benefit 45× more from disturbance than water fluxes, effect is dose-dependent and robust across 3 disturbance metrics, but potential forest-type confounding requires further investigation.</p>
+                <span class="hub-link">View Summary →</span>
+            </a>
+            
+            <!-- METHODOLOGY -->
+            <a href="disturbance_report.html#methods" class="hub-card">
+                <div class="hub-icon">📋</div>
+                <h3>Methods & Data</h3>
+                <p>Detailed methodology: 164 sites, 5 EFPs (2 carbon + 3 water), 3 disturbance metrics tested with tertile categorization, 8 Random Forest model variants (with/without disturbance), SHAP importance and Delta RMSE analysis pipeline.</p>
+                <span class="hub-link">Read Methods →</span>
+            </a>
+            
+            <!-- STEP 1 -->
+            <a href="disturbance_report.html#step1" class="hub-card">
+                <div class="hub-icon">🎯</div>
+                <h3>Step 1: Categorization</h3>
+                <p>Comparison of three categorization methods (tertiles, equal-width, natural breaks) for disturbance grouping. Selected tertiles for balanced groups and maximum statistical power.</p>
+                <span class="hub-link">Explore →</span>
+            </a>
+            
+            <!-- STEP 2 -->
+            <a href="disturbance_report.html#step2" class="hub-card">
+                <div class="hub-icon">🔍</div>
+                <h3>Step 2: SHAP Importance</h3>
+                <p>Analysis of how important disturbance variables are for each EFP. Key finding: 60× more important for carbon than water fluxes, confirming differential feature importance.</p>
+                <span class="hub-link">View Analysis →</span>
+            </a>
+            
+            <!-- STEP 3 -->
+            <a href="disturbance_report.html#step3" class="hub-card">
+                <div class="hub-icon">📈</div>
+                <h3>Step 3: Delta RMSE</h3>
+                <p>Do predictions actually improve? Carbon fluxes show 45% improvement (ΔRMSE = -0.45) at high-disturbance sites, water shows 0% improvement. Effect consistent across all 3 disturbance metrics.</p>
+                <span class="hub-link">View Results →</span>
+            </a>
+            
+            <!-- STEP 4 -->
+            <a href="disturbance_report.html#step4" class="hub-card">
+                <div class="hub-icon">🔬</div>
+                <h3>Step 4: Dose-Response</h3>
+                <p>Is the improvement dose-dependent? YES. Benefit appears only at high-disturbance sites and disappears at low-disturbance sites, confirming mechanistic signal rather than noise.</p>
+                <span class="hub-link">Explore Curves →</span>
+            </a>
+            
+            <!-- STEP 5 -->
+            <a href="disturbance_report.html#step5" class="hub-card">
+                <div class="hub-icon">⚠️</div>
+                <h3>Step 5: IGBP Check</h3>
+                <p>Confounding analysis: Are forests just naturally disturbed? Forests concentrate in high-disturbance areas (ENF: 54.7% in tertile 3 vs SAV: 0%), creating potential forest-type confounding that requires within-biome stratification to resolve.</p>
+                <span class="hub-link">Review Check →</span>
+            </a>
+            
+            <!-- CONCLUSIONS -->
+            <a href="disturbance_report.html#conclusions" class="hub-card">
+                <div class="hub-icon">🎯</div>
+                <h3>Conclusions</h3>
+                <p>Summary of findings with confidence levels: carbon > water (CONFIRMED, high confidence), dose-dependent (CONFIRMED, high confidence), IGBP confounding (PLAUSIBLE, medium confidence). Plus recommendations for future work.</p>
+                <span class="hub-link">Read Conclusions →</span>
+            </a>
+        </div>
+        
+        <!-- KEY STATISTICS SECTION -->
+        <div class="key-stats" id="summary">
+            <h2 style="color: #667eea; text-align: center; margin-bottom: 20px;">🎯 Key Statistics at a Glance</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">45%</div>
+                    <div class="stat-label">Carbon Improvement<br>(ΔRMSE = -0.45)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">0%</div>
+                    <div class="stat-label">Water Improvement<br>(ΔRMSE = -0.02)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">22-46×</div>
+                    <div class="stat-label">Difference Factor<br>Carbon vs Water</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Disturbance Metrics<br>All show same pattern</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">164</div>
+                    <div class="stat-label">Sites Analyzed<br>across 9 biome types</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">EFPs Studied<br>2 carbon + 3 water</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FEATURES SECTION -->
+        <div class="features-section">
+            <h2>✨ Report Features</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h4>📑 Interactive Navigation</h4>
+                    <p>Click through 8 major sections with tab-based navigation. Smooth animations and quick jumping between findings.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🎨 Professional Styling</h4>
+                    <p>Dark-to-light gradient theme with color-coded sections. Responsive design works on desktop and mobile.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>📊 Data Tables</h4>
+                    <p>Comprehensive tables showing metrics comparison, IGBP distribution, and statistical summaries with hover effects.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🔍 Expandable Sections</h4>
+                    <p>Collapsible sections for detailed results (Abs Mort, Rel Mort, Rel Dist) with click-to-expand functionality.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>📈 Statistical Highlights</h4>
+                    <p>Key findings emphasized in highlighted boxes. Important statistics displayed in stat cards with visual prominence.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>🔗 Deep Linking</h4>
+                    <p>Hub cards link directly to specific sections of the main report for quick navigation to topics of interest.</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>📊 Disturbance Impact Analysis Report | Generated: July 2026</p>
+            <p>🔬 Research by: Negin Katal | 📁 Data: 164 eddy covariance flux tower sites</p>
+            <p style="margin-top: 15px; color: #999; font-size: 0.9em;">
+                Want to dive deeper? 
+                <a href="disturbance_report.html" style="color: #667eea; text-decoration: none; font-weight: 600;">Start with the Main Report →</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
