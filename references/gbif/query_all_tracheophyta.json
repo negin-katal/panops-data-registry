@@ -29,7 +29,7 @@
     {
       "type": "lessThanOrEquals",
       "key": "COORDINATE_UNCERTAINTY_IN_METERS",
-      "value": 5000
+      "value": 10000
     }
   ]
 }

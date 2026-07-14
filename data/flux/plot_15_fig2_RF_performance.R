@@ -30,17 +30,18 @@ EFP_UNITS <- c(
   GPPsat = expression(GPP[sat]~~(mu*mol~m^{-2}~s^{-1})),
   NEPmax = expression(NEP[max]~~(mu*mol~m^{-2}~s^{-1})),
   ETmax  = expression(ET[max]~~(mm~d^{-1})),
-  uWUE   = expression(uWUE~~(g~C~mm^{-1}))
+  uWUE  = expression(uWUE~~(g~C~mm^{-1})),
+  WUE   = expression(WUE~~(g~C~mm^{-1}))
 )
 
 PANEL_DEFS <- list(
-  list(file = "derived_tables/outputs_afterEGU_results/RF_outputs_anomaly_24mbench/RF_predictions_LOSO.csv",
+  list(file = "derived_tables/outputs_afterEGU_results/RF_outputs_anomaly_24mbench_v2/RF_predictions_LOSO.csv",
        win = "12m", mem = "Anomaly"),
-  list(file = "derived_tables/outputs_afterEGU_results/RF_outputs_anomaly_24mbench/RF_predictions_LOSO.csv",
+  list(file = "derived_tables/outputs_afterEGU_results/RF_outputs_anomaly_24mbench_v2/RF_predictions_LOSO.csv",
        win = "24m", mem = "Anomaly"),
-  list(file = "derived_tables/outputs_afterEGU_results/RF_outputs_rawmem_24mbench/RF_predictions_LOSO.csv",
+  list(file = "derived_tables/outputs_afterEGU_results/RF_outputs_rawmem_24mbench_v2/RF_predictions_LOSO.csv",
        win = "12m", mem = "Raw-lag"),
-  list(file = "derived_tables/outputs_afterEGU_results/RF_outputs_rawmem_24mbench/RF_predictions_LOSO.csv",
+  list(file = "derived_tables/outputs_afterEGU_results/RF_outputs_rawmem_24mbench_v2/RF_predictions_LOSO.csv",
        win = "24m", mem = "Raw-lag")
 )
 
@@ -142,9 +143,10 @@ make_panel <- function(resp, ylab, tag, show_legend = FALSE) {
 p_gpp  <- make_panel("GPPsat", EFP_UNITS[["GPPsat"]], "a")
 p_nep  <- make_panel("NEPmax", EFP_UNITS[["NEPmax"]], "b")
 p_et   <- make_panel("ETmax",  EFP_UNITS[["ETmax"]],  "c")
-p_uwue <- make_panel("uWUE",   EFP_UNITS[["uWUE"]],   "d", show_legend = TRUE)
+p_uwue <- make_panel("uWUE",  EFP_UNITS[["uWUE"]],   "d")
+p_wue  <- make_panel("WUE",   EFP_UNITS[["WUE"]],    "e", show_legend = TRUE)
 
-fig2 <- (p_gpp / p_nep / p_et / p_uwue) +
+fig2 <- (p_gpp / p_nep / p_et / p_uwue / p_wue) +
   plot_annotation(
     title    = "Effect of adding deadwood disturbance on per-site RMSE",
     subtitle = "Paired violin: cyan = without D, pink = with D | Leave-One-Site-Out cross-validation | 166 sites",
@@ -174,7 +176,8 @@ efp_list <- list(
   list(resp = "GPPsat", ylab = EFP_UNITS[["GPPsat"]], tag = "a"),
   list(resp = "NEPmax", ylab = EFP_UNITS[["NEPmax"]], tag = "b"),
   list(resp = "ETmax",  ylab = EFP_UNITS[["ETmax"]],  tag = "c"),
-  list(resp = "uWUE",   ylab = EFP_UNITS[["uWUE"]],   tag = "d")
+  list(resp = "uWUE",  ylab = EFP_UNITS[["uWUE"]],   tag = "d"),
+  list(resp = "WUE",   ylab = EFP_UNITS[["WUE"]],    tag = "e")
 )
 
 for (efp in efp_list) {
