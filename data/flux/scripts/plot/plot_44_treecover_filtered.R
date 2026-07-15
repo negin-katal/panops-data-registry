@@ -93,9 +93,6 @@ igbp_colors <- c(
 # Create bar plot (filtered)
 p <- ggplot(site_summary_filtered, aes(x = reorder(SITE_ID, mean_tree_cover), y = mean_tree_cover, fill = IGBP)) +
   geom_bar(stat = "identity", width = 0.8) +
-  geom_hline(yintercept = threshold, colour = "#e74c3c", linetype = "dashed", linewidth = 0.7, alpha = 0.7) +
-  annotate("text", y = threshold + 2, x = 5, label = paste0("Threshold: ", round(threshold, 1), "%"),
-           color = "#e74c3c", size = 3) +
   scale_fill_manual(
     name = "IGBP",
     values = igbp_colors
@@ -103,7 +100,7 @@ p <- ggplot(site_summary_filtered, aes(x = reorder(SITE_ID, mean_tree_cover), y 
   coord_flip() +
   labs(
     title = "Mean Tree Cover by Site (Filtered: bottom 10% removed)",
-    subtitle = paste0("148 sites retained | ", nrow(excluded_sites), " sites excluded (tree cover < ", round(threshold, 1), "%)"),
+    subtitle = paste0("147 sites retained | ", nrow(excluded_sites), " sites excluded (tree cover < ", round(threshold, 1), "%)"),
     x = "Site ID",
     y = "Mean Tree Cover (%)"
   ) +

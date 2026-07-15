@@ -75,9 +75,18 @@ igbp_colors <- c(
   "DNF" = "#8e44ad"   # purple
 )
 
+# Calculate 10th percentile threshold for reference
+threshold <- quantile(site_summary$mean_tree_cover, 0.10)
+
 # Create bar plot
 p <- ggplot(site_summary, aes(x = reorder(SITE_ID, mean_tree_cover), y = mean_tree_cover, fill = IGBP)) +
   geom_bar(stat = "identity", width = 0.8) +
+  geom_vline(xintercept = sum(site_summary$mean_tree_cover < threshold) + 0.5,
+             colour = "#e74c3c", linetype = "dashed", linewidth = 0.8, alpha = 0.7) +
+  annotate("text", y = max(site_summary$mean_tree_cover) * 0.95,
+           x = sum(site_summary$mean_tree_cover < threshold) + 5,
+           label = paste0("Threshold:\n", round(threshold, 1), "%"),
+           color = "#e74c3c", size = 3, hjust = 0) +
   scale_fill_manual(
     name = "IGBP",
     values = igbp_colors
@@ -85,6 +94,7 @@ p <- ggplot(site_summary, aes(x = reorder(SITE_ID, mean_tree_cover), y = mean_tr
   coord_flip() +
   labs(
     title = "Mean Tree Cover by Site (164 RF+SHAP Sites)",
+    subtitle = paste0("Red dashed line marks 10th percentile (", round(threshold, 1), "%) threshold"),
     x = "Site ID",
     y = "Mean Tree Cover (%)"
   ) +
