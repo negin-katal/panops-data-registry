@@ -28,9 +28,16 @@ cat("Loading forest/deadwood data...\n")
 # Load forest and deadwood data
 fw_data <- fread("derived_tables/deadtree_deadwood_forest_siteyear_mean_500m.csv")
 
+# Load IGBP data from site metadata
+cat("Loading IGBP data...\n")
+igbp_map <- fread("combined_site_metadata.csv")[, .(SITE_ID, IGBP)]
+
 # Filter for RF model sites
 fw_data <- fw_data[SITE_ID %in% rf_sites]
 fw_data <- fw_data[order(SITE_ID, year)]
+
+# Merge IGBP info
+fw_data <- merge(fw_data, igbp_map, by = "SITE_ID", all.x = TRUE)
 
 cat("Creating plots for", length(unique(fw_data$SITE_ID)), "sites...\n")
 
@@ -58,6 +65,10 @@ create_site_plot <- function(site_id, data) {
 
   if (nrow(site_data) == 0) return(NULL)
 
+  # Get IGBP type
+  igbp <- site_data$IGBP[1]
+  if (is.na(igbp)) igbp <- "Unknown"
+
   # Convert to percentage
   site_data[, deadwood_pct := deadwood_mean_500m * 100]
   site_data[, forest_pct := forest_mean_500m * 100]
@@ -78,7 +89,7 @@ create_site_plot <- function(site_id, data) {
     ) +
     scale_x_continuous(name = "Year", breaks = seq(floor(min(site_data$year)), ceiling(max(site_data$year)), 2)) +
     labs(
-      title = paste("Site:", site_id),
+      title = paste(site_id, " | ", igbp, sep = ""),
       subtitle = paste("Years:", min(site_data$year), "-", max(site_data$year))
     ) +
     dark_theme +
