@@ -37,8 +37,8 @@ sites_list <- unique(main_data$SITE_ID)
 cat("Will plot", length(sites_list), "sites with data\n")
 
 cat("Loading IGBP data...\n")
-# Load IGBP data from site metadata
-igbp_map <- fread("combined_site_metadata.csv")[, .(SITE_ID, IGBP)]
+# Load IGBP data from complete site metadata (all 164 sites)
+igbp_map <- fread("Flux4Daniel/fluxnet_site_metadata_clean_with_elevation.csv")[, .(SITE_ID, IGBP)]
 
 # Define dark theme
 dark_theme <- theme_bw(base_size = 10) +
