@@ -23,9 +23,18 @@ cat("Loading RF v3 harmonized dataset...\n")
 # Load the main modeling dataset with all variables
 main_data <- fread("derived_tables/outputs_afterEGU_results/EFP_mortality_trait_hydro_combined_with_meteo_dist_lags_v3_harmonized.csv")
 
+cat("Loading 164 RF+SHAP analysis sites...\n")
+# Load the disturbance analysis dataset which contains the 164 sites used in RF+SHAP
+dist_analysis <- fread("derived_tables/disturbance_metric_test/tertiles_method.csv")
+rf_shap_sites <- unique(dist_analysis$SITE_ID)
+cat("Found", length(rf_shap_sites), "RF+SHAP sites\n")
+
+# Filter main data to only include RF+SHAP sites
+main_data <- main_data[SITE_ID %in% rf_shap_sites]
+
 # Get unique sites
 sites_list <- unique(main_data$SITE_ID)
-cat("Found", length(sites_list), "sites\n")
+cat("Will plot", length(sites_list), "sites with data\n")
 
 cat("Loading IGBP data...\n")
 # Load IGBP data from site metadata
