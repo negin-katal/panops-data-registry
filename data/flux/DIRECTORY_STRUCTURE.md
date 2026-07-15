@@ -1,6 +1,6 @@
 # Flux Analysis Project Structure
 
-**Project**: Pan-Tropical Ecosystem Disturbance Analysis using FluxNet Data  
+**Project**: The role of tree mortality on ecosystem functional properties  
 **Date**: July 2026  
 **Status**: Active Analysis
 
@@ -321,17 +321,17 @@ $RSCRIPT --version
 
 ### Model Variants
 - **M04**: Climate + Traits + Disturbance
-- **M06**: Climate + Mortality + Disturbance
-- **M08**: Climate + Traits + Mortality + Disturbance
+- **M06**: Climate + Memory + Disturbance
+- **M08**: Climate + Traits + Memory + Disturbance
 
 ### EFP Metrics (5 variables)
-- **Carbon**: GPPsat (gross primary productivity), NEPmax (net ecosystem productivity)
-- **Water**: ETmax (evapotranspiration), uWUE (understory water-use efficiency), WUE (water-use efficiency)
+- **Carbon**: GPPsat (gross primary productivity at saturated light), NEPmax (net ecosystem productivity)
+- **Water**: ETmax (maximum evapotranspiration), uWUE (underlying water-use efficiency), WUE (water-use efficiency)
 
 ### Disturbance Metrics (3 approaches)
 - **Absolute Mortality**: % tree mortality per site-year
-- **Relative Mortality**: mortality relative to annual average
-- **Relative Disturbance**: composite disturbance indicator
+- **Relative Mortality**: mortality relative to tree cover
+- **Relative Disturbance**: mortality related to tree cover plus tree cover loss
 
 ### Temporal Lags
 - **12-month lag**: Disturbance effects lagged 12 months
