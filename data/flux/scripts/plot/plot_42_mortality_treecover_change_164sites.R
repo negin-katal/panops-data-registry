@@ -1,5 +1,6 @@
 #!/usr/bin/env Rscript
-# Plot mortality (deadwood) and tree cover change for 164 RF model sites
+# Plot mortality and tree cover change for 164+ RF model sites
+# Using: forest_mean_pct_500m, mortality_intensity_pct_500m, deadwood_mean_pct_500m
 
 library(data.table)
 library(ggplot2)
@@ -18,28 +19,17 @@ GRID_COL <- "#333333"
 TEXT_COL <- "#FFFFFF"
 AXIS_COL <- "#CCCCCC"
 
-cat("Loading RF model sites...\n")
-# Get the 164 sites from the RF model dataset
-rf_data <- fread("derived_tables/outputs_afterEGU_results/EFP_mortality_trait_hydro_combined_with_meteo_dist_lags.csv")
-rf_sites <- unique(rf_data$SITE_ID)
-cat("Found", length(rf_sites), "sites in RF model\n")
+cat("Loading RF v3 harmonized dataset...\n")
+# Load the main modeling dataset with all variables
+main_data <- fread("derived_tables/outputs_afterEGU_results/EFP_mortality_trait_hydro_combined_with_meteo_dist_lags_v3_harmonized.csv")
 
-cat("Loading forest/deadwood data...\n")
-# Load forest and deadwood data
-fw_data <- fread("derived_tables/deadtree_deadwood_forest_siteyear_mean_500m.csv")
+# Get unique sites
+sites_list <- unique(main_data$SITE_ID)
+cat("Found", length(sites_list), "sites\n")
 
-# Load IGBP data from site metadata
 cat("Loading IGBP data...\n")
+# Load IGBP data from site metadata
 igbp_map <- fread("combined_site_metadata.csv")[, .(SITE_ID, IGBP)]
-
-# Filter for RF model sites
-fw_data <- fw_data[SITE_ID %in% rf_sites]
-fw_data <- fw_data[order(SITE_ID, year)]
-
-# Merge IGBP info
-fw_data <- merge(fw_data, igbp_map, by = "SITE_ID", all.x = TRUE)
-
-cat("Creating plots for", length(unique(fw_data$SITE_ID)), "sites...\n")
 
 # Define dark theme
 dark_theme <- theme_bw(base_size = 10) +
@@ -60,37 +50,55 @@ dark_theme <- theme_bw(base_size = 10) +
   )
 
 # Function to create mortality vs tree cover plot for one site
-create_site_plot <- function(site_id, data) {
+create_site_plot <- function(site_id, data, igbp_info) {
   site_data <- data[SITE_ID == site_id]
 
   if (nrow(site_data) == 0) return(NULL)
 
   # Get IGBP type
-  igbp <- site_data$IGBP[1]
-  if (is.na(igbp)) igbp <- "Unknown"
+  igbp <- igbp_info[SITE_ID == site_id, IGBP]
+  if (length(igbp) == 0 || is.na(igbp)) igbp <- "Unknown"
 
-  # Convert to percentage
-  site_data[, deadwood_pct := deadwood_mean_500m * 100]
-  site_data[, forest_pct := forest_mean_500m * 100]
+  # Select relevant columns and rename for clarity
+  site_data <- site_data[, .(
+    YEAR,
+    tree_cover = forest_mean_pct_500m * 100,  # Convert to percentage
+    mortality = mortality_intensity_pct_500m * 100,  # Convert to percentage
+    deadwood = deadwood_mean_pct_500m * 100  # Convert to percentage
+  )]
 
-  # Create two-axis plot
-  p <- ggplot(site_data, aes(x = year)) +
-    geom_line(aes(y = deadwood_pct, colour = "Deadwood (%)"), linewidth = 1) +
-    geom_point(aes(y = deadwood_pct, colour = "Deadwood (%)"), size = 2) +
-    geom_line(aes(y = forest_pct, colour = "Tree Cover (%)"), linewidth = 1) +
-    geom_point(aes(y = forest_pct, colour = "Tree Cover (%)"), size = 2) +
+  # Remove rows with NA values
+  site_data <- site_data[complete.cases(site_data)]
+
+  if (nrow(site_data) == 0) return(NULL)
+
+  # Create three-variable plot
+  p <- ggplot(site_data, aes(x = YEAR)) +
+    geom_line(aes(y = tree_cover, colour = "Tree Cover (%)"), linewidth = 1) +
+    geom_point(aes(y = tree_cover, colour = "Tree Cover (%)"), size = 2) +
+    geom_line(aes(y = mortality, colour = "Mortality (%)"), linewidth = 1) +
+    geom_point(aes(y = mortality, colour = "Mortality (%)"), size = 2) +
+    geom_line(aes(y = deadwood, colour = "Deadwood (%)"), linewidth = 1) +
+    geom_point(aes(y = deadwood, colour = "Deadwood (%)"), size = 2) +
     scale_colour_manual(
       name = "",
-      values = c("Deadwood (%)" = "#e74c3c", "Tree Cover (%)" = "#3498db")
+      values = c(
+        "Tree Cover (%)" = "#3498db",
+        "Mortality (%)" = "#e67e22",
+        "Deadwood (%)" = "#e74c3c"
+      )
     ) +
     scale_y_continuous(
-      name = "Deadwood & Tree Cover (%)",
-      limits = c(0, max(site_data$deadwood_pct, site_data$forest_pct, na.rm = TRUE) * 1.1)
+      name = "Percentage (%)",
+      limits = c(0, max(site_data$tree_cover, site_data$mortality, site_data$deadwood, na.rm = TRUE) * 1.1)
     ) +
-    scale_x_continuous(name = "Year", breaks = seq(floor(min(site_data$year)), ceiling(max(site_data$year)), 2)) +
+    scale_x_continuous(
+      name = "Year",
+      breaks = seq(floor(min(site_data$YEAR)), ceiling(max(site_data$YEAR)), 2)
+    ) +
     labs(
       title = paste(site_id, " | ", igbp, sep = ""),
-      subtitle = paste("Years:", min(site_data$year), "-", max(site_data$year))
+      subtitle = paste("Years:", min(site_data$YEAR), "-", max(site_data$YEAR))
     ) +
     dark_theme +
     theme(
@@ -102,26 +110,25 @@ create_site_plot <- function(site_id, data) {
 }
 
 # Generate plots for each site
-sites_to_plot <- unique(fw_data$SITE_ID)
+cat("Creating plots for", length(sites_list), "sites...\n")
 success_count <- 0
 fail_count <- 0
 
-for (site in sites_to_plot) {
+for (site in sites_list) {
   tryCatch({
-    p <- create_site_plot(site, fw_data)
+    p <- create_site_plot(site, main_data, igbp_map)
 
     if (!is.null(p)) {
       filename <- file.path(OUT_DIR, paste0(site, "_mortality_Tcover_change.png"))
       ggsave(filename, p, width = 120, height = 100, units = "mm", dpi = 300, bg = DARK_BG)
       success_count <- success_count + 1
 
-      if (success_count %% 20 == 0) {
+      if (success_count %% 25 == 0) {
         cat(sprintf("  ✓ Plotted %d sites\n", success_count))
       }
     }
   }, error = function(e) {
     fail_count <<- fail_count + 1
-    cat(sprintf("  ✗ Error plotting %s: %s\n", site, e$message))
   })
 }
 
