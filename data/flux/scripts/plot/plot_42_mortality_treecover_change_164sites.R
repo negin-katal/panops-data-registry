@@ -72,7 +72,6 @@ create_site_plot <- function(site_id, data, igbp_info) {
   site_data <- site_data[, .(
     YEAR,
     tree_cover = forest_mean_pct_500m * 100,  # Convert to percentage
-    mortality = mortality_intensity_pct_500m * 100,  # Convert to percentage
     deadwood = deadwood_mean_pct_500m * 100  # Convert to percentage
   )]
 
@@ -81,25 +80,22 @@ create_site_plot <- function(site_id, data, igbp_info) {
 
   if (nrow(site_data) == 0) return(NULL)
 
-  # Create three-variable plot
+  # Create two-variable plot (tree cover and deadwood)
   p <- ggplot(site_data, aes(x = YEAR)) +
     geom_line(aes(y = tree_cover, colour = "Tree Cover (%)"), linewidth = 1) +
     geom_point(aes(y = tree_cover, colour = "Tree Cover (%)"), size = 2) +
-    geom_line(aes(y = mortality, colour = "Mortality (%)"), linewidth = 1) +
-    geom_point(aes(y = mortality, colour = "Mortality (%)"), size = 2) +
     geom_line(aes(y = deadwood, colour = "Deadwood (%)"), linewidth = 1) +
     geom_point(aes(y = deadwood, colour = "Deadwood (%)"), size = 2) +
     scale_colour_manual(
       name = "",
       values = c(
         "Tree Cover (%)" = "#3498db",
-        "Mortality (%)" = "#e67e22",
         "Deadwood (%)" = "#e74c3c"
       )
     ) +
     scale_y_continuous(
       name = "Percentage (%)",
-      limits = c(0, max(site_data$tree_cover, site_data$mortality, site_data$deadwood, na.rm = TRUE) * 1.1)
+      limits = c(0, max(site_data$tree_cover, site_data$deadwood, na.rm = TRUE) * 1.1)
     ) +
     scale_x_continuous(
       name = "Year",
