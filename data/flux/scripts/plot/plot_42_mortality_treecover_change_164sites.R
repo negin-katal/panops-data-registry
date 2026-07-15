@@ -68,11 +68,11 @@ create_site_plot <- function(site_id, data, igbp_info) {
   igbp <- igbp_info[SITE_ID == site_id, IGBP]
   if (length(igbp) == 0 || is.na(igbp)) igbp <- "Unknown"
 
-  # Select relevant columns and rename for clarity
+  # Select relevant columns (already in percentage format, 0-100)
   site_data <- site_data[, .(
     YEAR,
-    tree_cover = forest_mean_pct_500m * 100,  # Convert to percentage
-    deadwood = deadwood_mean_pct_500m * 100  # Convert to percentage
+    tree_cover = forest_mean_pct_500m,
+    deadwood = deadwood_mean_pct_500m
   )]
 
   # Remove rows with NA values
@@ -99,7 +99,7 @@ create_site_plot <- function(site_id, data, igbp_info) {
     ) +
     scale_x_continuous(
       name = "Year",
-      breaks = seq(floor(min(site_data$YEAR)), ceiling(max(site_data$YEAR)), 2)
+      breaks = seq(floor(min(site_data$YEAR)), ceiling(max(site_data$YEAR)), 1)
     ) +
     labs(
       title = paste(site_id, " | ", igbp, sep = ""),
