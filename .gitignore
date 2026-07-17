@@ -99,3 +99,7 @@ outputs
 .local_gitignore
 scratch.ipynb
 debug
+
+# Parquet files (large data)
+*.parquet/
+*.parq/
