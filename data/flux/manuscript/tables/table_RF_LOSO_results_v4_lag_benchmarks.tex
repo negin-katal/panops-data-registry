@@ -1,0 +1,72 @@
+\begin{table}[htbp]
+\centering
+\caption{Leave-one-site-out random forest performance for four ecosystem
+functional properties (EFPs), evaluated on v4 benchmarks with center-of-growing-season (CGS)
+meteorological lags. Panels A--B: lag1 only (480 site-years, 133 sites);
+Panels C--D: lag1 + lag2 (338 site-years, 133 sites). Each cell shows $R^2$ (RMSE in
+native units). \textbf{Bold} = best $R^2$ per EFP within each panel.
+Panels A--B: anomaly z-score EFP memory; Panels C--D: raw-lag EFP memory.}
+\label{tab:RF_LOSO_v4}
+\footnotesize
+\begin{tabular}{llccccc}
+\toprule
+Model & Predictors & $n$ & GPP$_\mathrm{sat}$ & NEP$_\mathrm{max}$ & ET$_\mathrm{max}$ & uWUE \\
+  &  &  & ($\mu$mol m$^{-2}$ s$^{-1}$) & ($\mu$mol m$^{-2}$ s$^{-1}$) & (mm d$^{-1}$) & (g C mm$^{-1}$) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel A: Lag1 only --- Anomaly z-score EFP memory --- 480 site-years, 133 sites}} \\
+\midrule
+M01 & C & \multirow{8}{*}{480} & 0.397 (7.59) & 0.407 (7.31) & 0.369 (0.0564) & 0.267 (0.968) \\
+M02 & C + D &  & 0.517 (6.80) & 0.524 (6.55) & 0.377 (0.0560) & \textbf{0.321 (0.932)} \\
+M03 & C + T &  & 0.516 (6.85) & 0.513 (6.66) & \textbf{0.501 (0.0505)} & 0.218 (1.009) \\
+M04 & C + T + D &  & \textbf{0.535 (6.71)} & \textbf{0.536 (6.50)} & 0.498 (0.0506) & 0.229 (1.001) \\
+M05 & C + M &  & 0.397 (7.59) & 0.407 (7.31) & 0.369 (0.0564) & 0.267 (0.968) \\
+M06 & C + D + M &  & 0.517 (6.80) & 0.524 (6.55) & 0.377 (0.0560) & 0.321 (0.932) \\
+M07 & C + T + M &  & 0.516 (6.85) & 0.513 (6.66) & 0.501 (0.0505) & 0.218 (1.009) \\
+M08 & C + T + D + M &  & 0.535 (6.71) & 0.536 (6.50) & 0.498 (0.0506) & 0.229 (1.001) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel B: Lag1 only --- Raw-lag EFP memory --- 480 site-years, 133 sites}} \\
+\midrule
+M01 & C & \multirow{8}{*}{480} & 0.397 (7.59) & 0.407 (7.31) & 0.369 (0.0564) & 0.267 (0.968) \\
+M02 & C + D &  & 0.517 (6.80) & 0.524 (6.55) & 0.377 (0.0560) & \textbf{0.321 (0.932)} \\
+M03 & C + T &  & 0.516 (6.85) & 0.513 (6.66) & \textbf{0.501 (0.0505)} & 0.218 (1.009) \\
+M04 & C + T + D &  & \textbf{0.535 (6.71)} & \textbf{0.536 (6.50)} & 0.498 (0.0506) & 0.229 (1.001) \\
+M05 & C + M &  & 0.397 (7.59) & 0.407 (7.31) & 0.369 (0.0564) & 0.267 (0.968) \\
+M06 & C + D + M &  & 0.517 (6.80) & 0.524 (6.55) & 0.377 (0.0560) & 0.321 (0.932) \\
+M07 & C + T + M &  & 0.516 (6.85) & 0.513 (6.66) & 0.501 (0.0505) & 0.218 (1.009) \\
+M08 & C + T + D + M &  & 0.535 (6.71) & 0.536 (6.50) & 0.498 (0.0506) & 0.229 (1.001) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel C: Lag1 + Lag2 --- Anomaly z-score EFP memory --- 338 site-years, 133 sites}} \\
+\midrule
+M01 & C & \multirow{8}{*}{338} & 0.394 (7.60) & 0.418 (7.16) & 0.390 (0.0539) & 0.256 (1.003) \\
+M02 & C + D &  & 0.546 (6.58) & 0.528 (6.45) & 0.422 (0.0525) & \textbf{0.327 (0.954)} \\
+M03 & C + T &  & 0.536 (6.72) & 0.522 (6.53) & \textbf{0.538 (0.0474)} & 0.211 (1.043) \\
+M04 & C + T + D &  & \textbf{0.581 (6.38)} & \textbf{0.560 (6.27)} & 0.535 (0.0475) & 0.259 (1.012) \\
+M05 & C + M &  & 0.394 (7.60) & 0.418 (7.16) & 0.390 (0.0539) & 0.256 (1.003) \\
+M06 & C + D + M &  & 0.546 (6.58) & 0.528 (6.45) & 0.422 (0.0525) & 0.327 (0.954) \\
+M07 & C + T + M &  & 0.536 (6.72) & 0.522 (6.53) & 0.538 (0.0474) & 0.211 (1.043) \\
+M08 & C + T + D + M &  & 0.581 (6.38) & 0.560 (6.27) & 0.535 (0.0475) & 0.259 (1.012) \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel D: Lag1 + Lag2 --- Raw-lag EFP memory --- 338 site-years, 133 sites}} \\
+\midrule
+M01 & C & \multirow{8}{*}{338} & 0.394 (7.60) & 0.418 (7.16) & 0.390 (0.0539) & 0.256 (1.003) \\
+M02 & C + D &  & 0.546 (6.58) & 0.528 (6.45) & 0.422 (0.0525) & \textbf{0.327 (0.954)} \\
+M03 & C + T &  & 0.536 (6.72) & 0.522 (6.53) & \textbf{0.538 (0.0474)} & 0.211 (1.043) \\
+M04 & C + T + D &  & \textbf{0.581 (6.38)} & \textbf{0.560 (6.27)} & 0.535 (0.0475) & 0.259 (1.012) \\
+M05 & C + M &  & 0.394 (7.60) & 0.418 (7.16) & 0.390 (0.0539) & 0.256 (1.003) \\
+M06 & C + D + M &  & 0.546 (6.58) & 0.528 (6.45) & 0.422 (0.0525) & 0.327 (0.954) \\
+M07 & C + T + M &  & 0.536 (6.72) & 0.522 (6.53) & 0.538 (0.0474) & 0.211 (1.043) \\
+M08 & C + T + D + M &  & 0.581 (6.38) & 0.560 (6.27) & 0.535 (0.0475) & 0.259 (1.012) \\
+\midrule
+\bottomrule
+\end{tabular}
+\vspace{2pt}
+\begin{minipage}{\linewidth}
+\footnotesize
+\textit{Note:} C = Climate (TA, VPD, SW$_\mathrm{IN}$ mean/p05/p95, P mean/sum/p05/p95, CGS-centered);
+T = Plant traits (hydraulic, leaf, root);
+D = Disturbance (mortality intensity, deadwood, forest loss at 100--500\,m, with lag1/lag2);
+M = EFP memory (anomaly z-score in Panels A--C; raw lag-1/lag-2 values in Panels B--D).
+RMSE in native units in parentheses. CGS = center-of-growing-season; meteorological lags computed
+within 12-month windows centered on CGS month (±6 months).
+\end{minipage}
+\end{table}

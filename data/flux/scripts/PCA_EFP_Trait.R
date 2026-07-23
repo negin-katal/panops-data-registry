@@ -2,10 +2,11 @@ getwd()
 rm(list = ls())
 # Core
 library(dplyr); library(tidyr); library(stringr); library(purrr); library(readr)
-install.packages("janitor")
 library(janitor)
 # PCA + viz
+library(FactoMineR)   # PCA()
 library(factoextra)   # scree, biplot helpers (optional)
+library(gridExtra)    # grid.arrange()
 library(ggplot2)
 
 # Modeling (tidymodels = CV, tuning, clean pipelines)
@@ -801,7 +802,6 @@ plot_rf_performance <- function(rf_model, target, df, predictors, title = "") {
 
 
 ###SHAP value:
-install.packages("iml")
 library(iml)
 # Prepare data
 subdf <- dat_merged_clean %>% select(all_of(c("pc1", trait_vars))) %>% na.omit()

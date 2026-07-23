@@ -1,0 +1,26 @@
+IGBP,rel_dist_cat,N,pct
+ENF,Tertile 3 (High),21,39.6
+WET,Tertile 3 (High),20,52.6
+MF,Tertile 2 (Mid),2,50
+SAV,Tertile 3 (High),1,14.3
+WSA,Tertile 1 (Low),4,57.1
+WSA,Tertile 3 (High),2,28.6
+ENF,Tertile 2 (Mid),24,45.3
+DBF,Tertile 2 (Mid),7,29.2
+CSH,Tertile 3 (High),2,33.3
+EBF,Tertile 3 (High),1,25
+WET,Tertile 2 (Mid),11,28.9
+OSH,Tertile 3 (High),3,14.3
+OSH,Tertile 1 (Low),13,61.9
+WET,Tertile 1 (Low),7,18.4
+DBF,Tertile 1 (Low),12,50
+MF,Tertile 1 (Low),2,50
+OSH,Tertile 2 (Mid),5,23.8
+SAV,Tertile 1 (Low),6,85.7
+CSH,Tertile 2 (Mid),2,33.3
+ENF,Tertile 1 (Low),8,15.1
+EBF,Tertile 2 (Mid),2,50
+DBF,Tertile 3 (High),5,20.8
+EBF,Tertile 1 (Low),1,25
+CSH,Tertile 1 (Low),2,33.3
+WSA,Tertile 2 (Mid),1,14.3

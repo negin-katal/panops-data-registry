@@ -1,0 +1,173 @@
+================================================================================
+MORTALITY METRICS USED IN EACH PLOT TYPE
+================================================================================
+
+QUICK REFERENCE TABLE
+
+┌─────────────────────────────────┬──────────────┬──────────────┬──────────────┐
+│ Plot Type                       │ Abs Mort     │ Rel Mort     │ Rel Dist     │
+├─────────────────────────────────┼──────────────┼──────────────┼──────────────┤
+│ 01_SHAP_percent_*               │ ✓ ROW 1      │ ✓ ROW 2      │ ✓ ROW 3      │
+│ 02_SHAP_mean_*                  │ ✓ ROW 1      │ ✓ ROW 2      │ ✓ ROW 3      │
+│ 03_DeltaRMSE_* (delta_rmse/)    │ ✓ PANEL 1    │ ✓ PANEL 2    │ ✓ PANEL 3    │
+│ site_shap_* (site_shap/)        │ ✓ PANEL 1    │ ✓ PANEL 2    │ ✓ PANEL 3    │
+└─────────────────────────────────┴──────────────┴──────────────┴──────────────┘
+
+ALL PLOT TYPES USE ALL THREE MORTALITY METRICS ✓
+
+================================================================================
+DETAILED BREAKDOWN
+================================================================================
+
+PLOT TYPE 1: SHAP % Contribution
+──────────────────────────────────
+File: METHOD_NAME/01_SHAP_percent_mortality_disturbance.png
+Format: SINGLE PLOT with 3 ROWS × 5 COLUMNS layout
+
+Metrics Used:
+  ✓ Absolute Mortality (deadwood, %)
+    → ROW 1: 5 subplots (GPPsat, NEPmax, ETmax, uWUE, WUE)
+    
+  ✓ Relative Mortality (deadwood / forest × 100, %)
+    → ROW 2: 5 subplots (GPPsat, NEPmax, ETmax, uWUE, WUE)
+    
+  ✓ Relative Disturbance ((deadwood + loss) / (forest + loss) × 100, %)
+    → ROW 3: 5 subplots (GPPsat, NEPmax, ETmax, uWUE, WUE)
+
+What it shows:
+  Y-axis: Disturbance SHAP % (percentage of total SHAP)
+  X-axis: Category groups (Low/Mid/High or Tertile 1/2/3 depending on method)
+  Each metric shows same SHAP data but stratified differently
+
+Model: M04 (C+T+D)
+Window: 24m only
+
+================================================================================
+
+PLOT TYPE 2: Mean |SHAP| Values
+────────────────────────────────
+File: METHOD_NAME/02_SHAP_mean_mortality_disturbance.png
+Format: SINGLE PLOT with 3 ROWS × 5 COLUMNS layout
+
+Metrics Used:
+  ✓ Absolute Mortality (deadwood, %)
+    → ROW 1: 5 subplots with free y-axis scales
+    
+  ✓ Relative Mortality (deadwood / forest × 100, %)
+    → ROW 2: 5 subplots with free y-axis scales
+    
+  ✓ Relative Disturbance ((deadwood + loss) / (forest + loss) × 100, %)
+    → ROW 3: 5 subplots with free y-axis scales
+
+What it shows:
+  Y-axis: Mean |SHAP| (absolute magnitude, not %)
+  X-axis: Category groups
+  Each EFP has its own y-axis scale for better visibility
+  
+Model: M04 (C+T+D)
+Window: 24m only
+
+================================================================================
+
+PLOT TYPE 3: Delta RMSE (Model Comparison)
+─────────────────────────────────────────
+File: METHOD_NAME/delta_rmse/DeltaRMSE_M0X_M0X_EFP_WINDOW.png
+Format: SINGLE PLOT with 3 SIDE-BY-SIDE PANELS
+
+Metrics Used:
+  ✓ Absolute Mortality (deadwood, %)
+    → PANEL 1 (LEFT): Stratified by abs_mort categories
+    
+  ✓ Relative Mortality (deadwood / forest × 100, %)
+    → PANEL 2 (CENTER): Stratified by rel_mort categories
+    
+  ✓ Relative Disturbance ((deadwood + loss) / (forest + loss) × 100, %)
+    → PANEL 3 (RIGHT): Stratified by rel_dist categories
+
+What it shows:
+  Y-axis: Delta RMSE = RMSE(with Disturbance) - RMSE(without Disturbance)
+  X-axis: Categories (Low/Mid/High etc.)
+  Horizontal line at Y=0 separates improvement from degradation
+  
+Generated for all model pairs:
+  • M02 vs M01 (C vs C+D)     → 10 plots (5 EFPs × 2 windows)
+  • M04 vs M03 (C+T vs C+T+D) → 10 plots (5 EFPs × 2 windows)
+  • M06 vs M05 (C+M vs C+M+D) → 10 plots (5 EFPs × 2 windows)
+  • M08 vs M07 (C+T+M vs C+T+M+D) → 10 plots (5 EFPs × 2 windows)
+
+Total per method: 40 Delta RMSE plots
+
+================================================================================
+
+PLOT TYPE 4: Site-Level SHAP Stacked Bars
+──────────────────────────────────────────
+File: METHOD_NAME/site_shap/site_shap_M0X_EFP_WINDOW.png
+Format: SINGLE PLOT with 3 SIDE-BY-SIDE PANELS
+
+Metrics Used:
+  ✓ Absolute Mortality (deadwood, %)
+    → PANEL 1 (LEFT): Stacked bars stratified by abs_mort categories
+    
+  ✓ Relative Mortality (deadwood / forest × 100, %)
+    → PANEL 2 (CENTER): Stacked bars stratified by rel_mort categories
+    
+  ✓ Relative Disturbance ((deadwood + loss) / (forest + loss) × 100, %)
+    → PANEL 3 (RIGHT): Stacked bars stratified by rel_dist categories
+
+What it shows:
+  Y-axis: Individual sites (ordered by disturbance SHAP contribution)
+  X-axis: Relative SHAP contribution (0 to 1)
+  Colors: Driver groups (Climate, Traits, Disturbance, Memory)
+  Each panel shows same data but with different site grouping
+  
+Generated for models M06 and M08 only:
+  • M06: 10 plots (5 EFPs × 2 windows)
+  • M08: 10 plots (5 EFPs × 2 windows)
+
+Total per method: 20 site SHAP plots
+
+================================================================================
+COMPARISON PLOTS (ROOT DIRECTORY)
+================================================================================
+
+File: ROOT/01_abs_mort_comparison.png
+Mortality Metrics: ✓ ABSOLUTE MORTALITY ONLY (compares 3 methods for this metric)
+Format: 3 subplots showing tertiles, equal-width, natural breaks side-by-side
+
+File: ROOT/02_rel_mort_comparison.png
+Mortality Metrics: ✓ RELATIVE MORTALITY ONLY (compares 3 methods for this metric)
+Format: 3 subplots showing tertiles, equal-width, natural breaks side-by-side
+
+File: ROOT/03_rel_dist_comparison.png
+Mortality Metrics: ✓ RELATIVE DISTURBANCE ONLY (compares 3 methods for this metric)
+Format: 3 subplots showing tertiles, equal-width, natural breaks side-by-side
+
+================================================================================
+SUMMARY TABLE - COMPREHENSIVE
+================================================================================
+
+                      All 3 Metrics?  How Displayed?        # of Plots
+                      ──────────────  ──────────────        ───────────
+SHAP %                    YES         3 rows                1 per method
+Mean SHAP                 YES         3 rows                1 per method
+Delta RMSE                YES         3 panels              40 per method
+Site SHAP                 YES         3 panels              20 per method
+Comparison (root)         NO*         1 metric each         3 total
+
+* Comparison plots show 1 metric each but allow visual comparison across methods
+
+================================================================================
+KEY TAKEAWAY
+================================================================================
+
+✓ Every analysis plot (except the root comparison plots) includes ALL THREE
+  mortality metrics for comparison.
+
+✓ This allows you to evaluate whether disturbance effects are:
+  - CONSISTENT across different mortality metrics (robust finding)
+  - VARIABLE depending on which metric you use (metric-dependent effect)
+
+✓ Comparing the 3 panels/rows tells you about METRIC ROBUSTNESS
+  Comparing across the 3 method folders tells you about METHOD ROBUSTNESS
+
+================================================================================

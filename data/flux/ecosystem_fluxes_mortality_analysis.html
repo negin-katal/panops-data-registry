@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site-Level SHAP Analysis: Disturbance Effects on Ecosystem Fluxes</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0D0D0D 0%, #1A1A2E 100%);
+            color: #E0E0E0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #22D4EB;
+            padding-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #22D4EB;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(34, 212, 235, 0.3);
+            letter-spacing: -0.01em;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #9CA3AF;
+            margin-bottom: 5px;
+        }
+
+        .metadata {
+            font-size: 0.95em;
+            color: #6B7280;
+            margin-top: 10px;
+        }
+
+        .dataset-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            background: rgba(31, 41, 55, 0.8);
+            border-left: 4px solid #22D4EB;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        .info-label {
+            color: #9CA3AF;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            color: #22D4EB;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            color: #22D4EB;
+            margin: 40px 0 20px 0;
+            border-bottom: 2px solid #22D4EB;
+            padding-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 1.2em;
+            color: #9CA3AF;
+            margin: 25px 0 15px 0;
+            font-weight: 600;
+        }
+
+        .section {
+            margin: 30px 0;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid #2A2A3A;
+            border-radius: 8px;
+            padding: 25px;
+        }
+
+        .key-finding {
+            background: rgba(34, 212, 235, 0.1);
+            border-left: 5px solid #22D4EB;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+            border-right: 1px solid rgba(34, 212, 235, 0.2);
+        }
+
+        .key-finding strong {
+            color: #22D4EB;
+        }
+
+        .controls {
+            background: rgba(31, 41, 55, 0.8);
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            color: #22D4EB;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            background: #111827;
+            color: #E0E0E0;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        select:hover, input:hover {
+            border-color: #22D4EB;
+            box-shadow: 0 0 8px rgba(34, 212, 235, 0.2);
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #22D4EB;
+            box-shadow: 0 0 12px rgba(34, 212, 235, 0.3);
+        }
+
+        .plot-container {
+            margin: 30px 0;
+            background: rgba(17, 24, 39, 0.8);
+            border: 1px solid #2A2A3A;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .plot-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 0 20px rgba(34, 212, 235, 0.2);
+            display: inline-block;
+            max-height: 700px;
+        }
+
+        .plot-caption {
+            font-size: 0.9em;
+            color: #9CA3AF;
+            margin-top: 15px;
+            text-align: left;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+
+        table th {
+            background: rgba(34, 212, 235, 0.15);
+            color: #22D4EB;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #22D4EB;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #2A2A3A;
+            color: #E0E0E0;
+        }
+
+        table tr:hover {
+            background: rgba(34, 212, 235, 0.08);
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: #E0E0E0;
+        }
+
+        .code-block {
+            background: rgba(31, 41, 55, 0.9);
+            border-left: 4px solid #22D4EB;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            color: #90EE90;
+        }
+
+        .model-table {
+            margin: 20px 0;
+        }
+
+        .interpretation-list {
+            background: rgba(34, 212, 235, 0.08);
+            border-left: 4px solid #22D4EB;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .interpretation-list li {
+            margin-bottom: 12px;
+            padding-left: 10px;
+        }
+
+        .interpretation-list strong {
+            color: #22D4EB;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.85em;
+            color: #4B5563;
+            border-top: 1px solid #2A2A3A;
+            padding-top: 30px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-box {
+            background: rgba(31, 41, 55, 0.9);
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            color: #22D4EB;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #9CA3AF;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #9CA3AF;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 15px;
+            }
+        }
+
+        .warning-box {
+            background: rgba(255, 193, 7, 0.15);
+            border-left: 4px solid #FFC107;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            color: #FFE082;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Site-Level SHAP Analysis</h1>
+            <p class="subtitle">Disturbance Effects on Ecosystem Flux Predictions</p>
+            <div class="dataset-info">
+                <div class="info-card">
+                    <div class="info-label">Sites</div>
+                    <div class="info-value">113</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Site-Years</div>
+                    <div class="info-value">616</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Response Variables</div>
+                    <div class="info-value">5</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Models</div>
+                    <div class="info-value">3</div>
+                </div>
+            </div>
+            <p class="metadata">📊 Tree-cover filtered (≥30%) | 2026-07-17</p>
+        </header>
+
+        <div class="section">
+            <h2>Overview</h2>
+            <p>This analysis examines how disturbance metrics influence ecosystem flux predictions at individual flux tower sites. Using SHAP (SHapley Additive exPlanations) values, we quantify the contribution of disturbance variables (Absolute Mortality, Relative Mortality, Relative Disturbance) to model predictions across different time lags and response variables.</p>
+
+            <h3>Key Insight</h3>
+            <div class="key-finding">
+                <strong>Disturbance impact is stratified by disturbance level:</strong> Sites with high disturbance show stronger SHAP values for disturbance metrics, indicating these variables have greater influence on predictions where disturbance actually occurs. This mechanistic response validates the disturbance–flux relationship.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Interactive Analysis</h2>
+            <p>Use the controls below to explore site-level SHAP values for different model configurations, response variables, and temporal lags.</p>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label for="modelSelect">Model Configuration:</label>
+                    <select id="modelSelect" onchange="updatePlot()">
+                        <option value="M04">M04 – Climate + Traits + Disturbance</option>
+                        <option value="M06">M06 – Climate + Memory + Disturbance</option>
+                        <option value="M08">M08 – Climate + Traits + Memory + Disturbance</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="efpSelect">Response Variable (EFP):</label>
+                    <select id="efpSelect" onchange="updatePlot()">
+                        <option value="GPPsat">GPPsat (Gross Primary Productivity)</option>
+                        <option value="NEPmax">NEPmax (Net Ecosystem Productivity)</option>
+                        <option value="ETmax">ETmax (Evapotranspiration)</option>
+                        <option value="uWUE">uWUE (Unstressed Water Use Efficiency)</option>
+                        <option value="WUE">WUE (Water Use Efficiency)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="lagSelect">Temporal Lag:</label>
+                    <select id="lagSelect" onchange="updatePlot()">
+                        <option value="24m">24 months (2-year lag)</option>
+                        <option value="12m">12 months (1-year lag)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="plot-container">
+                <div id="plotLoadingMessage" class="loading">Loading plot...</div>
+                <img id="siteShapPlot" src="" alt="Site SHAP Analysis Plot" style="display:none;">
+                <div class="plot-caption" id="plotCaption">
+                    <strong>Site-Level SHAP Analysis for Disturbance Metrics</strong><br>
+                    Shows the magnitude of disturbance metric contributions to model predictions across individual sites, stratified by tertile disturbance categories (Low, Mid, High). Larger values indicate stronger influence on predictions. Three panels represent: Absolute Mortality, Relative Mortality, and Relative Disturbance.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Model Descriptions</h2>
+            <table class="model-table">
+                <thead>
+                    <tr>
+                        <th>Model ID</th>
+                        <th>Predictor Components</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>M04</strong></td>
+                        <td>C + T + D</td>
+                        <td>Climate + Traits + Disturbance metrics. Baseline model with static plant traits (hydraulics, leaf properties, SLA).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>M06</strong></td>
+                        <td>C + M + D</td>
+                        <td>Climate + EFP Memory + Disturbance metrics. Includes lagged EFP values as predictors to capture temporal dynamics.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>M08</strong></td>
+                        <td>C + T + M + D</td>
+                        <td>Full model with Climate + Traits + EFP Memory + Disturbance. Combines static site properties with temporal memory.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Predictor Breakdown</h3>
+            <div class="code-block">
+Climate (C):      143-286 columns (13 months × 11 meteorological variables × 1-2 lags)
+Traits (T):       21 columns (P12, P50, P88, gsmax, rdmax, leaf properties, stem traits)
+Memory (M):       2-4 columns (Lagged EFP values: raw + anomaly across lags)
+Disturbance (D):  75 columns (40-90 mortality metrics + 5-15 relative disturbance × buffers)
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Interpretation Guide</h2>
+            <div class="interpretation-list">
+                <ul>
+                    <li><strong>Each vertical panel:</strong> Represents one disturbance metric (Absolute Mortality, Relative Mortality, Relative Disturbance)</li>
+                    <li><strong>Horizontal grouping:</strong> Sites stratified into three disturbance level categories (Tertile 1: Low, Tertile 2: Mid, Tertile 3: High)</li>
+                    <li><strong>Box heights:</strong> Magnitude of SHAP values, indicating the strength of disturbance metric influence on model predictions</li>
+                    <li><strong>Vertical arrangement:</strong> All individual flux tower sites in the analysis</li>
+                    <li><strong>Pattern interpretation:</strong>
+                        <ul style="margin-left: 30px; margin-top: 10px;">
+                            <li>✓ <strong>Expected pattern:</strong> Taller boxes in High disturbance (Tertile 3) → disturbance metrics have stronger influence where disturbance is present</li>
+                            <li>✗ <strong>Unexpected pattern:</strong> Similar heights across tertiles → disturbance effects are spurious or confounded</li>
+                            <li>✓ <strong>Mechanistic validity:</strong> Response varies by disturbance level, not random scatter</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Disturbance Metrics Explained</h2>
+
+            <h3>1. Absolute Mortality</h3>
+            <p><strong>Definition:</strong> Percentage of deadwood in the pixel (0–100%)</p>
+            <div class="code-block">
+Absolute Mortality (%) = (Deadwood area) / (Total area) × 100
+            </div>
+            <p><strong>Interpretation:</strong> Direct measure of deadwood extent. Higher values indicate more dead biomass.</p>
+
+            <h3>2. Relative Mortality</h3>
+            <p><strong>Definition:</strong> Deadwood as a proportion of tree cover (0–100%)</p>
+            <div class="code-block">
+Relative Mortality (%) = (Deadwood area) / (Live tree cover) × 100
+            </div>
+            <p><strong>Interpretation:</strong> Mortality intensity relative to live tree density. Accounts for background tree cover variations.</p>
+
+            <h3>3. Relative Disturbance</h3>
+            <p><strong>Definition:</strong> Combined impact of deadwood and tree loss, normalized by forest extent</p>
+            <div class="code-block">
+Relative Disturbance (%) = (Deadwood + Tree loss) / (Original forest + Tree loss) × 100
+            </div>
+            <p><strong>Interpretation:</strong> Total disturbance magnitude including both mortality and loss processes. Ranges 0–100%.</p>
+
+            <h3>Buffer Radii</h3>
+            <p>Each metric is calculated at five buffer distances around the flux tower: <strong>100m, 200m, 300m, 400m, 500m</strong>. Different buffers capture disturbance at multiple spatial scales relevant to ecosystem processes.</p>
+        </div>
+
+        <div class="section">
+            <h2>What SHAP Values Tell Us</h2>
+
+            <h3>SHAP Interpretation</h3>
+            <p>SHAP (SHapley Additive exPlanations) values quantify each feature's contribution to individual predictions:</p>
+            <ul>
+                <li><strong>Magnitude:</strong> Larger |SHAP| values = stronger influence on predictions</li>
+                <li><strong>Direction:</strong> Positive SHAP = feature increases prediction; Negative SHAP = feature decreases prediction</li>
+                <li><strong>Site-specificity:</strong> SHAP values are calculated per-site, showing localized disturbance effects</li>
+                <li><strong>Model-agnostic:</strong> Works with any model type (Random Forest, neural networks, etc.)</li>
+            </ul>
+
+            <h3>Why SHAP Matters Here</h3>
+            <div class="key-finding">
+                SHAP values reveal whether disturbance metrics are <strong>mechanistically important</strong> (larger effects at disturbed sites) or <strong>spuriously correlated</strong> (similar effects everywhere). This validation is critical for establishing causal relationships.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Expected Patterns</h2>
+
+            <h3>Carbon Fluxes (GPPsat, NEPmax)</h3>
+            <div class="code-block">
+Expected: Large SHAP values at HIGH disturbance sites
+Rationale: Disturbance reduces photosynthetic capacity → must be included in predictions
+Pattern: Clear visual separation (tall boxes in T3, short in T1)
+            </div>
+
+            <h3>Water Fluxes (ETmax, uWUE, WUE)</h3>
+            <div class="code-block">
+Expected: Similar SHAP values across all disturbance levels
+Rationale: Water availability driven by climate, not disturbance level
+Pattern: No separation by tertile (uniform height across T1–T3)
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Temporal Lags Explained</h2>
+
+            <h3>12-Month Lag</h3>
+            <p>Disturbance effects from the previous year (t-1). Captures immediate legacy effects of mortality on current year fluxes.</p>
+
+            <h3>24-Month Lag</h3>
+            <p>Disturbance effects from two years prior (t-2). Reveals whether disturbance impacts persist or decay over longer timescales.</p>
+
+            <h3>Key Question</h3>
+            <p><strong>Do disturbance effects fade?</strong> Comparing 12m vs. 24m SHAP values reveals the temporal persistence of disturbance influence on ecosystem fluxes.</p>
+        </div>
+
+        <div class="section">
+            <h2>Methods Summary</h2>
+
+            <h3>Cross-Validation Strategy</h3>
+            <p><strong>Leave-One-Site-Out (LOSO):</strong> For each of 113 sites, train the model on 112 sites and predict for the held-out site. This ensures SHAP values reflect true generalization (not training set overfitting).</p>
+
+            <h3>Disturbance Stratification</h3>
+            <p><strong>Tertile Categories:</strong> Sites divided into three equal-sized groups (Low, Mid, High) based on disturbance percentiles (33.33%, 66.67%). This approach is statistically robust and avoids arbitrary thresholds.</p>
+
+            <h3>Data Filtering</h3>
+            <p><strong>Tree-cover threshold:</strong> Sites with <30% tree cover removed (71 sites). Remaining 113 sites are sufficiently forested to isolate disturbance effects from background canopy variations.</p>
+        </div>
+
+        <div class="footer">
+            <p><strong>Dataset:</strong> FluxNet ×
+
+ Disturbance Analysis (v10) | <strong>Tree-cover filtered:</strong> ≥30% | <strong>Sites:</strong> 113 | <strong>Site-years:</strong> 616</p>
+            <p style="margin-top: 10px; color: #6B7280;">Generated: 2026-07-17 | Questions? Check the accompanying analysis documentation.</p>
+        </div>
+    </div>
+
+    <script>
+        function updatePlot() {
+            const model = document.getElementById('modelSelect').value;
+            const efp = document.getElementById('efpSelect').value;
+            const lag = document.getElementById('lagSelect').value;
+
+            // Hide image and show loading message
+            const plotImg = document.getElementById('siteShapPlot');
+            const loadingMsg = document.getElementById('plotLoadingMessage');
+            plotImg.style.display = 'none';
+            loadingMsg.style.display = 'block';
+
+            // Build plot path from source repository
+            // Adjust base URL to your repository structure
+            const plotPath = `https://raw.githubusercontent.com/tejakattenborn/ESA-FORTRACK/main/D2.2_datasets_and_tools/ecosystem_fluxes_and_mortality/plots/site_shap_distmetrics/site_shap_${model}_${efp}_${lag}_distmetrics.png`;
+
+            plotImg.src = plotPath;
+            plotImg.onload = function() {
+                loadingMsg.style.display = 'none';
+                plotImg.style.display = 'inline-block';
+            };
+            plotImg.onerror = function() {
+                loadingMsg.innerHTML = `<span style="color: #FF6B6B;">Plot not found: ${model}_${efp}_${lag}</span><br><span style="color: #9CA3AF; font-size: 0.9em;">Check that the plot file exists in the repository.</span>`;
+            };
+
+            // Update caption
+            const captionText = `<strong>Site-Level SHAP Analysis for Disturbance Metrics (${model}, ${efp}, ${lag})</strong><br>
+Shows the magnitude of disturbance metric contributions to model predictions across individual sites, stratified by tertile disturbance categories (Low, Mid, High). Larger values indicate stronger influence on predictions. Three panels represent: Absolute Mortality, Relative Mortality, and Relative Disturbance.`;
+            document.getElementById('plotCaption').innerHTML = captionText;
+        }
+
+        // Load initial plot
+        window.onload = function() {
+            updatePlot();
+        };
+    </script>
+</body>
+</html>

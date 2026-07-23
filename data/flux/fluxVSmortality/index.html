@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FluxNet × Mortality — Data Explorer Hub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0D0D0D;color:#E0E0E0;font-family:Arial,sans-serif;
+     min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 20px}
+h1{font-size:1.7em;text-align:center;margin-bottom:6px;letter-spacing:-.01em}
+.sub{color:#9CA3AF;font-size:0.9em;text-align:center;margin-bottom:40px}
+.section-title{font-size:1.3em;color:#22D4EB;margin-top:40px;margin-bottom:15px;text-align:center;border-bottom:2px solid #22D4EB;padding-bottom:10px;width:100%;max-width:980px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;width:100%;max-width:980px;margin-bottom:40px}
+.card{background:#111827;border:1px solid #2A2A3A;border-radius:12px;padding:28px 26px;
+      text-decoration:none;color:#E0E0E0;transition:border-color .2s,transform .15s;
+      display:flex;flex-direction:column;gap:10px}
+.card:hover{border-color:#22D4EB;transform:translateY(-3px)}
+.card-icon{font-size:2.2em;margin-bottom:4px}
+.card-title{font-size:1.12em;font-weight:bold;color:#22D4EB}
+.card-desc{font-size:0.83em;color:#9CA3AF;line-height:1.55}
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.tag{font-size:0.72em;background:#1F2937;border:1px solid #374151;border-radius:4px;
+     padding:2px 8px;color:#6B7280}
+.footer{margin-top:48px;font-size:0.75em;color:#4B5563;text-align:center}
+a{color:#22D4EB;text-decoration:none}
+</style>
+</head>
+<body>
+<h1>FluxNet &times; Mortality &mdash; Data Explorer</h1>
+<p class="sub">Interactive data products &nbsp;&middot;&nbsp; 184–233 sites &nbsp;&middot;&nbsp; 2017–2025 &nbsp;&middot;&nbsp; Negin Katal</p>
+
+<div class="cards">
+
+  <a class="card" href="efp_explorer.html">
+    <div class="card-icon">🌍</div>
+    <div class="card-title">EFP Explorer</div>
+    <div class="card-desc">
+      World map of 233 FluxNet sites with ecosystem functional properties (GPPsat, NEPmax,
+      ETmax, uWUE, G1, EF …). Colour sites by IGBP class, flux network, or any EFP value.
+      Inspect data availability, distributions by ecosystem type, EFP relationships, and
+      per-site time series.
+    </div>
+    <div class="card-tags">
+      <span class="tag">233 sites</span>
+      <span class="tag">9 EFPs</span>
+      <span class="tag">Map</span>
+      <span class="tag">Availability</span>
+      <span class="tag">Scatter</span>
+      <span class="tag">Time series</span>
+    </div>
+  </a>
+
+  <a class="card" href="mortality.html">
+    <div class="card-icon">🌳</div>
+    <div class="card-title">Mortality &amp; Disturbance Explorer</div>
+    <div class="card-desc">
+      Deadwood-based disturbance metrics for 184 modeling sites from the v1 and v2-2
+      products. Compare mortality stock, new mortality rates, tree cover loss, and combined
+      severity across buffer radii (100–500 m). Includes EFP raw values and anomaly panels
+      per site.
+    </div>
+    <div class="card-tags">
+      <span class="tag">184 sites</span>
+      <span class="tag">v1 vs v2-2</span>
+      <span class="tag">5 buffer radii</span>
+      <span class="tag">13 metrics</span>
+      <span class="tag">EFP anomalies</span>
+    </div>
+  </a>
+
+  <a class="card" href="disturbance_metrics.html">
+    <div class="card-icon">⚡</div>
+    <div class="card-title">Disturbance Impact Analysis</div>
+    <div class="card-desc">
+      How disturbance data affects Random Forest predictions of carbon and water fluxes.
+      Three disturbance metrics, Delta RMSE, SHAP analysis, dose-response curves, and 
+      IGBP confounding assessment. 22–46× difference: carbon benefits strongly, water doesn't.
+    </div>
+    <div class="card-tags">
+      <span class="tag">164 sites</span>
+      <span class="tag">3 metrics</span>
+      <span class="tag">Carbon vs Water</span>
+      <span class="tag">Mechanism</span>
+      <span class="tag">SHAP</span>
+    </div>
+  </a>
+
+  <a class="card" href="v10/index.html">
+    <div class="card-icon">🌲</div>
+    <div class="card-title">V10 Disturbance–Flux Report</div>
+    <div class="card-desc">
+      Interactive browser for the V10 random-forest analysis of deadwood disturbance effects on
+      GPPsat, NEPmax, ETmax, uWUE and WUE. Switch between the all-sites (113) and high-tree-cover
+      (93) datasets; explore per-site RMSE, ΔRMSE, SHAP composition, mortality-threshold methods,
+      and IGBP / tree-cover boards for every model &amp; window combination.
+    </div>
+    <div class="card-tags">
+      <span class="tag">93 / 113 sites</span>
+      <span class="tag">RMSE &amp; ΔRMSE</span>
+      <span class="tag">SHAP</span>
+      <span class="tag">IGBP</span>
+      <span class="tag">8 model families</span>
+      <span class="tag">LOSO</span>
+    </div>
+  </a>
+
+  <a class="card" href="data_quality.html">
+    <div class="card-icon">📊</div>
+    <div class="card-title">Data Quality Report</div>
+    <div class="card-desc">
+      Automated quality check across all 1,535 EFP site-years and 20,664 site-months
+      from 9 flux networks. Flags unit issues, missing data patterns, outliers, and
+      physically impossible values for GPPsat, NEPmax, ETmax, uWUE, WUE, TA, VPD,
+      SW‐IN, and precipitation.
+    </div>
+    <div class="card-tags">
+      <span class="tag">233 sites</span>
+      <span class="tag">5 EFPs</span>
+      <span class="tag">9 networks</span>
+      <span class="tag">Unit checks</span>
+      <span class="tag">Outliers</span>
+      <span class="tag">Missing data</span>
+    </div>
+  </a>
+
+</div>
+
+<div class="footer">
+  FluxNet 2017–2025 V02 &nbsp;&middot;&nbsp; Deadwood maps v1 / v2-2 &nbsp;&middot;&nbsp;
+  <a href="mailto:neggy.k.92@gmail.com" style="color:#4B5563">neggy.k.92@gmail.com</a>
+</div>
+</body>
+</html>

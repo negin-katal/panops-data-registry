@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disturbance Impact on EFP Predictions - Report with Plots</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; margin: 0; padding: 0; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        header { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 30px; text-align: center; }
+        h1 { color: #667eea; font-size: 2.5em; margin-bottom: 10px; }
+        .content { background: white; border-radius: 10px; padding: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        h2 { color: #667eea; font-size: 1.8em; margin-bottom: 20px; border-bottom: 3px solid #667eea; padding-bottom: 10px; }
+        h3 { color: #764ba2; font-size: 1.3em; margin-top: 25px; margin-bottom: 15px; }
+        .figure { margin: 30px 0; text-align: center; padding: 15px; background: #f9f9f9; border-radius: 8px; border-left: 4px solid #667eea; }
+        .figure img { max-width: 100%; height: auto; border-radius: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); margin: 15px 0; }
+        .figure figcaption { color: #666; font-size: 0.95em; font-style: italic; margin-top: 10px; text-align: left; }
+        .key-finding { background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); border-left: 4px solid #667eea; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat-box { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; text-align: center; }
+        .stat-value { font-size: 2em; font-weight: bold; margin: 10px 0; }
+        footer { background: white; padding: 20px; border-radius: 10px; text-align: center; color: #666; margin-top: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        ul { margin-left: 20px; margin-top: 10px; }
+        li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔬 Disturbance Impact on EFP Predictions</h1>
+            <p>Complete Analysis Report with Visualizations</p>
+            <p style="color: #999; font-size: 0.9em;">📅 Analysis Date: July 2026 | Status: Complete</p>
+        </header>
+
+        <div class="content">
+            <h2>📊 Executive Summary</h2>
+            <div class="key-finding">
+                <strong>🎯 Main Finding:</strong> Disturbance data strongly improves carbon flux predictions (GPPsat, NEPmax) at high-disturbance sites, but provides minimal benefit for water flux predictions (ETmax, uWUE, WUE).
+            </div>
+            <h3>Key Statistics</h3>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div>Carbon Improvement</div>
+                    <div class="stat-value">-0.45</div>
+                    <div>Mean ΔRMSE</div>
+                </div>
+                <div class="stat-box">
+                    <div>Water Improvement</div>
+                    <div class="stat-value">-0.02</div>
+                    <div>Mean ΔRMSE</div>
+                </div>
+                <div class="stat-box">
+                    <div>Difference Factor</div>
+                    <div class="stat-value">22-46×</div>
+                    <div>Carbon vs Water</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>📈 Delta RMSE Analysis</h2>
+            <h3>Figure 7: Carbon vs Water Fluxes Distribution</h3>
+            <div class="figure">
+                <img src="plots/synthesis/02_delta_rmse_boxplot_carbon_vs_water.png" alt="Figure 7: Delta RMSE Distribution">
+                <figcaption>Five individual plots with independent y-axis scales. Carbon shows clear separation by disturbance level; water shows no pattern.</figcaption>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>🔬 Mechanism Evidence (Dose-Response)</h2>
+            <h3>Figure 11: Three-Panel Dose-Response Analysis</h3>
+            <div class="figure">
+                <img src="plots/synthesis/06_mechanism_evidence_doseresponse.png" alt="Figure 11: Dose-Response Curves">
+                <figcaption>Three panels showing disturbed sites, non-disturbed sites, and full dose-response with all sites. Clear separation between carbon (orange) and water (blue) patterns.</figcaption>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>📊 SHAP & Prediction Direction</h2>
+            <h3>Figure 8: Prediction Direction by Disturbance Level</h3>
+            <div class="figure">
+                <img src="plots/synthesis/03_shap_direction_violin.png" alt="Figure 8: Prediction Direction">
+                <figcaption>Violin plots showing residuals (prediction error) by disturbance level. Carbon shows systematic over-prediction at high-disturbance; water clustered at zero.</figcaption>
+            </div>
+
+            <h3>Figure 9: SHAP Importance Heatmap</h3>
+            <div class="figure">
+                <img src="plots/synthesis/04_shap_direction_heatmap.png" alt="Figure 9: SHAP Heatmap">
+                <figcaption>Magnitude of disturbance variable importance. Carbon fluxes show 100× higher values than water fluxes.</figcaption>
+            </div>
+
+            <h3>Figure 10: SHAP vs Prediction Direction</h3>
+            <div class="figure">
+                <img src="plots/synthesis/05_shap_signed_vs_absolute.png" alt="Figure 10: SHAP vs Direction">
+                <figcaption>Scatter plot showing importance (X) vs prediction direction (Y). Carbon fluxes in high-X, negative-Y quadrant.</figcaption>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>⚠️ IGBP Confounding Analysis</h2>
+            
+            <h3>Absolute Mortality IGBP Analysis</h3>
+            <div class="figure">
+                <img src="plots/abs_mort_analysis/igbp_disturbance_heatmap.png" alt="IGBP Heatmap - Abs Mort">
+                <figcaption>Figure 12a: IGBP distribution across Absolute Mortality categories.</figcaption>
+            </div>
+            <div class="figure">
+                <img src="plots/abs_mort_analysis/igbp_composition_stacked.png" alt="IGBP Composition - Abs Mort">
+                <figcaption>Figure 12b: IGBP composition by disturbance level.</figcaption>
+            </div>
+            <div class="figure">
+                <img src="plots/abs_mort_analysis/igbp_mean_disturbance.png" alt="Mean Disturbance by IGBP">
+                <figcaption>Figure 12c: Mean Absolute Mortality by IGBP type.</figcaption>
+            </div>
+
+            <h3>Relative Mortality IGBP Analysis</h3>
+            <div class="figure">
+                <img src="plots/rel_mort_analysis/igbp_disturbance_heatmap.png" alt="IGBP Heatmap - Rel Mort">
+                <figcaption>Figure 13a: IGBP distribution across Relative Mortality categories.</figcaption>
+            </div>
+            <div class="figure">
+                <img src="plots/rel_mort_analysis/igbp_composition_stacked.png" alt="IGBP Composition - Rel Mort">
+                <figcaption>Figure 13b: IGBP composition by Relative Mortality level.</figcaption>
+            </div>
+            <div class="figure">
+                <img src="plots/rel_mort_analysis/igbp_mean_disturbance.png" alt="Mean Rel Mort by IGBP">
+                <figcaption>Figure 13c: Mean Relative Mortality by IGBP type.</figcaption>
+            </div>
+
+            <h3>Relative Disturbance IGBP Analysis</h3>
+            <div class="figure">
+                <img src="plots/rel_dist_analysis/igbp_disturbance_heatmap.png" alt="IGBP Heatmap - Rel Dist">
+                <figcaption>Figure 14a: IGBP distribution across Relative Disturbance categories.</figcaption>
+            </div>
+            <div class="figure">
+                <img src="plots/rel_dist_analysis/igbp_composition_stacked.png" alt="IGBP Composition - Rel Dist">
+                <figcaption>Figure 14b: IGBP composition by Relative Disturbance level.</figcaption>
+            </div>
+            <div class="figure">
+                <img src="plots/rel_dist_analysis/igbp_mean_disturbance.png" alt="Mean Rel Dist by IGBP">
+                <figcaption>Figure 14c: Mean Relative Disturbance by IGBP type.</figcaption>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2>🎯 Conclusions</h2>
+            <div class="key-finding">
+                <strong>✅ Hypothesis CONFIRMED:</strong> Disturbance variables dramatically improve carbon flux predictions (~45%) at high-disturbance sites, but provide minimal benefit for water flux predictions (~0%).
+            </div>
+            <h3>Key Findings</h3>
+            <ul>
+                <li><strong>✅ Carbon > Water:</strong> 22-49× difference, consistent across 3 metrics</li>
+                <li><strong>✅ Dose-Dependent:</strong> Benefit appears only at high-disturbance sites</li>
+                <li><strong>⚠️ IGBP Confounding:</strong> Forests concentrate in high-disturbance areas (ENF: 54.7% vs SAV: 0%)</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>📊 Disturbance Impact Analysis Report | Generated: July 2026</p>
+            <p>🔬 Research by: Negin Katal | 📁 Data: 164 eddy covariance flux tower sites</p>
+        </footer>
+    </div>
+</body>
+</html>

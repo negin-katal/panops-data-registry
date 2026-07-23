@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>directory_structure</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="DIRECTORY_STRUCTURE_files/libs/clipboard/clipboard.min.js"></script>
+<script src="DIRECTORY_STRUCTURE_files/libs/quarto-html/quarto.js"></script>
+<script src="DIRECTORY_STRUCTURE_files/libs/quarto-html/popper.min.js"></script>
+<script src="DIRECTORY_STRUCTURE_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="DIRECTORY_STRUCTURE_files/libs/quarto-html/anchor.min.js"></script>
+<link href="DIRECTORY_STRUCTURE_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="DIRECTORY_STRUCTURE_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="DIRECTORY_STRUCTURE_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="DIRECTORY_STRUCTURE_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="DIRECTORY_STRUCTURE_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="flux-analysis-project-structure" class="level1">
+<h1>Flux Analysis Project Structure</h1>
+<p><strong>Project</strong>: Pan-Tropical Ecosystem Disturbance Analysis using FluxNet Data<br>
+<strong>Date</strong>: July 2026<br>
+<strong>Status</strong>: Active Analysis</p>
+<section id="directory-organization" class="level2">
+<h2 class="anchored" data-anchor-id="directory-organization">📁 Directory Organization</h2>
+<section id="core-analysis-directories" class="level3">
+<h3 class="anchored" data-anchor-id="core-analysis-directories">Core Analysis Directories</h3>
+<section id="scripts-all-analysis-scripts-147-files" class="level4">
+<h4 class="anchored" data-anchor-id="scripts-all-analysis-scripts-147-files"><code>scripts/</code> — All Analysis Scripts (147 files)</h4>
+<p>Organized R, Python, and shell scripts for data processing, modeling, and visualization.</p>
+<pre><code>scripts/
+├── plot/         (74 files) Visualization and figure generation scripts
+│   ├── plot_01_* : Delta RMSE and site-level analysis
+│   ├── plot_03_* : SHAP importance visualizations
+│   ├── plot_05_* : Disturbance SHAP scatter plots
+│   ├── plot_06_* : Site overview and R² analysis
+│   ├── plot_07_* : R² disturbance comparisons
+│   ├── plot_08_* : Interactive mortality visualizations
+│   ├── plot_10_* : EFP explorer and interactive viewers
+│   ├── plot_11_* : EFP explorer for main analysis
+│   ├── plot_12_* : Site-level SHAP mortality analysis
+│   ├── plot_13_* : Site SHAP with new mortality metrics
+│   ├── plot_14_* : Manuscript figures (Fig 1 - site map)
+│   ├── plot_15_* : Manuscript figures (Fig 2 - RF performance)
+│   ├── plot_16_* : Disturbance threshold and SHAP analysis
+│   ├── plot_17_* : IGBP and tree cover analysis
+│   ├── plot_18_* : IGBP-specific thresholds
+│   ├── plot_19_* : Threshold effects per model
+│   ├── plot_20_* : Per-model threshold comparisons
+│   ├── plot_21_* : Site-level SHAP disturbance metrics
+│   ├── plot_26_* : Delta RMSE separate comparisons
+│   ├── plot_27_* : Delta RMSE by IGBP
+│   ├── plot_28_* : Site SHAP M06/M08 analysis
+│   ├── plot_32_* : Mortality distributions
+│   ├── plot_33_* : Mortality quantile analysis
+│   ├── plot_34_* : Mortality categorization methods
+│   ├── plot_35_* : Master categorization tests
+│   ├── plot_36_* : Master delta RMSE tests
+│   ├── plot_37_* : Master site SHAP tests
+│   ├── plot_38_* : Carbon vs water synthesis
+│   ├── plot_39_* : SHAP direction analysis
+│   ├── plot_40_* : Dose-response mechanisms
+│   └── plot_41_* : IGBP cross-tabulation analysis
+│
+├── model/        (70 files) Random Forest model training &amp; evaluation
+│   ├── run_18_* : RF LOSO (Leave-One-Site-Out) models
+│   ├── run_19_* : Fixed LOSO variants
+│   ├── run_20_* : Precip quantile patches
+│   ├── run_21_* : Site-level variable importance
+│   ├── run_22_* : Site-level SHAP values
+│   ├── run_23_* : Raw memory SHAP extraction
+│   ├── run_24_* : Anomaly-based models (24-month benchmarks)
+│   ├── run_25_* : SHAP anomaly extraction
+│   ├── run_26_* : Post-processing pipelines
+│   ├── run_27_* : No-WET filtering variants
+│   ├── run_28_* : SHAP extraction (no-WET)
+│   ├── run_29_* : Post-processing (no-WET)
+│   ├── run_30_* : Post-hoc WET removal
+│   ├── run_31_* : Model ensemble (M09, M10)
+│   ├── run_32_* : SHAP ensemble extraction
+│   ├── run_39_* : v3 harmonized models (all variants)
+│   ├── run_40_* : v3 raw memory models
+│   ├── run_41_* : v3 SHAP anomaly extraction
+│   ├── run_42_* : v3 SHAP raw memory
+│   ├── run_43_* : SHAP merge all v3
+│   ├── run_44_* : M06 24-month anomaly
+│   ├── run_45_* : M06 training
+│   └── run_deadwood_*: Deadwood disturbance metrics
+│
+└── utility/      (3 files) Utility &amp; helper scripts
+    ├── step12_shap_continue.R: SHAP continuation handler
+    ├── fix_traits_missing_sites.R: Data quality fixes
+    └── launch_rf20_after_patch.sh: Model launching helper</code></pre>
+</section>
+<section id="notebooks-data-preparation-jupyter-notebooks-21-files" class="level4">
+<h4 class="anchored" data-anchor-id="notebooks-data-preparation-jupyter-notebooks-21-files"><code>notebooks/</code> — Data Preparation Jupyter Notebooks (21 files)</h4>
+<p>Interactive notebooks for exploratory data analysis, EFP calculations, and modeling setup.</p>
+<pre><code>notebooks/
+├── 01_EFPmodel.ipynb: EFP model exploration
+├── 02_climate_data.ipynb: Climate data processing
+├── 03_combine_climatedata_EFP.ipynb: Data integration
+├── 04_EFP_prediction.ipynb: EFP model predictions
+├── 05_model_with_Shap.ipynb: SHAP value calculation
+├── 06_model_val_colin.ipynb: Model validation
+├── 07_deadwood_Fcover_site_level.ipynb: Deadwood analysis
+├── 08_EFP_newModel.ipynb: New EFP model variants
+├── 09_visualization.ipynb: Data visualization
+├── 10_step12_shap.ipynb: SHAP continuation workflow
+├── 11_data_prep_4_modeling.ipynb: Modeling data prep
+├── 12_FLUXNET_shuttle.ipynb: FluxNet data retrieval
+├── 12_get_elevation_4_metadata.ipynb: Elevation metadata
+├── 13_site_info_vis.ipynb: Site information visualization
+├── 14_calc_EFPs.ipynb: EFP calculations
+├── 15_merge_efp_meteo_mortality.ipynb: EFP-meteo-mortality merge
+├── 15_merge_trait_mortality_meteo.ipynb: Trait-based merge
+├── 16_growing_season_calc.ipynb: Growing season calculation
+├── 17_EFP_anomalies_memory.ipynb: Anomaly memory effects
+├── 18_RF_LOSO_EFP.ipynb: RF LOSO model training
+├── 19_build_lagged_dataset.ipynb: Lagged feature creation</code></pre>
+</section>
+</section>
+<section id="output-results-directories" class="level3">
+<h3 class="anchored" data-anchor-id="output-results-directories">Output &amp; Results Directories</h3>
+<section id="plots-generated-figures-visualizations" class="level4">
+<h4 class="anchored" data-anchor-id="plots-generated-figures-visualizations"><code>plots/</code> — Generated Figures &amp; Visualizations</h4>
+<pre><code>plots/
+├── manuscript_candidates/    Main publication figures (PDF + PNG)
+│   ├── fig1_site_map_EFP_distributions.*
+│   ├── fig2_RF_RMSE_disturbance_effect.*
+│   ├── fig2_panels/           Individual EFP panels
+│   ├── fig2_per_model/        Model-specific comparisons
+│   ├── fig_IGBP_*             IGBP-stratified analysis
+│   ├── fig_threshold_*        Disturbance threshold effects
+│   ├── mortality_metrics_*    Mortality categorization
+│   └── [M02, M04, M06, M08]/  Model-specific outputs
+│
+├── disturbance_effects/24mbench/  Delta RMSE &amp; SHAP analysis
+├── disturbance_metric_test/       Categorization method validation
+├── site_shap_*/                   Site-level SHAP visualizations
+├── synthesis/                     Summary analysis figures
+├── abs_mort_analysis/             Absolute mortality IGBP analysis
+├── rel_mort_analysis/             Relative mortality IGBP analysis
+└── rel_dist_analysis/             Relative disturbance IGBP analysis</code></pre>
+</section>
+<section id="derived_tables-processed-datasets-model-outputs" class="level4">
+<h4 class="anchored" data-anchor-id="derived_tables-processed-datasets-model-outputs"><code>derived_tables/</code> — Processed Datasets &amp; Model Outputs</h4>
+<pre><code>derived_tables/
+├── EFP_*.csv                       Processed EFP datasets
+├── final_disturbance_*.csv         Disturbance categorization results
+├── outputs_afterEGU_results/       Main RF model outputs
+│   ├── RF_metrics_LOSO.csv        Model performance metrics
+│   ├── RF_predictions_*.csv       Model predictions &amp; residuals
+│   ├── RF_SHAP_*.csv              SHAP values per model
+│   ├── RF_varimp_*.csv            Variable importance rankings
+│   └── [per-model directories]/   Individual model outputs
+│
+└── disturbance_metric_test/        Disturbance categorization analysis
+    ├── tertiles_method.csv        Final categorization results
+    └── [analysis folders]/         IGBP confounding checks</code></pre>
+</section>
+<section id="manuscript-publication-overleaf-sync" class="level4">
+<h4 class="anchored" data-anchor-id="manuscript-publication-overleaf-sync"><code>manuscript/</code> — Publication &amp; Overleaf Sync</h4>
+<pre><code>manuscript/
+├── sn-article.tex                Main LaTeX manuscript
+├── sn-article.pdf                Compiled PDF
+├── sn-bibliography.bib            Bibliography
+├── tables/                         Table `.tex` files
+│   ├── table_RF_LOSO_results_*.tex
+│   ├── table_RMSE_ratio_*.tex
+│   └── [other summary tables]/
+│
+├── figures/                       Figure directory (if using local)
+├── site_disturbance_history/      Dashboard HTML
+└── push_to_overleaf.sh           Sync script to Overleaf</code></pre>
+</section>
+<section id="html_reports-interactive-dashboards-explorers" class="level4">
+<h4 class="anchored" data-anchor-id="html_reports-interactive-dashboards-explorers"><code>html_reports/</code> — Interactive Dashboards &amp; Explorers</h4>
+<pre><code>html_reports/
+├── index.html                      Hub page linking to all explorers
+├── disturbance_metrics.html        Disturbance impact analysis
+├── efp_explorer.html               EFP data explorer
+├── mortality_explorer.html         Mortality-disturbance explorer
+├── data_quality_report.html        Data quality assessment
+└── plots/                          Referenced plot directories</code></pre>
+</section>
+<section id="results_v3_final-version-3-harmonized-results" class="level4">
+<h4 class="anchored" data-anchor-id="results_v3_final-version-3-harmonized-results"><code>results_v3_final/</code> — Version 3 Harmonized Results</h4>
+<p>Final outputs from v3 harmonized modeling pipeline (M04, M06, M08 models with disturbance metrics)</p>
+</section>
+<section id="logs-run-logs-error-tracking" class="level4">
+<h4 class="anchored" data-anchor-id="logs-run-logs-error-tracking"><code>logs/</code> — Run Logs &amp; Error Tracking</h4>
+<pre><code>logs/
+├── run_*.log                       Model training logs
+├── plot_*.log                      Plot generation logs
+└── [date-stamped logs]/</code></pre>
+</section>
+</section>
+<section id="data-directories" class="level3">
+<h3 class="anchored" data-anchor-id="data-directories">Data Directories</h3>
+<section id="deadwood-deadwood-forest-loss-data" class="level4">
+<h4 class="anchored" data-anchor-id="deadwood-deadwood-forest-loss-data"><code>deadwood/</code> — Deadwood &amp; Forest Loss Data</h4>
+<p>Processed deadwood detection and forest loss metrics from satellite data</p>
+</section>
+<section id="derived_tables-derived-datasets-dvc-tracked" class="level4">
+<h4 class="anchored" data-anchor-id="derived_tables-derived-datasets-dvc-tracked"><code>derived_tables/</code> — Derived Datasets (DVC-tracked)</h4>
+<p>Large processed datasets tracked via DVC (Data Version Control)</p>
+</section>
+<section id="merged_sites_subset-site-subsets-versions" class="level4">
+<h4 class="anchored" data-anchor-id="merged_sites_subset-site-subsets-versions"><code>merged_sites_subset*/</code> — Site Subsets &amp; Versions</h4>
+<p>Different site filtering and preprocessing variants</p>
+</section>
+<section id="plant_trait-plant-trait-database" class="level4">
+<h4 class="anchored" data-anchor-id="plant_trait-plant-trait-database"><code>plant_trait/</code> — Plant Trait Database</h4>
+<p>Trait data for model features (wood density, plant height, etc.)</p>
+</section>
+<section id="fluxnet_2017_2025-fluxnet-raw-data" class="level4">
+<h4 class="anchored" data-anchor-id="fluxnet_2017_2025-fluxnet-raw-data"><code>fluxnet_2017_2025*/</code> — FluxNet Raw Data</h4>
+<p>Original FLUXNET tower data (large, requires DVC)</p>
+</section>
+<section id="efp_per_site-efp_site_year_results-efp-calculations" class="level4">
+<h4 class="anchored" data-anchor-id="efp_per_site-efp_site_year_results-efp-calculations"><code>efp_per_site/</code>, <code>efp_site_year_results/</code> — EFP Calculations</h4>
+<p>Intermediate and final EFP calculation results</p>
+</section>
+</section>
+<section id="configuration-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="configuration-documentation">Configuration &amp; Documentation</h3>
+<section id="claude.md" class="level4">
+<h4 class="anchored" data-anchor-id="claude.md"><code>CLAUDE.md</code></h4>
+<p>Project instructions for Claude AI agent (critical setup info)</p>
+</section>
+<section id="agents.md" class="level4">
+<h4 class="anchored" data-anchor-id="agents.md"><code>AGENTS.md</code></h4>
+<p>Agent guide with R runtime requirements and script conventions</p>
+</section>
+<section id="claude-claude-code-configuration" class="level4">
+<h4 class="anchored" data-anchor-id="claude-claude-code-configuration"><code>.claude/</code> — Claude Code Configuration</h4>
+<p>IDE settings and project-specific skills</p>
+</section>
+<section id="flux.code-workspace" class="level4">
+<h4 class="anchored" data-anchor-id="flux.code-workspace"><code>flux.code-workspace</code></h4>
+<p>VS Code workspace configuration</p>
+</section>
+<section id="dvc-dvc-configuration" class="level4">
+<h4 class="anchored" data-anchor-id="dvc-dvc-configuration"><code>.dvc/</code> — DVC Configuration</h4>
+<p>Data version control configuration for large files</p>
+<hr>
+</section>
+</section>
+</section>
+<section id="quick-start-guide" class="level2">
+<h2 class="anchored" data-anchor-id="quick-start-guide">🚀 Quick Start Guide</h2>
+<section id="running-plot-scripts" class="level3">
+<h3 class="anchored" data-anchor-id="running-plot-scripts">Running Plot Scripts</h3>
+<p>All plot scripts call <code>setwd()</code> internally. Run from project root:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">RSCRIPT</span><span class="op">=</span>/home/nk1125/miniconda3/envs/clean_r_env/bin/Rscript</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="va">$RSCRIPT</span> scripts/plot/plot_14_fig1_manuscript.R</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Output: plots/manuscript_candidates/fig1_*.png</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="running-model-training-scripts" class="level3">
+<h3 class="anchored" data-anchor-id="running-model-training-scripts">Running Model Training Scripts</h3>
+<p>Launch in tmux for long-running processes:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> new-session <span class="at">-d</span> <span class="at">-s</span> rf_model</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> send-keys <span class="at">-t</span> rf_model <span class="st">"</span><span class="va">$RSCRIPT</span><span class="st"> scripts/model/run_24_RF_LOSO_anomaly_24mbench.R 2&gt;&amp;1 | tee logs/run.log"</span> Enter</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">tmux</span> capture-pane <span class="at">-t</span> rf_model <span class="at">-p</span> <span class="kw">|</span> <span class="fu">tail</span> <span class="at">-10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="accessing-interactive-explorers" class="level3">
+<h3 class="anchored" data-anchor-id="accessing-interactive-explorers">Accessing Interactive Explorers</h3>
+<p>All interactive HTML reports are in <code>html_reports/</code>: - <strong>Hub</strong>: <code>html_reports/index.html</code> (local) or GitHub Pages - <strong>Disturbance Analysis</strong>: <code>html_reports/disturbance_metrics.html</code> - <strong>EFP Explorer</strong>: <code>html_reports/efp_explorer.html</code></p>
+</section>
+<section id="syncing-to-overleaf" class="level3">
+<h3 class="anchored" data-anchor-id="syncing-to-overleaf">Syncing to Overleaf</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> manuscript/push_to_overleaf.sh <span class="st">"describe your changes"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="key-analysis-workflows" class="level2">
+<h2 class="anchored" data-anchor-id="key-analysis-workflows">📊 Key Analysis Workflows</h2>
+<section id="disturbance-impact-analysis-pipeline" class="level3">
+<h3 class="anchored" data-anchor-id="disturbance-impact-analysis-pipeline">1. Disturbance Impact Analysis Pipeline</h3>
+<ol type="1">
+<li><strong>Data Prep</strong>: <code>notebooks/15_merge_efp_meteo_mortality.ipynb</code></li>
+<li><strong>Model Training</strong>: <code>scripts/model/run_24_*.R</code> (RF LOSO)</li>
+<li><strong>SHAP Extraction</strong>: <code>scripts/model/run_25_*.R</code> and <code>run_41_*.R</code></li>
+<li><strong>Visualization</strong>: <code>scripts/plot/plot_21_site_shap_distmetrics.R</code></li>
+<li><strong>Analysis</strong>: <code>scripts/plot/plot_39_shap_direction_analysis.R</code>, <code>plot_40_mechanism_*.R</code></li>
+<li><strong>Dashboard</strong>: <code>html_reports/disturbance_metrics.html</code></li>
+</ol>
+</section>
+<section id="manuscript-figure-generation" class="level3">
+<h3 class="anchored" data-anchor-id="manuscript-figure-generation">2. Manuscript Figure Generation</h3>
+<p>Sequential plot script execution: - <strong>Fig 1</strong>: <code>scripts/plot/plot_14_fig1_manuscript.R</code> - <strong>Fig 2</strong>: <code>scripts/plot/plot_15_fig2_RF_performance.R</code> - <strong>Fig 2 Panels</strong>: <code>scripts/plot/plot_16_disturbance_threshold.R</code> - <strong>Supporting</strong>: <code>plot_17_*</code>, <code>plot_18_*</code>, etc.</p>
+</section>
+<section id="categorization-method-validation" class="level3">
+<h3 class="anchored" data-anchor-id="categorization-method-validation">3. Categorization Method Validation</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run disturbance metric test</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="va">$RSCRIPT</span> scripts/plot/plot_35_master_categorization_test.R</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Outputs: plots/disturbance_metric_test/COMPREHENSIVE_SUMMARY_REPORT.md</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+</section>
+<section id="file-naming-conventions" class="level2">
+<h2 class="anchored" data-anchor-id="file-naming-conventions">📝 File Naming Conventions</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 32%">
+<col style="width: 39%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Prefix</th>
+<th>Purpose</th>
+<th>Directory</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>plot_NN_*</code></td>
+<td>Visualization scripts (NN = sequence number)</td>
+<td><code>scripts/plot/</code></td>
+</tr>
+<tr class="even">
+<td><code>run_NN_*</code></td>
+<td>Model training/evaluation scripts</td>
+<td><code>scripts/model/</code></td>
+</tr>
+<tr class="odd">
+<td><code>step_*</code></td>
+<td>Step-by-step utility scripts</td>
+<td><code>scripts/utility/</code></td>
+</tr>
+<tr class="even">
+<td><code>NN_*.ipynb</code></td>
+<td>Data prep notebooks (NN = sequence)</td>
+<td><code>notebooks/</code></td>
+</tr>
+<tr class="odd">
+<td><code>fig*</code></td>
+<td>Manuscript figures (PDF + PNG)</td>
+<td><code>plots/manuscript_candidates/</code></td>
+</tr>
+<tr class="even">
+<td><code>*_LOSO.csv</code></td>
+<td>Leave-One-Site-Out model metrics</td>
+<td><code>derived_tables/outputs_*/</code></td>
+</tr>
+<tr class="odd">
+<td><code>*_SHAP.csv</code></td>
+<td>SHAP values per site</td>
+<td><code>derived_tables/outputs_*/</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="critical-r-environment-setup" class="level2">
+<h2 class="anchored" data-anchor-id="critical-r-environment-setup">⚙️ Critical R Environment Setup</h2>
+<p><strong>Always use the conda R environment, NEVER the system R:</strong></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ✅ Correct</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="va">RSCRIPT</span><span class="op">=</span>/home/nk1125/miniconda3/envs/clean_r_env/bin/Rscript</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ❌ Wrong (will crash with undefined symbol errors)</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">/usr/bin/Rscript</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Conda R</strong>: 4.3.3 (all packages installed)<br>
+<strong>System R</strong>: 4.1.2 (missing packages, incompatible)</p>
+<p>Verify with:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="va">$RSCRIPT</span> <span class="at">--version</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># → R scripting front-end version 4.3.3 (2024-02-29)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+<section id="key-references" class="level2">
+<h2 class="anchored" data-anchor-id="key-references">📚 Key References</h2>
+<section id="model-variants" class="level3">
+<h3 class="anchored" data-anchor-id="model-variants">Model Variants</h3>
+<ul>
+<li><strong>M04</strong>: Climate + Traits + Disturbance</li>
+<li><strong>M06</strong>: Climate + Mortality + Disturbance</li>
+<li><strong>M08</strong>: Climate + Traits + Mortality + Disturbance</li>
+</ul>
+</section>
+<section id="efp-metrics-5-variables" class="level3">
+<h3 class="anchored" data-anchor-id="efp-metrics-5-variables">EFP Metrics (5 variables)</h3>
+<ul>
+<li><strong>Carbon</strong>: GPPsat (gross primary productivity), NEPmax (net ecosystem productivity)</li>
+<li><strong>Water</strong>: ETmax (evapotranspiration), uWUE (understory water-use efficiency), WUE (water-use efficiency)</li>
+</ul>
+</section>
+<section id="disturbance-metrics-3-approaches" class="level3">
+<h3 class="anchored" data-anchor-id="disturbance-metrics-3-approaches">Disturbance Metrics (3 approaches)</h3>
+<ul>
+<li><strong>Absolute Mortality</strong>: % tree mortality per site-year</li>
+<li><strong>Relative Mortality</strong>: mortality relative to annual average</li>
+<li><strong>Relative Disturbance</strong>: composite disturbance indicator</li>
+</ul>
+</section>
+<section id="temporal-lags" class="level3">
+<h3 class="anchored" data-anchor-id="temporal-lags">Temporal Lags</h3>
+<ul>
+<li><strong>12-month lag</strong>: Disturbance effects lagged 12 months</li>
+<li><strong>24-month lag</strong>: Benchmark (24-month buffer for disturbance timing)</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="external-resources" class="level2">
+<h2 class="anchored" data-anchor-id="external-resources">🔗 External Resources</h2>
+<ul>
+<li><strong>GitHub Pages Site</strong>: https://negin-katal.github.io/fluxVSmortality/</li>
+<li><strong>Overleaf Manuscript</strong>: https://git.overleaf.com/698b0715a5817a2efadd24b6 (token in remote config)</li>
+<li><strong>FLUXNET Data</strong>: https://fluxnet.org/ (via acquired downloads in <code>fluxnet_2017_2025/</code>)</li>
+<li><strong>DVC Storage</strong>: <code>.dvc/</code> config points to remote (check local <code>.dvc/config</code> for paths)</li>
+</ul>
+<hr>
+</section>
+<section id="quick-troubleshooting" class="level2">
+<h2 class="anchored" data-anchor-id="quick-troubleshooting">📞 Quick Troubleshooting</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 41%">
+<col style="width: 58%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>R packages not found</td>
+<td>Use conda R: <code>RSCRIPT=/home/nk1125/miniconda3/envs/clean_r_env/bin/Rscript</code></td>
+</tr>
+<tr class="even">
+<td>Plot script fails</td>
+<td>Verify working directory is <code>/mnt/gsdata/projects/panops/panops-data-registry/data/flux</code></td>
+</tr>
+<tr class="odd">
+<td>Model training killed</td>
+<td>Run in tmux: <code>tmux new-session -d -s rf_run</code> (hosts connection loss)</td>
+</tr>
+<tr class="even">
+<td>DVC data missing</td>
+<td>Run <code>dvc pull</code> to fetch large files from remote</td>
+</tr>
+<tr class="odd">
+<td>Plots not showing in HTML</td>
+<td>Check relative paths in <code>html_reports/</code> match plot directory structure</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><strong>Last Updated</strong>: July 15, 2026<br>
+<strong>Maintainer</strong>: Negin Katal<br>
+<strong>Status</strong>: Active (v3 harmonized analysis complete, manuscript in preparation)</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

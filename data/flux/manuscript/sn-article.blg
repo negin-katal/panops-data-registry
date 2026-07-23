@@ -1,0 +1,16 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: sn-article.aux
+The style file: sn-basic.bst
+White space in argument---line 31 of file sn-article.aux
+ : \citation{mcdowell2008mechanisms,larson2012tree
+ :                                                 }
+I'm skipping whatever remains of this command
+Database file #1: sn-bibliography.bib
+Warning--I didn't find a database entry for "migliavacca2021three"
+sn-basic.bst [2024/07/19 v1.1 bibliography style]
+Warning--empty year in diazGlobalSpectrumPlant2016; set to ????
+`journal` is a missing field, not a string, for entry diazGlobalSpectrumPlant2016
+while executing---line 1810 of file sn-basic.bst
+Warning--empty journal in diazGlobalSpectrumPlant2016
+(There were 2 error messages)
