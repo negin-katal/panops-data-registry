@@ -9,6 +9,8 @@ library(ranger)
 library(treeshap)
 library(parallel)
 
+N_CORES <- 60  # per-site LOSO SHAP is embarrassingly parallel
+
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) < 1) {
   stop("Usage: Rscript run_v10_extract_SHAP_from_ranger.R <dataset_type>")
@@ -106,14 +108,12 @@ for (resp in RESPONSE_VARS) {
     df_model <- df_model[complete.cases(df_model), ]
     sites_test <- unique(df_model$SITE_ID)
 
-    fold_shap <- vector("list", length(sites_test))
-
-    for (i in seq_along(sites_test)) {
+    fold_shap <- mclapply(seq_along(sites_test), function(i) {
       test_site <- sites_test[i]
       train_dt <- as.data.table(df_model[df_model$SITE_ID != test_site, ])
       test_dt <- as.data.table(df_model[df_model$SITE_ID == test_site, ])
 
-      if (nrow(test_dt) == 0) next
+      if (nrow(test_dt) == 0) return(NULL)
 
       # Compute TreeSHAP
       shap_result <- tryCatch({
@@ -121,7 +121,7 @@ for (resp in RESPONSE_VARS) {
         treeshap(unified, as.data.frame(test_dt[, ..xvars]), verbose = FALSE)
       }, error = function(e) NULL)
 
-      if (is.null(shap_result)) next
+      if (is.null(shap_result)) return(NULL)
 
       # Extract mean absolute SHAP
       shap_mat <- as.data.table(shap_result$shaps)
@@ -131,8 +131,8 @@ for (resp in RESPONSE_VARS) {
                         variable.name = "variable",
                         value.name = "mean_abs_shap")
       shap_long[, `:=`(model = model_id, response = resp, test_site = test_site)]
-      fold_shap[[i]] <- shap_long
-    }
+      shap_long
+    }, mc.cores = N_CORES)
 
     if (length(fold_shap) > 0) {
       shap_results[[length(shap_results) + 1]] <- rbindlist(fold_shap, fill = TRUE)

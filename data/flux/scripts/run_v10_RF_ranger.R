@@ -40,6 +40,7 @@ dir.create(output_base, recursive = TRUE, showWarnings = FALSE)
 RESPONSE_VARS <- c("GPPsat", "NEPmax", "ETmax", "uWUE", "WUE")
 N_TREES <- 500
 SEED <- 42
+N_THREADS <- 24  # cap ranger threads (shared machine)
 
 model_specs <- list(
   M1_12m  = 'C',
@@ -183,6 +184,7 @@ for (resp in RESPONSE_VARS) {
         y = train_cc[[resp]],
         num.trees = N_TREES,
         seed = SEED,
+        num.threads = N_THREADS,
         respect.unordered.factors = "order"
       )
 

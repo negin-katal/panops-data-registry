@@ -37,6 +37,26 @@ print(f"  B2: {len(df_b2.columns)} columns\n")
 # Response variables
 response_vars = ['GPPsat', 'NEPmax', 'ETmax', 'uWUE', 'WUE']
 
+# --- FIX (2026-07-23): the generic all-sites B1/B2 files lack the per-response
+# EFP-memory columns (they live only in v10_all_B*_{resp}.csv). Without this
+# merge the all-sites M5-M8 models train without memory and collapse onto
+# M1-M4. Merge lag1[/lag2] memory for every response before harmonizing. ---
+mem_dir = 'derived_tables/outputs_afterEGU_results/v10_all_sites'
+for r in response_vars:
+    rs1 = pd.read_csv(f'{mem_dir}/v10_all_B1_{r}.csv')
+    b1_mem = [c for c in [f'{r}_lag1', f'{r}_anom_lag1'] if c in rs1.columns]
+    if b1_mem:
+        df_b1 = df_b1.merge(rs1[['SITE_ID', 'YEAR'] + b1_mem],
+                            on=['SITE_ID', 'YEAR'], how='left')
+    rs2 = pd.read_csv(f'{mem_dir}/v10_all_B2_{r}.csv')
+    b2_mem = [c for c in [f'{r}_lag1', f'{r}_anom_lag1', f'{r}_lag2', f'{r}_anom_lag2']
+              if c in rs2.columns]
+    if b2_mem:
+        df_b2 = df_b2.merge(rs2[['SITE_ID', 'YEAR'] + b2_mem],
+                            on=['SITE_ID', 'YEAR'], how='left')
+print(f"After merging EFP memory: B1={len(df_b1.columns)} cols, "
+      f"B2={len(df_b2.columns)} cols\n")
+
 print("Finding IDENTICAL site-years for B1 and B2...\n")
 
 # Remove rows with ANY missing values
