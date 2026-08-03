@@ -352,6 +352,23 @@
       site-years) so results stay comparable. Hyperparameters are chosen with <b>grouped 5-fold CV</b> (folds = disjoint
       groups of sites) to avoid leaking into the reported LOSO metrics. These figures span both datasets internally and
       are independent of the dataset / RF-structure toggles above.</p>
+
+    <h3 class="mini">What exp02 changes vs. baseline</h3>
+    <table class="deftbl">
+      <thead><tr><th>Setting</th><th>Baseline RF</th><th>exp02-tuned</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Split-variable rule</td><td>random <code>mtry&nbsp;&asymp;&nbsp;p/3</code> predictors tried per split</td><td>same, <b>plus</b> the raw memory column forced into <b>every</b> split (<code>always.split.variables</code>)</td></tr>
+        <tr><td class="k">Forced variable</td><td>none</td><td><code>{resp}_lag1</code> (12&nbsp;m) · <code>{resp}_lag1</code>+<code>{resp}_lag2</code> (24&nbsp;m)</td></tr>
+        <tr class="add"><td class="k">Models affected</td><td>—</td><td>raw-memory only: <b>M5, M6, M7, M8 (raw)</b></td></tr>
+        <tr><td class="k">Anomaly &amp; no-memory models</td><td>baseline</td><td>identical to baseline — unchanged</td></tr>
+        <tr><td class="k">mtry · num.trees · seed</td><td>&lfloor;p/3&rfloor; · 500 · 42</td><td>unchanged</td></tr>
+        <tr><td class="k">Datasets · predictors · LOSO folds</td><td>fixed</td><td>unchanged</td></tr>
+      </tbody>
+    </table>
+    <p class="itxt" style="margin-top:8px">In one line: <b>exp02 = baseline + force each raw-memory model's own
+      previous-year EFP into every tree split.</b> Nothing else differs, so any change in the numbers is attributable to
+      that single structural tweak — which is why the anomaly and no-memory models come out byte-for-byte identical.</p>
+
     <div class="controls">
       <div class="ctrl"><label>Experiment view</label><select id="sel10_view"></select></div>
     </div>
