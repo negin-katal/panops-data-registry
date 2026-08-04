@@ -39,6 +39,8 @@ if (dataset_type == "filtered") {
   shap_file <- "derived_tables/outputs_afterEGU_results/RF_v10_all_sites/RF_site_shap_M04_M08.csv"
   out_dir   <- "plots/V10/all_sites/IGBP_boards"
 } else stop("Invalid dataset_type")
+## --- optional model-family override (XGBoost etc.); no-op when unset ---
+source("scripts/v10_model_family.R"); v10_apply_override()
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 dark_theme <- theme_bw(base_size = 9) +

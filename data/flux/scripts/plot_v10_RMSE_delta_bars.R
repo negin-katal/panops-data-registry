@@ -29,6 +29,8 @@ if (dataset_type == "filtered") {
   harm_file <- "derived_tables/outputs_afterEGU_results/v10_all_sites/v10_all_B1_GPPsat_harmonized.csv"
   out_dir   <- "plots/V10/all_sites/RMSE"
 } else stop("Invalid dataset_type")
+## --- optional model-family override (XGBoost etc.); no-op when unset ---
+source("scripts/v10_model_family.R"); v10_apply_override()
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 DARK_BG <- "#0D0D0D"; PANEL_BG <- "#111111"; GRID_COL <- "#333333"

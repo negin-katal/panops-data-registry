@@ -46,6 +46,8 @@ if (dataset_type == "filtered") {
   base_out  <- "plots/V10/all_sites/RMSE/delta_RMSE_category"
 } else stop("Invalid dataset_type")
 out_dir <- if (MERGE) file.path(base_out, "merged_low_disturbance") else base_out
+## --- optional model-family override (XGBoost etc.); no-op when unset ---
+source("scripts/v10_model_family.R"); v10_apply_override()
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 # ── per-site RMSE per model ──────────────────────────────────

@@ -75,6 +75,8 @@ if (dataset_type == "filtered") {
 if (MERGE) {
   output_dir <- file.path(output_dir, "merged_low_disturbance")
 }
+## --- optional model-family override (XGBoost etc.); no-op when unset ---
+source("scripts/v10_model_family.R"); v10_apply_override()
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
 df_harm <- as.data.frame(fread(harm_file))

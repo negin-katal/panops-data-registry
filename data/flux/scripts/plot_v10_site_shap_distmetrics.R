@@ -32,6 +32,8 @@ if (dataset_type == "filtered") {
 } else {
   stop("Invalid dataset_type")
 }
+## --- optional model-family override (XGBoost etc.); no-op when unset ---
+source("scripts/v10_model_family.R"); v10_apply_override()
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 # ── colours ──────────────────────────────────────────────────

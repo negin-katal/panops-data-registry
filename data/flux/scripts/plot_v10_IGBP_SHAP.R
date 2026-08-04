@@ -35,6 +35,8 @@ if (dataset_type == "filtered") {
   out_igbp  <- "plots/V10/all_sites/SHAP_percent/IGBP"
   out_tc    <- "plots/V10/all_sites/SHAP_percent/treecover"
 } else stop("Invalid dataset_type")
+## --- optional model-family override (XGBoost etc.); no-op when unset ---
+source("scripts/v10_model_family.R"); v10_apply_override()
 dir.create(out_igbp, showWarnings = FALSE, recursive = TRUE)
 dir.create(out_tc, showWarnings = FALSE, recursive = TRUE)
 

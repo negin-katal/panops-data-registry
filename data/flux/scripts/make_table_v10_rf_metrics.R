@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 # ============================================================================
 # Generate LaTeX table of V10 RF LOSO metrics (matches table_RF_LOSO_v4 style)
-# Two tables (all-sites 113, high-tree-cover 93); 4 panels each
+# Two tables (all-sites 112, high-tree-cover 93); 4 panels each
 # (12m/24m window × anomaly/raw memory). Cell = R2 (RMSE); bold = best R2/EFP.
 # ============================================================================
 
@@ -27,12 +27,18 @@ mid <- function(base, mem, win) {
   paste0(base, "_", mem, "_", win)
 }
 
+# Learner is parameterised so the same generator serves RF (default) and XGBoost.
+# With no env vars set this reproduces the RF table exactly.
+LEARNER   <- Sys.getenv("V10_LEARNER",   "random forest")   # caption wording
+LBL       <- Sys.getenv("V10_TEX_LABEL", "RF")              # \label{tab:<LBL>_LOSO_v10_...}
+IN_ALL    <- Sys.getenv("V10_TBL_ALL",   "derived_tables/outputs_afterEGU_results/RF_v10_all_sites/RF_metrics_LOSO.csv")
+IN_FILT   <- Sys.getenv("V10_TBL_FILT",  "derived_tables/outputs_afterEGU_results/RF_v10/RF_metrics_LOSO.csv")
+OUT_TEX   <- Sys.getenv("V10_TBL_OUT",   "manuscript/tables/table_RF_LOSO_v10.tex")
+
 DATASETS <- list(
-  list(key = "all_sites",
-       file = "derived_tables/outputs_afterEGU_results/RF_v10_all_sites/RF_metrics_LOSO.csv",
-       name = "all sites", sites = 113),
-  list(key = "filtered",
-       file = "derived_tables/outputs_afterEGU_results/RF_v10/RF_metrics_LOSO.csv",
+  list(key = "all_sites", file = IN_ALL,
+       name = "all sites", sites = 112),
+  list(key = "filtered",  file = IN_FILT,
        name = "high tree cover ($>$30\\% canopy)", sites = 93)
 )
 
@@ -82,13 +88,13 @@ emit_table <- function(ds) {
   out <- c(
     "\\begin{table}[htbp]",
     "\\centering",
-    sprintf(paste0("\\caption{Leave-one-site-out random forest performance for five ecosystem ",
+    sprintf(paste0("\\caption{Leave-one-site-out ", LEARNER, " performance for five ecosystem ",
                    "functional properties (EFPs) on the V10 \\textbf{%s} dataset (%d sites, %d site-years). ",
                    "Panels A--B: 12-month climate window (lag1); Panels C--D: 24-month window (lag1+lag2). ",
                    "Panels A,C use anomaly EFP memory; Panels B,D use raw-lag EFP memory. ",
                    "Each cell shows $R^2$ (RMSE in native units). \\textbf{Bold} = best $R^2$ per EFP within each panel.}"),
             ds$name, ds$sites, n_sy),
-    sprintf("\\label{tab:RF_LOSO_v10_%s}", ds$key),
+    sprintf("\\label{tab:%s_LOSO_v10_%s}", LBL, ds$key),
     "\\footnotesize",
     "\\setlength{\\tabcolsep}{4pt}",
     "\\begin{tabular}{llcccccc}",
@@ -114,6 +120,6 @@ emit_table <- function(ds) {
 }
 
 all_lines <- unlist(lapply(DATASETS, function(ds) c(emit_table(ds), "")))
-out_file <- "manuscript/tables/table_RF_LOSO_v10.tex"
+out_file <- OUT_TEX
 writeLines(all_lines, out_file)
 cat("Wrote", out_file, "(", length(all_lines), "lines )\n")
