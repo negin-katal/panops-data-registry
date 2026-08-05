@@ -43,15 +43,23 @@ COL_DN <- "#E74C3C"   # red   = worse
 
 EFP_ORDER  <- c("GPPsat", "NEPmax", "ETmax", "uWUE", "WUE")
 EFP_LABELS <- c(
-  GPPsat = "GPPsat  (µmol m⁻² s⁻¹)", NEPmax = "NEPmax  (µmol m⁻² s⁻¹)",
-  ETmax = "ETmax  (mm d⁻¹)", uWUE = "uWUE  (g C mm⁻¹)", WUE = "WUE  (g C mm⁻¹)"
+  GPPsat = "GPPsat  (rRMSE %)", NEPmax = "NEPmax  (rRMSE %)",
+  ETmax = "ETmax  (rRMSE %)", uWUE = "uWUE  (rRMSE %)", WUE = "WUE  (rRMSE %)"
 )
 
 # ── per-site RMSE per model ──────────────────────────────────
 preds <- fread(pred_file)
 preds <- preds[is.finite(observed) & is.finite(predicted)]
-site_rmse <- preds[, .(rmse = sqrt(mean((observed - predicted)^2))),
+# Relative RMSE (%) = per-site RMSE / that RESPONSE's network-mean observed value * 100.
+# Normalising by the response mean (rather than each site's own mean) keeps every
+# EFP on one comparable "% of typical magnitude" scale while avoiding the heavy
+# tail that per-site normalisation produces at low-mean sites
+# (p99 ~66-90 % here vs ~150-266 % with per-site means).
+resp_mean <- preds[, .(gmean = mean(observed)), by = response]
+site_rmse <- preds[, .(rmse_abs = sqrt(mean((observed - predicted)^2))),
                    by = .(model, response, SITE_ID)]
+site_rmse <- merge(site_rmse, resp_mean, by = "response")
+site_rmse[, rmse := 100 * rmse_abs / gmean]
 
 # ── comparison definitions ───────────────────────────────────
 PAIR_LEVELS <- c("C vs C+D", "C+T vs C+T+D", "C+M vs C+M+D", "C+T+M vs C+T+D+M")
@@ -158,8 +166,8 @@ p <- ggplot(dt, aes(x = pair, y = rmse, fill = model_type)) +
   scale_colour_identity() +
   facet_grid(response ~ col, scales = "free_y", labeller = resp_labeller, switch = "y") +
   labs(x = NULL, y = NULL,
-       title = "Effect of adding deadwood disturbance on per-site RMSE",
-       subtitle = sprintf("Paired violin: cyan = without D, pink = with D | LOSO CV | %d sites | %% = change in RMSE (negative = less error, green; positive = more error, red)", n_sites)) +
+       title = "Effect of adding deadwood disturbance on per-site relative RMSE",
+       subtitle = sprintf("Paired violin: cyan = without D, pink = with D | LOSO CV | %d sites | y = rRMSE (%% of each site's mean observed value) | %% label = change in RMSE (negative = less error, green; positive = more error, red)", n_sites)) +
   dark_theme +
   theme(strip.placement = "outside")
 

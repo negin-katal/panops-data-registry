@@ -116,17 +116,19 @@ for (resp in EFP_ORDER) {
       if (nrow(d_wo) == 0 || nrow(d_wd) == 0) next
       m <- merge(d_wo, d_wd, by = "SITE_ID")
       m <- merge(m, site_rd[, .(SITE_ID, tier)], by = "SITE_ID", all.x = TRUE)
-      m[, dRMSE := rmse_wd - rmse_wo]          # <0 = improved
+      m[, dRMSE := 100 * (rmse_wd - rmse_wo) / rmse_wo]   # % change; <0 = improved
       setorder(m, dRMSE)
       m[, rank := .I]
       m[, improved := dRMSE < 0]
       m[, `:=`(response = resp, col = cd$col, pair = pd$pair)]
       bar_rows[[bk]] <- m; bk <- bk + 1
 
-      pct_imp <- round(100 * mean(m$improved), 0)
+      pct_imp  <- round(100 * mean(m$improved), 0)      # share of sites improved
+      mean_pct <- mean(m$dRMSE, na.rm = TRUE)            # mean % change in RMSE
       lab_rows[[lk]] <- data.table(response = resp, col = cd$col, pair = pd$pair,
                                    x = 1, y = Inf,
-                                   label = sprintf("%d%% improved", pct_imp)); lk <- lk + 1
+                                   label = sprintf("%d%% of sites improved  |  mean %+.1f%%",
+                                                   pct_imp, mean_pct)); lk <- lk + 1
     }
   }
   bars <- rbindlist(bar_rows); labs <- rbindlist(lab_rows)
@@ -144,9 +146,9 @@ for (resp in EFP_ORDER) {
     scale_fill_manual(values = TIER_COLS, breaks = c("High", "Mid", "Low"),
                       na.value = "grey30", name = "Relative Disturbance (natural breaks)") +
     facet_grid(pair ~ col, scales = "free_y") +
-    labs(x = "Sites (sorted by ΔRMSE)", y = "ΔRMSE  =  RMSE(with D) − RMSE(without D)",
+    labs(x = "Sites (sorted by ΔRMSE %)", y = "ΔRMSE (%)  =  100 × [RMSE(with D) − RMSE(without D)] / RMSE(without D)",
          title = sprintf("Per-site ΔRMSE from adding disturbance — %s", EFP_LABELS[resp]),
-         subtitle = sprintf("Below 0 = D reduces per-site RMSE | bars coloured by Relative Disturbance tier (blue=Low, grey=Mid, red=High) | LOSO CV | %d sites", n_sites)) +
+         subtitle = sprintf("Below 0 = D reduces per-site RMSE | panel label = %% of sites improved and the mean %% change | bars coloured by Relative Disturbance tier (blue=Low, grey=Mid, red=High) | LOSO CV | %d sites", n_sites)) +
     dark_theme
 
   stem <- file.path(out_dir, sprintf("delta_RMSE_bars_%s", resp))
