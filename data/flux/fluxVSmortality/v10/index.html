@@ -364,11 +364,11 @@
     <table class="deftbl">
       <thead><tr><th>Setting</th><th>Baseline RF</th><th>exp02-tuned</th></tr></thead>
       <tbody>
-        <tr><td class="k">Split-variable rule</td><td>random <code>mtry&nbsp;&asymp;&nbsp;p/3</code> predictors tried per split</td><td>same, <b>plus</b> the raw memory column forced into <b>every</b> split (<code>always.split.variables</code>)</td></tr>
+        <tr><td class="k">Split-variable rule</td><td>random <code>mtry&nbsp;=&nbsp;&lfloor;&radic;p&rfloor;</code> predictors tried per split (11&ndash;21, ~5&nbsp;% of p)</td><td>same, <b>plus</b> the raw memory column forced into <b>every</b> split (<code>always.split.variables</code>)</td></tr>
         <tr><td class="k">Forced variable</td><td>none</td><td><code>{resp}_lag1</code> (12&nbsp;m) · <code>{resp}_lag1</code>+<code>{resp}_lag2</code> (24&nbsp;m)</td></tr>
         <tr class="add"><td class="k">Models affected</td><td>—</td><td>raw-memory only: <b>M5, M6, M7, M8 (raw)</b></td></tr>
         <tr><td class="k">Anomaly &amp; no-memory models</td><td>baseline</td><td>identical to baseline — unchanged</td></tr>
-        <tr><td class="k">mtry · num.trees · seed</td><td>&lfloor;p/3&rfloor; · 500 · 42</td><td>unchanged</td></tr>
+        <tr><td class="k">mtry · num.trees · seed</td><td>&lfloor;&radic;p&rfloor; · 500 · 42</td><td>unchanged</td></tr>
         <tr><td class="k">Datasets · predictors · LOSO folds</td><td>fixed</td><td>unchanged</td></tr>
       </tbody>
     </table>
@@ -389,9 +389,9 @@
         <tr class="add"><td class="k">exp02 — always.split <span class="pill">toggle</span></td><td>0.703</td><td>0.684</td><td>unchanged (no penalty)</td></tr>
       </tbody>
     </table>
-    <p class="itxt" style="margin-top:10px"><b>Finding.</b> The ranger default <code>mtry&nbsp;&asymp;&nbsp;p/3</code>
+    <p class="itxt" style="margin-top:10px"><b>Finding.</b> The ranger default <code>mtry&nbsp;=&nbsp;&lfloor;&radic;p&rfloor;</code> (only ~5&nbsp;% of predictors &mdash; note this is ranger's default, <i>not</i> <code>randomForest</code>'s <code>p/3</code>)
       systematically under-uses the dominant raw prior-year EFP (<code>{resp}_lag1</code>) sitting among ~240&ndash;440
-      weak predictors, so it is offered at only ~&#8531; of splits. <b>exp01</b> raises <code>mtry</code> (&rarr;0.7&middot;p
+      weak predictors, so it is offered at only <b>~6&nbsp;% of splits</b> (16 of 279 for M6&nbsp;raw&nbsp;12m). <b>exp01</b> raises <code>mtry</code> (&rarr;0.7&middot;p
       or full bagging) and lifts the raw-memory models by <b>+0.21 R² (all-sites) / +0.25 (high-Tcover)</b> — e.g.
       GPP<sub>sat</sub> M5 raw 0.51&rarr;0.71, NEP<sub>max</sub> M6 raw 0.60&rarr;0.77 — but costs ~0.02&ndash;0.04 on the
       other models. <b>exp02</b> instead forces <code>{resp}_lag1</code> into every split
@@ -421,7 +421,7 @@
       <tbody>
         <tr><td class="k">Algorithm</td><td>bagging - independent deep trees, averaged</td><td>boosting - sequential trees fit to residuals</td></tr>
         <tr><td class="k">Ensemble size</td><td><code>num.trees = 500</code></td><td><code>nrounds = 500</code></td></tr>
-        <tr><td class="k">Randomisation</td><td><code>mtry &asymp; p/3</code> per split</td><td><code>colsample_bytree = 0.8</code>, <code>subsample = 0.8</code></td></tr>
+        <tr><td class="k">Randomisation</td><td><code>mtry = &lfloor;&radic;p&rfloor;</code> per split (11&ndash;21)</td><td><code>colsample_bytree = 0.8</code>, <code>subsample = 0.8</code></td></tr>
         <tr><td class="k">Depth / shrinkage</td><td>grown to purity, no shrinkage</td><td><code>max_depth = 6</code>, <code>learning_rate = 0.05</code></td></tr>
         <tr class="add"><td class="k">Everything else</td><td colspan="2">identical - datasets, predictors, model set, LOSO folds, seed 42</td></tr>
       </tbody>
@@ -484,7 +484,7 @@
         <tr><td class="k">Complexity cap</td><td><code>min.node.size = 5</code></td><td><code>max_depth = 6</code></td><td><code>num_leaves = 31</code>, <code>min_data_in_leaf = 5</code></td></tr>
         <tr><td class="k">Ensemble size</td><td>500 trees</td><td>500 rounds</td><td>500 rounds</td></tr>
         <tr><td class="k">Shrinkage</td><td>none</td><td>0.05</td><td>0.05</td></tr>
-        <tr><td class="k">Row / column sampling</td><td><code>mtry &asymp; p/3</code></td><td>0.8 / 0.8</td><td>0.8 / 0.8</td></tr>
+        <tr><td class="k">Row / column sampling</td><td><code>mtry = &lfloor;&radic;p&rfloor;</code></td><td>0.8 / 0.8</td><td>0.8 / 0.8</td></tr>
         <tr class="add"><td class="k">Everything else</td><td colspan="3">identical - datasets, predictors, 24 model configs, LOSO folds, seed 42</td></tr>
       </tbody>
     </table>
@@ -558,6 +558,11 @@ const DELTA_UNITS=['M1vsM2_12m','M1vsM2_24m','M3vsM4_12m','M3vsM4_24m',
 const MODEL_WIN=[]; SHAP_MODELS.forEach(m=>WINDOWS.forEach(w=>MODEL_WIN.push(m[0]+'_'+w)));
 const MODEL_FAMS=['M1','M2','M3','M4','M5','M6','M7','M8'];
 const LGB_VIEWS=[
+  ['deltaR2_5way','ΔR²: all five (RF · exp01 · exp02 · XGBoost · LightGBM)'],
+  ['deltaRMSE_5way','ΔRMSE: all five'],
+  ['deltaR2_by_EFP_5way','ΔR² per EFP: all five'],
+  ['deltaRMSE_by_EFP_5way','ΔRMSE per EFP: all five'],
+  ['RMSE_paired_5way','RMSE without D vs with D: all five'],
   ['deltaR2_4way','ΔR²: RF vs RF exp02 vs XGBoost vs LightGBM'],
   ['deltaR2_by_EFP_4way','ΔR² per EFP - all sites'],
   ['deltaR2_by_EFP_4way_highTcover','ΔR² per EFP - high tree cover'],
@@ -571,6 +576,11 @@ const LGB_VIEWS=[
   ['attribution_3way','Attribution: Disturbance / Memory SHAP share']
 ];
 const LGB_DESC={
+  'deltaR2_5way':'Change in LOSO R² from adding D, for all five model variants including both RF tunings. The three RF variants are nearly identical — RF tuning does not change the disturbance effect at all; only the learner family (bagging vs boosting) does.',
+  'deltaRMSE_5way':'The same contrast in RMSE (negative = less error). All five variants agree: D helps ~6-8% where raw memory is absent, ~0-3% once it is present.',
+  'deltaR2_by_EFP_5way':'ΔR² per response, all five variants (all sites). The benefit sits in NEPmax, GPPsat and ETmax; uWUE and WUE are flat.',
+  'deltaRMSE_by_EFP_5way':'ΔRMSE % per response, all five variants (all sites).',
+  'RMSE_paired_5way':'Absolute LOSO RMSE without D (pale) vs with D (solid), normalised per EFP to the RF without-D baseline.',
   'deltaR2_4way':'Mean change in LOSO R² when the disturbance block D is added, all four learners. Positive = D improves the model. D buys +0.08..+0.14 R² where raw memory is absent, but only +0.00..+0.03 once it is present.',
   'deltaR2_by_EFP_4way':'ΔR² per response (all sites). The disturbance benefit is concentrated in the flux magnitudes - NEPmax and GPPsat, then ETmax - and is near zero for the efficiency ratios uWUE and WUE.',
   'deltaR2_by_EFP_4way_highTcover':'ΔR² per response, high-tree-cover dataset.',
@@ -597,7 +607,7 @@ const EXP_VIEWS=[
   ['exp02_always_split/three_way_raw_memory_R2','exp02 · three-way raw-memory R²']
 ];
 const EXP_DESC={
-  'exp01_hyperparams/tuning_curves_mtry':'Grouped 5-fold CV RMSE vs mtry (relative to the ranger default — white ring). All 5 EFPs fall as mtry rises → default mtry≈p/3 too low; min.node.size / num.trees matter far less.',
+  'exp01_hyperparams/tuning_curves_mtry':'Grouped 5-fold CV RMSE vs mtry (relative to the ranger default ⌊√p⌋ ≈ 5% of predictors — white ring). All 5 EFPs fall as mtry rises → the default ⌊√p⌋ is far too low; min.node.size / num.trees matter far less.',
   'exp01_hyperparams/baseline_vs_tuned_dRMSE':'LOSO ΔRMSE % per model, exp01-tuned vs baseline. The gain is concentrated entirely in the raw-memory models; anomaly and no-memory models are flat or slightly worse.',
   'exp02_always_split/three_way_raw_memory_R2':'Raw-memory LOSO R²: baseline → exp01 (high mtry) → exp02 (always.split). exp02 matches/beats exp01 on raw-memory models while leaving every other model exactly at baseline.'
 };

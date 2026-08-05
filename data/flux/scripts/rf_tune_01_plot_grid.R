@@ -27,7 +27,7 @@ p <- ggplot(g, aes(x=mtry_frac, y=rel, colour=factor(min_node), linetype=factor(
   scale_linetype_manual(values=c("500"="solid","1000"="dashed"), name="num.trees") +
   scale_x_continuous(breaks=c(0.2,0.33,0.5,0.7,1.0)) +
   labs(title="exp01: hyperparameter tuning curves — grouped-CV RMSE vs mtry (relative to default)",
-       subtitle="y = CV RMSE change vs ranger default (white ring, mtry≈p/3, node 5, 500 trees). Below 0 = better. All 5 EFPs fall as mtry rises → default too low.",
+       subtitle="y = CV RMSE change vs ranger default (white ring, mtry=floor(sqrt(p)) ~5% of p, node 5, 500 trees). Below 0 = better. All 5 EFPs fall as mtry rises -> default far too low.",
        x="mtry (fraction of predictors)", y="CV RMSE vs default (%)") +
   theme_bw(base_size=9) +
   theme(plot.background=element_rect(fill=DARK,colour=NA), panel.background=element_rect(fill=PANEL,colour=NA),

@@ -2,7 +2,7 @@
 
 **Goal:** recover exp01's large raw-memory gain *without* exp01's small penalty on the
 non-memory / anomaly models. Follows directly from [exp01](../exp01_hyperparams/README.md), which
-showed the default `mtry ≈ p/3` under-uses the dominant raw-memory predictor.
+showed the default `mtry = ⌊√p⌋` (≈5 % of predictors) under-uses the dominant raw-memory predictor.
 
 ## What changed vs baseline
 **Only the split rule for raw-memory models.** Everything else identical; datasets fixed

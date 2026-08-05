@@ -27,7 +27,7 @@ Nothing here overwrites the RF results. The RF outputs stay in
 |---|---|---|
 | Algorithm | bagged trees, grown independently in parallel | boosted trees, grown sequentially on residuals |
 | Ensemble size | `num.trees = 500` | `nrounds = 500` |
-| Randomness per split/tree | `mtry ≈ p/3` predictors sampled per split | `colsample_bytree = 0.8`, `subsample = 0.8` |
+| Randomness per split/tree | `mtry = ⌊√p⌋` predictors sampled per split (11–21, ~5 % of p) | `colsample_bytree = 0.8`, `subsample = 0.8` |
 | Depth control | grown to purity (`min.node.size = 5`) | `max_depth = 6`, `min_child_weight = 1` |
 | Shrinkage | none | `learning_rate = 0.05` |
 

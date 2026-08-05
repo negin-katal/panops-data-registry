@@ -53,7 +53,8 @@ Set explicitly in `scripts/run_v10_RF_ranger.R`:
 - `respect.unordered.factors = "order"`
 
 Left at **ranger defaults** (candidates for tuning):
-- `mtry` = ⌊p/3⌋ (regression default) — **untuned**
+- `mtry` = ⌊√p⌋ (ranger's regression default — note: **not** ⌊p/3⌋, which is `randomForest`'s
+  default) — **untuned**. For p = 143–444 this is only **11–21 predictors per split (~5 % of p)**.
 - `min.node.size` = 5 (regression default) — **untuned**
 - `max.depth` = unlimited — **untuned**
 - `sample.fraction` = 1, `replace = TRUE` (bootstrap) — **untuned**

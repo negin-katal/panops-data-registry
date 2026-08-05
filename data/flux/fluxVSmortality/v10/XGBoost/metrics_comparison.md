@@ -15,7 +15,7 @@ Same datasets, same variables, same LOSO folds; only the learner differs. See
 
 - **Raw-memory models: XGBoost wins big** (+0.18 all-sites, +0.20 high-Tcover). Boosting is
   greedy: it fits the dominant prior-year EFP on the first rounds and then boosts the residuals.
-  Random forest at the default `mtry ≈ p/3` only offers that column at ~⅓ of splits, so it
+  Random forest at the default `mtry = ⌊√p⌋` offers that column at only ~6 % of splits, so it
   under-uses it — the exact deficiency [exp01/exp02](../RF_tuning/) diagnosed. **XGBoost recovers
   that gain for free, without the `always.split` trick.** For reference on all-sites GPP<sub>sat</sub>
   M6 raw 12m: RF baseline 0.554 → exp02-tuned RF 0.723 → XGBoost 0.712.

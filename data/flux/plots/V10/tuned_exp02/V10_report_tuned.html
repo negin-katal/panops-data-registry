@@ -170,7 +170,7 @@
     <p class="itxt" style="border-left:3px solid var(--green);padding-left:10px">
       <b>RF structure (tuned).</b> The raw prior-year EFP (<span class="pill">{resp}_lag1</span>) is one
       dominant predictor among ~240–440 weak climate/disturbance columns, so at ranger's default
-      <span class="pill">mtry ≈ p/3</span> it was under-used. The raw-memory models (M5–M8 raw) now
+      <span class="pill">mtry = ⌊√p⌋</span> (~5% of predictors) it was under-used. The raw-memory models (M5–M8 raw) now
       <b>force <span class="pill">{resp}_lag1</span> into every split</b> (ranger
       <span class="pill">always.split.variables</span>, default mtry); all other models are unchanged.
       This lifts the raw-memory models by <b>~+0.22–0.25 R²</b> (e.g. GPPsat M6_raw 0.55→<b>0.72</b>) with

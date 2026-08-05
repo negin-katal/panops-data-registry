@@ -22,7 +22,7 @@ replication, and it splits the same way in both directions:
 
 - **Where a dominant predictor exists** (raw prior-year EFP), both boosters gain ~0.18–0.20 R² over
   RF. Boosting is greedy — it fits the strong column on the first rounds — whereas RF at the default
-  `mtry ≈ p/3` only offers it at ~⅓ of splits. This is exactly the deficiency
+  `mtry = ⌊√p⌋` offers it at only ~6 % of splits. This is exactly the deficiency
   [exp01/exp02](../RF_tuning/) diagnosed, and both boosters fix it without any tuning trick.
 - **Where no dominant predictor exists** (anomaly and no-memory models, signal spread thinly over
   ~240–440 weak correlated columns), **RF wins** and LightGBM is slightly the weakest of the three.

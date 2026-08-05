@@ -36,7 +36,7 @@ strategy*, so anything both boosters do together is attributable to boosting its
 | Complexity cap | `min.node.size = 5` | `max_depth = 6` | `num_leaves = 31`, `min_data_in_leaf = 5` |
 | Ensemble size | `num.trees = 500` | `nrounds = 500` | `nrounds = 500` |
 | Shrinkage | none | `learning_rate = 0.05` | `learning_rate = 0.05` |
-| Row / column sampling | `mtry ≈ p/3` per split | `subsample`/`colsample_bytree` = 0.8 | `bagging_fraction`/`feature_fraction` = 0.8 |
+| Row / column sampling | `mtry = ⌊√p⌋` per split (11–21, ~5 % of p) | `subsample`/`colsample_bytree` = 0.8 | `bagging_fraction`/`feature_fraction` = 0.8 |
 | Binning | exact splits | exact (default) | **histogram** (fast) |
 
 **LightGBM hyperparameters (untuned).** Matched to the XGBoost run wherever a direct analogue

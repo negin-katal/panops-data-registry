@@ -12,7 +12,7 @@ for the baseline.
 
 Tuned hyperparameters (baseline default in brackets):
 - `mtry` — number of predictors tried per split, expressed as a **fraction of predictors** so it
-  transfers across the 24 models of differing size *(default ⌊p/3⌋ ≈ 0.33)*
+  transfers across the 24 models of differing size *(ranger's default is ⌊√p⌋, i.e. only ≈0.05 of p)*
 - `min.node.size` *(default 5)*
 - `num.trees` *(default 500)*
 
@@ -76,7 +76,7 @@ wins — often `mtry_frac = 1.0` (i.e. bagging) — with gains **larger** than t
 | uWUE | 0.70 | 10 | 500 | −5.3 % |
 | WUE | 1.00 | 5 | 500 | −6.0 % |
 
-**Takeaways:** (1) the ranger default `mtry ≈ p/3` is clearly too low here — the strong signal is
+**Takeaways:** (1) the ranger default `mtry = ⌊√p⌋` (≈5 % of predictors) is far too low here — the strong signal is
 concentrated in a few predictors among many weak ones, so considering more per split helps;
 (2) `num.trees` and `min.node.size` matter far less than `mtry`; (3) gains (~5–11 % grouped-CV RMSE)
 are worth carrying into the reported LOSO.
@@ -99,8 +99,9 @@ Examples (LOSO R², baseline → tuned): GPPsat M5_raw 0.51→**0.71**; NEPmax M
 uWUE M7_raw 0.28→**0.63**. Non-memory and anomaly models are flat or slightly worse.
 
 **Why:** the raw prior-year EFP (`{resp}_lag1`) is a *dominant* single predictor sitting among
-~240–440 mostly-weak climate/disturbance columns. At the ranger default `mtry ≈ p/3` it is only
-offered at ~⅓ of splits, so the RF systematically **under-uses** the strongest signal. Raising
+~240–440 mostly-weak climate/disturbance columns. At the ranger default `mtry = ⌊√p⌋` (16 of 279 for
+M6_raw_12m) it is offered at only **~6 % of splits**, so the RF systematically **under-uses** the
+strongest signal. Raising
 `mtry` (to 0.7·p or full bagging) lets that signal be chosen → large gains. Anomaly memory is a
 weaker predictor, so it doesn't benefit; for the weak-diffuse non-memory models, higher `mtry`
 just reduces tree decorrelation slightly → marginally worse.

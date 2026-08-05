@@ -21,7 +21,7 @@ SEED <- 42
 N_CORES <- 60
 K <- 5  # grouped folds for tuning
 
-# grid (baseline = ranger defaults: mtry≈p/3, min.node.size=5, num.trees=500)
+# grid (baseline = ranger defaults: mtry=floor(sqrt(p)) ~5% of p, min.node.size=5, num.trees=500)
 GRID <- CJ(mtry_frac = c(0.20, 0.33, 0.50, 0.70, 1.00),
            min_node  = c(3, 5, 10),
            ntrees    = c(500, 1000))
