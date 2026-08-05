@@ -575,19 +575,19 @@
     <h3 class="mini">Learner configurations</h3>
     <div style="overflow-x:auto">
     <table class="deftbl">
-      <thead><tr><th></th><th>RF baseline</th><th>RF exp01-tuned</th><th>RF exp02</th><th>XGBoost</th><th>LightGBM</th></tr></thead>
+      <thead><tr><th></th><th>RF baseline</th><th>RF exp01-tuned</th><th>RF exp02</th><th>XGBoost</th><th>LightGBM</th><th>LightGBM tuned</th></tr></thead>
       <tbody>
-        <tr><td class="k">Library</td><td><code>ranger</code></td><td><code>ranger</code></td><td><code>ranger</code></td><td><code>xgboost</code> 3.2.1.1</td><td><code>lightgbm</code> 4.7.0</td></tr>
-        <tr><td class="k">Algorithm</td><td>bagging</td><td>bagging</td><td>bagging</td><td>boosting, depth-wise</td><td>boosting, leaf-wise</td></tr>
-        <tr><td class="k">Ensemble size</td><td><code>num.trees = 500</code></td><td>500 or 1000</td><td><code>num.trees = 500</code></td><td><code>nrounds = 500</code></td><td><code>nrounds = 500</code></td></tr>
-        <tr><td class="k">Complexity cap</td><td>grown to purity</td><td>grown to purity</td><td>grown to purity</td><td><code>max_depth = 6</code></td><td><code>num_leaves = 31</code></td></tr>
-        <tr><td class="k">Min node / leaf</td><td><code>min.node.size = 5</code></td><td>3 / 5 / 10</td><td><code>min.node.size = 5</code></td><td><code>min_child_weight = 1</code></td><td><code>min_data_in_leaf = 5</code></td></tr>
-        <tr><td class="k">Feature sampling</td><td><code>mtry = &lfloor;&radic;p&rfloor;</code> (11&ndash;21)</td><td><code>mtry</code> = 310&ndash;444</td><td><code>mtry = &lfloor;&radic;p&rfloor;</code></td><td><code>colsample_bytree = 0.8</code></td><td><code>feature_fraction = 0.8</code></td></tr>
-        <tr><td class="k">Row sampling</td><td>bootstrap</td><td>bootstrap</td><td>bootstrap</td><td><code>subsample = 0.8</code></td><td><code>bagging_fraction = 0.8</code></td></tr>
-        <tr><td class="k">Shrinkage</td><td>none</td><td>none</td><td>none</td><td><code>learning_rate = 0.05</code></td><td><code>learning_rate = 0.05</code></td></tr>
-        <tr><td class="k">Split finding</td><td>exact</td><td>exact</td><td>exact</td><td>exact</td><td>histogram</td></tr>
-        <tr class="add"><td class="k">Special</td><td>&mdash;</td><td>per-response config</td><td><code>always.split.variables</code> on raw-memory models only</td><td>&mdash;</td><td>&mdash;</td></tr>
-        <tr><td class="k">Seed</td><td>42</td><td>42</td><td>42</td><td>42</td><td>42</td></tr>
+        <tr><td class="k">Library</td><td><code>ranger</code></td><td><code>ranger</code></td><td><code>ranger</code></td><td><code>xgboost</code> 3.2.1.1</td><td><code>lightgbm</code> 4.7.0</td><td><code>lightgbm</code> 4.7.0</td></tr>
+        <tr><td class="k">Algorithm</td><td>bagging</td><td>bagging</td><td>bagging</td><td>boosting, depth-wise</td><td>boosting, leaf-wise</td><td>boosting, leaf-wise</td></tr>
+        <tr><td class="k">Ensemble size</td><td><code>num.trees = 500</code></td><td>500 or 1000</td><td><code>num.trees = 500</code></td><td><code>nrounds = 500</code></td><td><code>nrounds = 500</code></td><td><code>nrounds = 500</code></td></tr>
+        <tr><td class="k">Complexity cap</td><td>grown to purity</td><td>grown to purity</td><td>grown to purity</td><td><code>max_depth = 6</code></td><td><code>num_leaves = 31</code></td><td><code>num_leaves</code> 3&ndash;15 <span class="pill">CV</span></td></tr>
+        <tr><td class="k">Min node / leaf</td><td><code>min.node.size = 5</code></td><td>3 / 5 / 10</td><td><code>min.node.size = 5</code></td><td><code>min_child_weight = 1</code></td><td><code>min_data_in_leaf = 5</code></td><td><code>min_data_in_leaf</code> 5&ndash;20 <span class="pill">CV</span></td></tr>
+        <tr><td class="k">Feature sampling</td><td><code>mtry = &lfloor;&radic;p&rfloor;</code> (11&ndash;21)</td><td><code>mtry</code> = 310&ndash;444</td><td><code>mtry = &lfloor;&radic;p&rfloor;</code></td><td><code>colsample_bytree = 0.8</code></td><td><code>feature_fraction = 0.8</code></td><td><code>feature_fraction = 0.8</code></td></tr>
+        <tr><td class="k">Row sampling</td><td>bootstrap</td><td>bootstrap</td><td>bootstrap</td><td><code>subsample = 0.8</code></td><td><code>bagging_fraction = 0.8</code></td><td><code>bagging_fraction = 0.8</code></td></tr>
+        <tr><td class="k">Shrinkage</td><td>none</td><td>none</td><td>none</td><td><code>learning_rate = 0.05</code></td><td><code>learning_rate = 0.05</code></td><td><code>learning_rate = 0.05</code></td></tr>
+        <tr><td class="k">Split finding</td><td>exact</td><td>exact</td><td>exact</td><td>exact</td><td>histogram</td><td>histogram</td></tr>
+        <tr class="add"><td class="k">Special</td><td>&mdash;</td><td>per-response config</td><td><code>always.split.variables</code> on raw-memory models only</td><td>&mdash;</td><td>&mdash;</td><td>complexity by grouped-CV, per response</td></tr>
+        <tr><td class="k">Seed</td><td>42</td><td>42</td><td>42</td><td>42</td><td>42</td><td>42</td></tr>
       </tbody>
     </table>
     </div>
@@ -609,6 +609,27 @@
     </table>
     <p class="itxt" style="margin-top:8px">Selected by <b>grouped 5-fold CV</b> (folds = disjoint groups of sites) on
       <code>M8_raw_24m</code>, so selection never touches the reported LOSO metric.</p>
+
+    <h3 class="mini">LightGBM tuned — per-response complexity</h3>
+    <table class="deftbl">
+      <thead><tr><th>Response</th><th><code>min_data_in_leaf</code></th><th><code>num_leaves</code></th></tr></thead>
+      <tbody>
+        <tr><td class="k">GPP<sub>sat</sub></td><td>20</td><td>15</td></tr>
+        <tr><td class="k">NEP<sub>max</sub></td><td>5</td><td>7</td></tr>
+        <tr><td class="k">ET<sub>max</sub></td><td>20</td><td>3</td></tr>
+        <tr><td class="k">uWUE</td><td>10</td><td>7</td></tr>
+        <tr><td class="k">WUE</td><td>5</td><td>5</td></tr>
+      </tbody>
+    </table>
+    <p class="itxt" style="margin-top:8px">Also selected by <b>grouped 5-fold CV</b> over
+      <code>min_data_in_leaf</code> × <code>num_leaves</code>, on <code>M2_12m</code> (no memory, weak diffuse signal)
+      and <code>M6_raw_12m</code> (one dominant predictor), all five responses. The first grid put the optimum on its
+      boundary, so it was extended down to <code>num_leaves = 3</code> before adopting. <b><code>num_leaves</code> is the
+      binding knob</b>, not <code>min_data_in_leaf</code>: values of 3&ndash;15 beat 31 nearly everywhere, and
+      <code>min_data_in_leaf = 40</code> is uniformly bad because the constraint binds before leaf count matters.
+      Everything else matches the untuned LightGBM run. Sweep:
+      <code>scripts/lgb_tune_regularisation.R</code>; outputs are entirely separate
+      (<code>LGB_v10_tuned*</code>, <code>plots/V10/LightGBM_tuned/</code>).</p>
 
     <h3 class="mini">Model families and predictor counts</h3>
     <table class="deftbl">
