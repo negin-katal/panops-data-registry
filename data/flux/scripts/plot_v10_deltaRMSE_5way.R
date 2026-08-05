@@ -162,8 +162,8 @@ p6 <- ggplot(long[dataset=="High tree cover (93)"], aes(pair, dR2, fill=learner)
        subtitle="Change in LOSO R2 from adding D, per response. Positive = disturbance improves the model.",
        x=NULL, y="dR2 from adding D") +
   thm + theme(axis.text.x=element_text(angle=45, hjust=1, size=5.5))
-ggsave(file.path(OUT,"deltaR2_by_EFP_4way_highTcover.png"), p6, width=14, height=6.5, dpi=200, bg=DARK)
-ggsave(file.path(OUT,"deltaR2_by_EFP_4way_highTcover.pdf"), p6, width=14, height=6.5, bg=DARK)
+ggsave(file.path(OUT,"deltaR2_by_EFP_5way_highTcover.png"), p6, width=14, height=6.5, dpi=200, bg=DARK)
+ggsave(file.path(OUT,"deltaR2_by_EFP_5way_highTcover.pdf"), p6, width=14, height=6.5, bg=DARK)
 
 cat("saved deltaRMSE_5way.png, deltaRMSE_by_EFP_5way.png, RMSE_paired_5way.png, deltaR2_5way.png, deltaR2_by_EFP_5way.png\n\n")
 cat("=== mean dRMSE %% from adding D (avg over EFPs + windows; negative = D helps) ===\n")

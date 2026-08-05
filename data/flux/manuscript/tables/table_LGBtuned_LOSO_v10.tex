@@ -1,0 +1,128 @@
+\begin{table}[htbp]
+\centering
+\caption{Leave-one-site-out LightGBM (CV-tuned complexity) performance for five ecosystem functional properties (EFPs) on the V10 \textbf{all sites} dataset (112 sites, 414 site-years). Panels A--B: 12-month climate window (lag1); Panels C--D: 24-month window (lag1+lag2). Panels A,C use anomaly EFP memory; Panels B,D use raw-lag EFP memory. Each cell shows $R^2$ (RMSE in native units). \textbf{Bold} = best $R^2$ per EFP within each panel.}
+\label{tab:LGBtuned_LOSO_v10_all_sites}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llcccccc}
+\toprule
+Model & Predictors & $n$ & GPP$_\mathrm{sat}$ & NEP$_\mathrm{max}$ & ET$_\mathrm{max}$ & uWUE & WUE \\
+  &  &  & ($\mu$mol m$^{-2}$ s$^{-1}$) & ($\mu$mol m$^{-2}$ s$^{-1}$) & (mm d$^{-1}$) & (g C mm$^{-1}$) & (g C mm$^{-1}$) \\
+\midrule
+\multicolumn{8}{l}{\textit{Panel A: Lag1 only --- Anomaly EFP memory --- 414 site-years}} \\
+\midrule
+M1 & C & \multirow{8}{*}{414} & 0.222 (7.93) & 0.220 (7.88) & 0.222 (0.0614) & 0.078 (1.057) & 0.132 (1.145) \\
+M2 & C + D &  & 0.455 (6.63) & 0.506 (6.27) & 0.376 (0.0550) & 0.047 (1.075) & \textbf{0.170 (1.120)} \\
+M3 & C + T &  & 0.248 (7.79) & 0.273 (7.61) & 0.429 (0.0526) & 0.031 (1.084) & 0.093 (1.171) \\
+M4 & C + T + D &  & 0.454 (6.64) & 0.505 (6.28) & \textbf{0.476 (0.0505)} & 0.015 (1.092) & 0.133 (1.145) \\
+M5 & C + M &  & 0.222 (7.93) & 0.222 (7.87) & 0.246 (0.0605) & \textbf{0.080 (1.055)} & 0.149 (1.134) \\
+M6 & C + D + M &  & 0.451 (6.66) & \textbf{0.508 (6.26)} & 0.363 (0.0556) & 0.060 (1.067) & 0.158 (1.128) \\
+M7 & C + T + M &  & 0.260 (7.73) & 0.256 (7.70) & 0.437 (0.0523) & 0.053 (1.071) & 0.093 (1.171) \\
+M8 & C + T + D + M &  & \textbf{0.472 (6.53)} & 0.492 (6.36) & 0.474 (0.0505) & 0.022 (1.088) & 0.109 (1.161) \\
+\midrule
+\multicolumn{8}{l}{\textit{Panel B: Lag1 only --- Raw-lag EFP memory --- 414 site-years}} \\
+\midrule
+M1 & C & \multirow{8}{*}{414} & 0.222 (7.93) & 0.220 (7.88) & 0.222 (0.0614) & 0.078 (1.057) & 0.132 (1.145) \\
+M2 & C + D &  & 0.455 (6.63) & 0.506 (6.27) & 0.376 (0.0550) & 0.047 (1.075) & 0.170 (1.120) \\
+M3 & C + T &  & 0.248 (7.79) & 0.273 (7.61) & 0.429 (0.0526) & 0.031 (1.084) & 0.093 (1.171) \\
+M4 & C + T + D &  & 0.454 (6.64) & 0.505 (6.28) & 0.476 (0.0505) & 0.015 (1.092) & 0.133 (1.145) \\
+M5 & C + M &  & 0.709 (4.84) & 0.764 (4.34) & 0.702 (0.0381) & \textbf{0.548 (0.740)} & \textbf{0.592 (0.785)} \\
+M6 & C + D + M &  & \textbf{0.713 (4.82)} & \textbf{0.764 (4.33)} & 0.721 (0.0368) & 0.530 (0.754) & 0.576 (0.800) \\
+M7 & C + T + M &  & 0.696 (4.95) & 0.734 (4.61) & 0.720 (0.0368) & 0.537 (0.749) & 0.580 (0.797) \\
+M8 & C + T + D + M &  & 0.709 (4.84) & 0.761 (4.36) & \textbf{0.727 (0.0364)} & 0.531 (0.754) & 0.587 (0.790) \\
+\midrule
+\multicolumn{8}{l}{\textit{Panel C: Lag1 + Lag2 --- Anomaly EFP memory --- 414 site-years}} \\
+\midrule
+M1 & C & \multirow{8}{*}{414} & 0.226 (7.90) & 0.228 (7.84) & 0.245 (0.0605) & 0.000 (1.100) & 0.068 (1.187) \\
+M2 & C + D &  & 0.445 (6.69) & 0.510 (6.25) & 0.367 (0.0554) & \textbf{0.051 (1.072)} & \textbf{0.169 (1.120)} \\
+M3 & C + T &  & 0.260 (7.73) & 0.263 (7.66) & 0.390 (0.0544) & 0.010 (1.095) & 0.045 (1.201) \\
+M4 & C + T + D &  & 0.461 (6.60) & 0.493 (6.36) & 0.437 (0.0523) & -0.002 (1.101) & 0.065 (1.189) \\
+M5 & C + M &  & 0.232 (7.87) & 0.237 (7.80) & 0.247 (0.0605) & -0.017 (1.110) & 0.086 (1.175) \\
+M6 & C + D + M &  & 0.460 (6.60) & \textbf{0.515 (6.22)} & 0.372 (0.0552) & 0.025 (1.087) & 0.125 (1.150) \\
+M7 & C + T + M &  & 0.279 (7.63) & 0.275 (7.60) & 0.406 (0.0537) & 0.001 (1.100) & 0.038 (1.206) \\
+M8 & C + T + D + M &  & \textbf{0.478 (6.49)} & 0.504 (6.28) & \textbf{0.467 (0.0509)} & 0.019 (1.090) & 0.096 (1.169) \\
+\midrule
+\multicolumn{8}{l}{\textit{Panel D: Lag1 + Lag2 --- Raw-lag EFP memory --- 414 site-years}} \\
+\midrule
+M1 & C & \multirow{8}{*}{414} & 0.226 (7.90) & 0.228 (7.84) & 0.245 (0.0605) & 0.000 (1.100) & 0.068 (1.187) \\
+M2 & C + D &  & 0.445 (6.69) & 0.510 (6.25) & 0.367 (0.0554) & 0.051 (1.072) & 0.169 (1.120) \\
+M3 & C + T &  & 0.260 (7.73) & 0.263 (7.66) & 0.390 (0.0544) & 0.010 (1.095) & 0.045 (1.201) \\
+M4 & C + T + D &  & 0.461 (6.60) & 0.493 (6.36) & 0.437 (0.0523) & -0.002 (1.101) & 0.065 (1.189) \\
+M5 & C + M &  & 0.719 (4.76) & 0.784 (4.15) & 0.734 (0.0359) & \textbf{0.574 (0.718)} & 0.588 (0.789) \\
+M6 & C + D + M &  & 0.732 (4.65) & 0.787 (4.12) & 0.739 (0.0356) & 0.559 (0.731) & \textbf{0.594 (0.783)} \\
+M7 & C + T + M &  & 0.716 (4.79) & 0.785 (4.14) & \textbf{0.744 (0.0352)} & 0.561 (0.729) & 0.584 (0.793) \\
+M8 & C + T + D + M &  & \textbf{0.735 (4.63)} & \textbf{0.789 (4.10)} & 0.741 (0.0354) & 0.566 (0.725) & 0.579 (0.798) \\
+\midrule
+\bottomrule
+\end{tabular}
+\vspace{2pt}
+\begin{minipage}{\linewidth}
+\footnotesize
+\textit{Note:} C = Climate (TA, VPD, SW$_\mathrm{IN}$, P; mean/p05/p95); T = Plant traits (hydraulic, leaf, stem); D = Disturbance (absolute/relative mortality, relative disturbance, new mortality at 100--500\,m, with lags); M = EFP memory (previous-year value; anomaly z-score in Panels A,C; raw lag in Panels B,D). 12-month window = lag1 only; 24-month window = lag1 + lag2. RMSE in native units in parentheses.
+\end{minipage}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Leave-one-site-out LightGBM (CV-tuned complexity) performance for five ecosystem functional properties (EFPs) on the V10 \textbf{high tree cover ($>$30\% canopy)} dataset (93 sites, 395 site-years). Panels A--B: 12-month climate window (lag1); Panels C--D: 24-month window (lag1+lag2). Panels A,C use anomaly EFP memory; Panels B,D use raw-lag EFP memory. Each cell shows $R^2$ (RMSE in native units). \textbf{Bold} = best $R^2$ per EFP within each panel.}
+\label{tab:LGBtuned_LOSO_v10_filtered}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llcccccc}
+\toprule
+Model & Predictors & $n$ & GPP$_\mathrm{sat}$ & NEP$_\mathrm{max}$ & ET$_\mathrm{max}$ & uWUE & WUE \\
+  &  &  & ($\mu$mol m$^{-2}$ s$^{-1}$) & ($\mu$mol m$^{-2}$ s$^{-1}$) & (mm d$^{-1}$) & (g C mm$^{-1}$) & (g C mm$^{-1}$) \\
+\midrule
+\multicolumn{8}{l}{\textit{Panel A: Lag1 only --- Anomaly EFP memory --- 395 site-years}} \\
+\midrule
+M1 & C & \multirow{8}{*}{395} & 0.163 (7.97) & 0.134 (8.10) & 0.314 (0.0543) & 0.180 (0.903) & 0.182 (0.976) \\
+M2 & C + D &  & 0.373 (6.90) & \textbf{0.453 (6.44)} & 0.350 (0.0529) & 0.244 (0.867) & 0.321 (0.889) \\
+M3 & C + T &  & 0.146 (8.05) & 0.183 (7.86) & 0.406 (0.0506) & -0.036 (1.014) & 0.013 (1.072) \\
+M4 & C + T + D &  & 0.328 (7.14) & 0.375 (6.88) & 0.402 (0.0507) & 0.137 (0.926) & 0.204 (0.963) \\
+M5 & C + M &  & 0.167 (7.95) & 0.165 (7.95) & 0.312 (0.0544) & 0.145 (0.922) & 0.173 (0.981) \\
+M6 & C + D + M &  & \textbf{0.374 (6.89)} & 0.443 (6.50) & 0.335 (0.0535) & \textbf{0.253 (0.861)} & \textbf{0.338 (0.878)} \\
+M7 & C + T + M &  & 0.160 (7.98) & 0.169 (7.93) & \textbf{0.408 (0.0505)} & -0.001 (0.997) & 0.029 (1.064) \\
+M8 & C + T + D + M &  & 0.351 (7.02) & 0.374 (6.89) & 0.395 (0.0510) & 0.124 (0.933) & 0.195 (0.968) \\
+\midrule
+\multicolumn{8}{l}{\textit{Panel B: Lag1 only --- Raw-lag EFP memory --- 395 site-years}} \\
+\midrule
+M1 & C & \multirow{8}{*}{395} & 0.163 (7.97) & 0.134 (8.10) & 0.314 (0.0543) & 0.180 (0.903) & 0.182 (0.976) \\
+M2 & C + D &  & 0.373 (6.90) & 0.453 (6.44) & 0.350 (0.0529) & 0.244 (0.867) & 0.321 (0.889) \\
+M3 & C + T &  & 0.146 (8.05) & 0.183 (7.86) & 0.406 (0.0506) & -0.036 (1.014) & 0.013 (1.072) \\
+M4 & C + T + D &  & 0.328 (7.14) & 0.375 (6.88) & 0.402 (0.0507) & 0.137 (0.926) & 0.204 (0.963) \\
+M5 & C + M &  & 0.688 (4.86) & 0.728 (4.54) & 0.680 (0.0371) & \textbf{0.612 (0.621)} & 0.605 (0.678) \\
+M6 & C + D + M &  & 0.691 (4.84) & \textbf{0.732 (4.50)} & \textbf{0.681 (0.0371)} & 0.607 (0.625) & 0.637 (0.650) \\
+M7 & C + T + M &  & 0.675 (4.97) & 0.711 (4.67) & 0.666 (0.0379) & 0.594 (0.635) & 0.587 (0.693) \\
+M8 & C + T + D + M &  & \textbf{0.697 (4.80)} & 0.730 (4.52) & 0.668 (0.0378) & 0.611 (0.621) & \textbf{0.643 (0.645)} \\
+\midrule
+\multicolumn{8}{l}{\textit{Panel C: Lag1 + Lag2 --- Anomaly EFP memory --- 395 site-years}} \\
+\midrule
+M1 & C & \multirow{8}{*}{395} & 0.174 (7.92) & 0.166 (7.95) & 0.287 (0.0554) & 0.147 (0.920) & 0.196 (0.968) \\
+M2 & C + D &  & \textbf{0.365 (6.94)} & 0.420 (6.63) & 0.312 (0.0544) & 0.209 (0.886) & 0.301 (0.902) \\
+M3 & C + T &  & 0.185 (7.86) & 0.229 (7.64) & 0.409 (0.0504) & -0.015 (1.004) & 0.019 (1.069) \\
+M4 & C + T + D &  & 0.339 (7.08) & 0.373 (6.89) & 0.387 (0.0513) & 0.110 (0.940) & 0.151 (0.994) \\
+M5 & C + M &  & 0.178 (7.90) & 0.173 (7.91) & 0.311 (0.0544) & 0.145 (0.922) & 0.174 (0.981) \\
+M6 & C + D + M &  & 0.341 (7.07) & \textbf{0.428 (6.58)} & 0.297 (0.0550) & \textbf{0.234 (0.872)} & \textbf{0.318 (0.891)} \\
+M7 & C + T + M &  & 0.179 (7.89) & 0.183 (7.87) & \textbf{0.420 (0.0500)} & 0.003 (0.995) & 0.055 (1.049) \\
+M8 & C + T + D + M &  & 0.348 (7.03) & 0.393 (6.78) & 0.397 (0.0509) & 0.140 (0.924) & 0.199 (0.966) \\
+\midrule
+\multicolumn{8}{l}{\textit{Panel D: Lag1 + Lag2 --- Raw-lag EFP memory --- 395 site-years}} \\
+\midrule
+M1 & C & \multirow{8}{*}{395} & 0.174 (7.92) & 0.166 (7.95) & 0.287 (0.0554) & 0.147 (0.920) & 0.196 (0.968) \\
+M2 & C + D &  & 0.365 (6.94) & 0.420 (6.63) & 0.312 (0.0544) & 0.209 (0.886) & 0.301 (0.902) \\
+M3 & C + T &  & 0.185 (7.86) & 0.229 (7.64) & 0.409 (0.0504) & -0.015 (1.004) & 0.019 (1.069) \\
+M4 & C + T + D &  & 0.339 (7.08) & 0.373 (6.89) & 0.387 (0.0513) & 0.110 (0.940) & 0.151 (0.994) \\
+M5 & C + M &  & 0.683 (4.91) & 0.717 (4.63) & \textbf{0.692 (0.0364)} & 0.605 (0.627) & 0.597 (0.685) \\
+M6 & C + D + M &  & 0.694 (4.82) & 0.728 (4.54) & 0.689 (0.0366) & \textbf{0.618 (0.616)} & \textbf{0.630 (0.657)} \\
+M7 & C + T + M &  & 0.679 (4.94) & 0.717 (4.63) & 0.677 (0.0373) & 0.602 (0.629) & 0.578 (0.701) \\
+M8 & C + T + D + M &  & \textbf{0.700 (4.77)} & \textbf{0.736 (4.47)} & 0.665 (0.0380) & 0.607 (0.625) & 0.620 (0.665) \\
+\midrule
+\bottomrule
+\end{tabular}
+\vspace{2pt}
+\begin{minipage}{\linewidth}
+\footnotesize
+\textit{Note:} C = Climate (TA, VPD, SW$_\mathrm{IN}$, P; mean/p05/p95); T = Plant traits (hydraulic, leaf, stem); D = Disturbance (absolute/relative mortality, relative disturbance, new mortality at 100--500\,m, with lags); M = EFP memory (previous-year value; anomaly z-score in Panels A,C; raw lag in Panels B,D). 12-month window = lag1 only; 24-month window = lag1 + lag2. RMSE in native units in parentheses.
+\end{minipage}
+\end{table}
+
