@@ -167,7 +167,7 @@ p <- ggplot(dt, aes(x = pair, y = rmse, fill = model_type)) +
   facet_grid(response ~ col, scales = "free_y", labeller = resp_labeller, switch = "y") +
   labs(x = NULL, y = NULL,
        title = "Effect of adding deadwood disturbance on per-site relative RMSE",
-       subtitle = sprintf("Paired violin: cyan = without D, pink = with D | LOSO CV | %d sites | y = rRMSE (%% of each site's mean observed value) | %% label = change in RMSE (negative = less error, green; positive = more error, red)", n_sites)) +
+       subtitle = sprintf("Paired violin: cyan = without D, pink = with D | LOSO CV | %d sites | y = rRMSE (%% of that EFP's network-mean observed value) | %% label = change in RMSE (negative = less error, green; positive = more error, red)", n_sites)) +
   dark_theme +
   theme(strip.placement = "outside")
 
