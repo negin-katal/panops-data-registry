@@ -94,7 +94,7 @@ for (u in units) {
   wd <- site_rmse[model == u$wd, .(response, SITE_ID, r_wd = rmse)]
   if (nrow(wo) == 0 || nrow(wd) == 0) { cat("  skip:", u$id, "\n"); next }
   d <- merge(wo, wd, by = c("response", "SITE_ID"))
-  d[, delta_rmse := 100 * (r_wd - r_wo) / r_wo]   # % change; <0 = improved
+  d[, delta_rmse := r_wd - r_wo]
   d <- merge(d, site_meta, by = "SITE_ID")
   d <- d[response %in% EFP_ORDER & !is.na(IGBP)]
   d[, response := factor(response, levels = EFP_ORDER)]
@@ -106,13 +106,11 @@ for (u in units) {
     geom_boxplot(width = 0.18, outlier.shape = NA, colour = "white", fill = NA, linewidth = 0.3) +
     stat_summary(fun = median, geom = "point", colour = "white", size = 1.2) +
     stat_summary(fun = mean, geom = "point", colour = "yellow", size = 1.2, shape = 18) +
-    stat_summary(fun = mean, geom = "text", colour = "yellow", size = 1.9, vjust = -1.1,
-                 aes(label = sprintf("%+.0f%%", after_stat(y)))) +
     scale_fill_manual(values = IGBP_COL, guide = "none") +
     facet_wrap(~response, nrow = 1, scales = "free_y", labeller = EFP_LAB) +
-    labs(x = NULL, y = expression(Delta*"RMSE  (%)"),
+    labs(x = NULL, y = expression(Delta*"RMSE  (with D - without D)"),
          title = sprintf("Effect of adding disturbance on per-site RMSE by IGBP class — %s", u$id),
-         subtitle = "White dot = median | Yellow diamond + label = mean % change | negative = D improved") +
+         subtitle = "White dot = median | Yellow diamond = mean | negative = D improved") +
     dark_theme +
     theme(axis.text.x = element_text(colour = AXIS_COL, size = 6.5, face = "bold", angle = 45, hjust = 1))
   ggsave(file.path(out_igbp, sprintf("IGBP_deltaRMSE_%s.png", u$id)), pA, width = 18, height = 5, dpi = 200, bg = DARK_BG)
@@ -128,7 +126,7 @@ for (u in units) {
     guides(colour = guide_legend(override.aes = list(size = 2.5, alpha = 1), ncol = 1)) +
     facet_wrap(~response, nrow = 1, scales = "free_y", labeller = EFP_LAB) +
     labs(x = "Tree cover — forest_mean_pct_500m (%)",
-         y = expression(Delta*"RMSE  (%)"),
+         y = expression(Delta*"RMSE  (with D - without D)"),
          title = sprintf("Tree cover vs. disturbance benefit — %s", u$id),
          subtitle = "Each point = one site | Loess trend with 95% CI") +
     dark_theme + theme(legend.position = "right")

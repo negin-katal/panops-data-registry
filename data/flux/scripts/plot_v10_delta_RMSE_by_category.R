@@ -117,7 +117,7 @@ delta_for_unit <- function(u) {
   wd <- site_rmse[model == u$wd, .(response, SITE_ID, r_wd = rmse)]
   if (nrow(wo) == 0 || nrow(wd) == 0) return(NULL)
   m <- merge(wo, wd, by = c("response", "SITE_ID"))
-  m[, dRMSE := 100 * (r_wd - r_wo) / r_wo]   # % change; <0 = improved
+  m[, dRMSE := r_wd - r_wo]
   m <- m[response %in% EFP_ORDER]
   m[, response := factor(response, levels = EFP_ORDER)]
   m
@@ -132,11 +132,9 @@ make_row <- function(dt, cat_col, metric_name, show_x) {
     geom_violin(trim = TRUE, scale = "width", width = 0.8, colour = NA, alpha = 0.85) +
     geom_boxplot(width = 0.18, outlier.shape = NA, colour = "white", fill = NA, linewidth = 0.35) +
     stat_summary(fun = median, geom = "point", colour = "white", size = 1.1) +
-    stat_summary(fun = mean, geom = "text", colour = "#FFFFFF", size = 2.1, vjust = -0.6,
-                 aes(label = sprintf("%+.1f%%", after_stat(y)))) +
     scale_fill_manual(values = FILL_MAP, guide = "none") +
     facet_wrap(~response, nrow = 1, scales = "free_y") +
-    labs(title = metric_name, x = NULL, y = "ΔRMSE (%)") +
+    labs(title = metric_name, x = NULL, y = "ΔRMSE (with D − without D)") +
     theme_bw(base_size = 9) +
     theme(
       plot.title = element_text(colour = TEXT_COL, size = 10, face = "bold"),
