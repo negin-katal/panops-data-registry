@@ -123,16 +123,52 @@ delta_for_unit <- function(u) {
   m
 }
 
-make_row <- function(dt, cat_col, metric_name, show_x) {
+# ── one-sided significance within each category ──────────────
+# dRMSE is already the paired per-site difference (with D - without D), so this
+# is a ONE-SAMPLE one-sided Wilcoxon signed-rank, H1: median dRMSE < 0, i.e.
+# adding disturbance REDUCES per-site RMSE. Non-parametric: dRMSE is skewed.
+cat_stats <- function(dt, cat_col) {
+  d2 <- copy(dt)
+  d2[, cat := factor(get(cat_col), levels = LEVELS)]
+  d2 <- d2[!is.na(cat) & is.finite(dRMSE)]
+  d2[, .(n = .N,
+         med = median(dRMSE),
+         pct_imp = 100 * mean(dRMSE < 0),
+         p = if (.N >= 6) tryCatch(wilcox.test(dRMSE, mu = 0, alternative = "less",
+                                               exact = FALSE)$p.value,
+                                   error = function(e) NA_real_) else NA_real_),
+     by = .(response, cat)]
+}
+stars <- function(q) fifelse(is.na(q), "",
+                    fifelse(q < 0.001, "***",
+                    fifelse(q < 0.01,  "**",
+                    fifelse(q < 0.05,  "*", "ns"))))
+
+make_row <- function(dt, cat_col, metric_name, show_x, st = NULL) {
   dt2 <- copy(dt)
   dt2[, cat := factor(get(cat_col), levels = LEVELS)]
   dt2 <- dt2[!is.na(cat)]
+  ann <- NULL
+  if (!is.null(st)) {
+    ytop <- dt2[, .(ymax = quantile(dRMSE, 0.98, na.rm = TRUE)), by = response]
+    ann <- merge(st, ytop, by = "response")
+    ann[, `:=`(response = factor(response, levels = EFP_ORDER),
+               cat = factor(cat, levels = LEVELS),
+               ylab = ymax * 1.10)]
+    # Significance alone is misleading here: the High category has ~26 sites vs
+    # ~86 for Low+Mid, so it clears fewer FDR thresholds DESPITE a larger effect.
+    # Always show the effect size next to the star.
+    ann[, lab2 := sprintf("%s\n%.0f%%\u2193  n=%d", sig, pct_imp, n)]
+  }
   ggplot(dt2, aes(x = cat, y = dRMSE, fill = cat)) +
     geom_hline(yintercept = 0, colour = "#888888", linewidth = 0.4) +
     geom_violin(trim = TRUE, scale = "width", width = 0.8, colour = NA, alpha = 0.85) +
     geom_boxplot(width = 0.18, outlier.shape = NA, colour = "white", fill = NA, linewidth = 0.35) +
     stat_summary(fun = median, geom = "point", colour = "white", size = 1.1) +
     scale_fill_manual(values = FILL_MAP, guide = "none") +
+    { if (!is.null(ann)) geom_text(data = ann, aes(x = cat, y = ylab, label = lab2),
+                                   inherit.aes = FALSE, colour = "#FFFFFF", size = 2.4,
+                                   lineheight = 0.95, fontface = "bold") } +
     facet_wrap(~response, nrow = 1, scales = "free_y") +
     labs(title = metric_name, x = NULL, y = "ΔRMSE (with D − without D)") +
     theme_bw(base_size = 9) +
@@ -152,6 +188,7 @@ make_row <- function(dt, cat_col, metric_name, show_x) {
 }
 
 cat("Generating figures:\n")
+sig_rows <- list()
 for (u in units) {
   du <- delta_for_unit(u)
   if (is.null(du)) { cat("  skip (no data):", u$id, "\n"); next }
@@ -159,12 +196,25 @@ for (u in units) {
     cats <- build_cats(method)
     dm <- merge(du, cats, by = "SITE_ID", all.x = TRUE)
 
+    # stats for every metric x response x category in THIS figure, then BH-FDR
+    # across all of them (per-figure scope, matching the paired-violin figures)
+    st_all <- rbindlist(lapply(seq_along(metrics), function(i) {
+      cat_stats(dm, metrics[[i]]$col)[, metric := metrics[[i]]$name][]
+    }), fill = TRUE)
+    st_all[, q := p.adjust(p, method = "BH")]
+    st_all[, sig := stars(q)]
+    sig_rows[[length(sig_rows) + 1]] <-
+      st_all[, .(unit = u$id, method = method, metric, response, category = cat,
+                 n, median_dRMSE = round(med, 5), pct_sites_improved = round(pct_imp, 1),
+                 p_onesided_wilcoxon = signif(p, 4), q_BH = signif(q, 4), sig)]
+
     rows <- lapply(seq_along(metrics), function(i) {
-      make_row(dm, metrics[[i]]$col, metrics[[i]]$name, show_x = (i == length(metrics)))
+      make_row(dm, metrics[[i]]$col, metrics[[i]]$name, show_x = (i == length(metrics)),
+               st = st_all[metric == metrics[[i]]$name])
     })
     combined <- (rows[[1]] / rows[[2]] / rows[[3]]) +
       plot_annotation(
-        title = sprintf("ΔRMSE by disturbance category — %s | %s", u$id, method),
+        title = sprintf("ΔRMSE by disturbance category — %s | %s\nstars = one-sided Wilcoxon, H1: adding D reduces RMSE (BH-FDR within figure): *** q<0.001, ** q<0.01, * q<0.05, ns | %%\u2193 = share of sites whose RMSE improved (read this with the star: High has ~26 sites vs ~86 for Low+Mid, so it has less power despite a larger effect)", u$id, method),
         theme = theme(plot.title = element_text(colour = TEXT_COL, size = 13, face = "bold", hjust = 0.5),
                       plot.background = element_rect(fill = DARK_BG, colour = NA))
       ) & theme(plot.background = element_rect(fill = DARK_BG, colour = NA))
@@ -174,6 +224,14 @@ for (u in units) {
     ggsave(paste0(stem, ".pdf"), combined, width = 16, height = 9, bg = DARK_BG)
     cat(sprintf("  ✓ %s\n", basename(stem)))
   }
+}
+
+if (length(sig_rows) > 0) {
+  sig_dt <- rbindlist(sig_rows, fill = TRUE)
+  sig_csv <- file.path(out_dir, "delta_RMSE_category_significance.csv")
+  fwrite(sig_dt, sig_csv)
+  cat(sprintf("\n  significance CSV: %s (%d tests, %d with q<0.05)\n",
+              sig_csv, nrow(sig_dt), sig_dt[q_BH < 0.05, .N]))
 }
 
 cat("\n✅ V10 ΔRMSE BY CATEGORY COMPLETE\n")

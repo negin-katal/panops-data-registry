@@ -256,8 +256,20 @@
     <div class="secnum">SECTION 3</div>
     <h2>Model performance &amp; effect of disturbance on RMSE</h2>
     <p class="desc">Paired per-site RMSE (cyan = without disturbance, pink = with disturbance) for the four model
-      comparisons (C vs C+D, C+T vs C+T+D, C+M vs C+M+D, C+T+M vs C+T+D+M) across memory type × window. The
-      percentage above each pair is the RMSE reduction from adding disturbance (green = better, grey ≈ no change, red = worse).</p>
+      comparisons (C vs C+D, C+T vs C+T+D, C+M vs C+M+D, C+T+M vs C+T+D+M) across memory type × window.</p>
+    <p class="itxt"><b>Reading the labels.</b> Each pair carries three numbers:
+      <span class="pill">%</span> the <b>median paired change</b> in per-site RMSE (negative = less error, green);
+      <span class="pill">stars</span> a <b>one-sided paired Wilcoxon signed-rank test</b>, H<sub>1</sub>: adding D
+      <i>reduces</i> per-site RMSE, with Benjamini–Hochberg FDR applied across the 80 tests in the figure
+      (*** q&lt;0.001, ** q&lt;0.01, * q&lt;0.05, ns); and <span class="pill">%↓</span> the share of sites whose RMSE
+      improved. Sites are paired on <code>SITE_ID</code>, so both models saw identical training data for each held-out
+      site. Full statistics (p, q, n, medians) are written to
+      <code>RMSE_disturbance_significance.csv</code> beside the figure.</p>
+    <p class="itxt"><b>Two caveats.</b> The effect size is the <i>median of the paired per-site changes</i>, not the
+      difference of the two medians — the latter ignores the pairing and disagreed in sign with the paired statistic in
+      half of the comparisons checked. And because LOSO models share training sites, the per-site errors are not fully
+      independent, which makes p-values mildly <b>anti-conservative</b>; strong results are safe, marginal ones
+      (q ≈ 0.05) should not be over-read.</p>
     <div class="imgwrap"><img id="img_rmse" loading="lazy" alt="paired RMSE"></div>
   </section>
 
@@ -294,6 +306,14 @@
     <h2>ΔRMSE by disturbance category</h2>
     <p class="desc">Per-site ΔRMSE (violins) stratified by disturbance category, in the SHAP-percent style — 3 rows
       (absolute mortality / relative mortality / relative disturbance) × 5 EFP columns.</p>
+    <p class="itxt"><b>Significance (merged figures).</b> ΔRMSE is already the paired per-site difference, so each
+      category is tested with a <b>one-sided one-sample Wilcoxon signed-rank test</b>, H<sub>1</sub>: median ΔRMSE &lt; 0
+      (adding D reduces RMSE), BH-FDR across the 30 tests in each figure. Each violin is annotated with the star, the
+      <b>share of sites improved</b> and <b>n</b>.</p>
+    <p class="itxt"><b>Do not compare significance across categories.</b> The High class holds ~26 sites versus ~86 for
+      Low+Mid, so it clears fewer FDR thresholds <i>despite a ~3.6× larger median effect</i>. Read the effect size and
+      %↓ together with the star — on effect size, disturbance information helps most exactly where disturbance
+      occurred. Full statistics in <code>delta_RMSE_category_significance.csv</code>.</p>
     <div class="controls">
       <div class="ctrl"><label>Comparison</label><select id="sel6_unit"></select></div>
       <div class="ctrl"><label>Threshold method</label><select id="sel6_method"></select></div>

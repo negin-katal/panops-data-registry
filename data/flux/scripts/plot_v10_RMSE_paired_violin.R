@@ -83,20 +83,41 @@ for (cd in cols_def) {
     m_wo <- mid(pd$wo, cd$mem, cd$win)
     m_wd <- mid(pd$wd, cd$mem, cd$win)
     for (resp in EFP_ORDER) {
-      r_wo <- site_rmse[model == m_wo & response == resp, rmse]
-      r_wd <- site_rmse[model == m_wd & response == resp, rmse]
-      if (length(r_wo) == 0 || length(r_wd) == 0) next
+      # pair explicitly on SITE_ID - relying on row order would silently
+      # misalign the pairs if a site were missing from one of the two models
+      pw <- merge(site_rmse[model == m_wo & response == resp, .(SITE_ID, wo = rmse)],
+                  site_rmse[model == m_wd & response == resp, .(SITE_ID, wd = rmse)],
+                  by = "SITE_ID")
+      pw <- pw[is.finite(wo) & is.finite(wd)]
+      if (nrow(pw) == 0) next
+      r_wo <- pw$wo; r_wd <- pw$wd
       plot_rows[[k]] <- data.table(response = resp, col = cd$col, pair = pd$pair,
                                    model_type = "Without D", rmse = r_wo); k <- k + 1
       plot_rows[[k]] <- data.table(response = resp, col = cd$col, pair = pd$pair,
                                    model_type = "With D", rmse = r_wd); k <- k + 1
       # signed % change in RMSE (median-based): negative = LESS error = improvement
       med_wo <- median(r_wo, na.rm = TRUE); med_wd <- median(r_wd, na.rm = TRUE)
-      delta_pct <- (med_wd - med_wo) / med_wo * 100
+      # Effect size = MEDIAN OF THE PAIRED PER-SITE % CHANGES, not the difference
+      # of the two medians. The design is paired (same sites, same folds, only D
+      # differs), so the effect size must be too - and it is what the signed-rank
+      # test below actually assesses. Difference-of-medians compares two marginal
+      # distributions, ignores the pairing, and disagreed in SIGN with the paired
+      # statistic in 10 of 20 spot-checked comparisons (e.g. NEPmax M1->M2 read
+      # +5.0% by that measure but -13.9% paired, with 63% of sites improving).
+      delta_pct <- median((r_wd - r_wo) / r_wo * 100, na.rm = TRUE)
+      # ONE-SIDED paired Wilcoxon signed-rank: H1 = adding D REDUCES per-site RMSE.
+      # Non-parametric because per-site RMSE is right-skewed. Paired on SITE_ID, so
+      # both models saw identical training data for each held-out site.
+      pval <- tryCatch(
+        wilcox.test(r_wd, r_wo, paired = TRUE, alternative = "less", exact = FALSE)$p.value,
+        error = function(e) NA_real_)
+      n_pair  <- length(r_wo)
+      pct_imp <- 100 * mean(r_wd < r_wo, na.rm = TRUE)
       # colour tracks improvement: green when error drops, red when it rises
       lcol <- if (delta_pct < -1) COL_UP else if (delta_pct > 1) COL_DN else COL_NC
       lab_rows[[lk]] <- data.table(response = resp, col = cd$col, pair = pd$pair,
-                                   imp = delta_pct,
+                                   imp = delta_pct, p = pval, n = n_pair, pct_imp = pct_imp,
+                                   med_wo = med_wo, med_wd = med_wd,
                                    label = sprintf("%+.1f%%", delta_pct),
                                    lcol = lcol); lk <- lk + 1
     }
@@ -104,6 +125,29 @@ for (cd in cols_def) {
 }
 dt <- rbindlist(plot_rows)
 labs <- rbindlist(lab_rows)
+
+# ── significance: Benjamini-Hochberg FDR across all tests in THIS figure ──────
+# Scope = one learner variant x one dataset (80 tests), so each figure is
+# internally valid and figures stay comparable with one another.
+labs[, q := p.adjust(p, method = "BH")]
+stars <- function(q) fifelse(is.na(q), "",
+                    fifelse(q < 0.001, "***",
+                    fifelse(q < 0.01,  "**",
+                    fifelse(q < 0.05,  "*", " ns"))))
+labs[, sig := stars(q)]
+# Show the effect size with the significance marker - a star on its own invites
+# comparing significance across groups that differ in sample size and power.
+labs[, label := sprintf("%+.1f%%%s\n%.0f%%\u2193", imp, sig, pct_imp)]
+
+res_csv <- file.path(out_dir, "RMSE_disturbance_significance.csv")
+fwrite(labs[order(response, col, pair),
+            .(response, window_memory = col, pair, n_sites = n,
+              median_RMSE_withoutD = round(med_wo, 4), median_RMSE_withD = round(med_wd, 4),
+              delta_pct = round(imp, 2), pct_sites_improved = round(pct_imp, 1),
+              p_onesided_wilcoxon = signif(p, 4), q_BH = signif(q, 4), sig)],
+       res_csv)
+cat(sprintf("  significance CSV: %s (%d tests, %d with q<0.05)\n",
+            res_csv, nrow(labs), labs[q < 0.05, .N]))
 
 dt[, response := factor(response, levels = EFP_ORDER)]
 dt[, col := factor(col, levels = COL_LEVELS)]
@@ -159,7 +203,7 @@ p <- ggplot(dt, aes(x = pair, y = rmse, fill = model_type)) +
   facet_grid(response ~ col, scales = "free_y", labeller = resp_labeller, switch = "y") +
   labs(x = NULL, y = NULL,
        title = "Effect of adding deadwood disturbance on per-site RMSE",
-       subtitle = sprintf("Paired violin: cyan = without D, pink = with D | LOSO CV | %d sites | %% = change in RMSE (negative = less error, green; positive = more error, red)", n_sites)) +
+       subtitle = sprintf("Paired violin: cyan = without D, pink = with D | LOSO CV | %d sites | %% = MEDIAN PAIRED change in per-site RMSE (negative = less error, green)\nstars = one-sided paired Wilcoxon, H1: adding D reduces RMSE, BH-FDR within figure (*** q<0.001, ** q<0.01, * q<0.05, ns) | %%\u2193 = share of sites whose RMSE improved", n_sites)) +
   dark_theme +
   theme(strip.placement = "outside")
 
