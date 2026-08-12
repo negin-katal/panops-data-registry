@@ -1,0 +1,12 @@
+{
+  "learner": "RF",
+  "response": "ETmax",
+  "best_value": 0.65713852,
+  "n_trials": 50,
+  "params": {
+    "mtry_frac": 0.813428872322714,
+    "num_trees": 500,
+    "min_node_size": 2,
+    "sample_fraction": 0.9975654455562261
+  }
+}
