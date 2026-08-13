@@ -1,0 +1,6 @@
+outs:
+- md5: 445b327c8a5536c52b29980d0471c808.dir
+  size: 32861484030
+  nfiles: 1328
+  hash: md5
+  path: FluxNet_oldV
