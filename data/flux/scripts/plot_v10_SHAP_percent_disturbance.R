@@ -64,6 +64,10 @@ if (dataset_type == "filtered") {
   harm_file <- "derived_tables/outputs_afterEGU_results/v10/v10_B1_GPPsat_harmonized.csv"
   shap_file <- "derived_tables/outputs_afterEGU_results/RF_v10/RF_site_shap_M04_M08.csv"
   output_dir <- "plots/V10/sites_with_high_Tcover/SHAP_percent"
+} else if (dataset_type == "tc50") {
+  harm_file <- "derived_tables/outputs_afterEGU_results/v10_tc50/v10_tc50_B1_GPPsat_harmonized.csv"
+  shap_file <- "derived_tables/outputs_afterEGU_results/RF_v10_tc50/RF_site_shap_M04_M08.csv"
+  output_dir <- "plots/V10/sites_tc50/SHAP_percent"
 } else if (dataset_type == "all_sites") {
   harm_file <- "derived_tables/outputs_afterEGU_results/v10_all_sites/v10_all_B1_GPPsat_harmonized.csv"
   shap_file <- "derived_tables/outputs_afterEGU_results/RF_v10_all_sites/RF_site_shap_M04_M08.csv"

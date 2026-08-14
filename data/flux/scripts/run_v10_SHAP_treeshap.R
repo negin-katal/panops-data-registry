@@ -25,6 +25,9 @@ setwd("/mnt/gsdata/projects/panops/panops-data-registry/data/flux")
 if (dataset_type == "filtered") {
   output_base <- 'derived_tables/outputs_afterEGU_results/v10'
   prefix <- 'v10_B'
+} else if (dataset_type == "tc50") {
+  output_base <- 'derived_tables/outputs_afterEGU_results/v10_tc50'
+  prefix <- 'v10_tc50_B'
 } else if (dataset_type == "all_sites") {
   output_base <- 'derived_tables/outputs_afterEGU_results/v10_all_sites'
   prefix <- 'v10_all_B'

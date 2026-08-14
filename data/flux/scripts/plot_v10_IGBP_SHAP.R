@@ -30,6 +30,10 @@ if (dataset_type == "filtered") {
   shap_file <- "derived_tables/outputs_afterEGU_results/RF_v10/RF_site_shap_M04_M08.csv"
   out_igbp  <- "plots/V10/sites_with_high_Tcover/SHAP_percent/IGBP"
   out_tc    <- "plots/V10/sites_with_high_Tcover/SHAP_percent/treecover"
+} else if (dataset_type == "tc50") {
+  shap_file <- "derived_tables/outputs_afterEGU_results/RF_v10_tc50/RF_site_shap_M04_M08.csv"
+  out_igbp  <- "plots/V10/sites_tc50/SHAP_percent/IGBP"
+  out_tc    <- "plots/V10/sites_tc50/SHAP_percent/treecover"
 } else if (dataset_type == "all_sites") {
   shap_file <- "derived_tables/outputs_afterEGU_results/RF_v10_all_sites/RF_site_shap_M04_M08.csv"
   out_igbp  <- "plots/V10/all_sites/SHAP_percent/IGBP"

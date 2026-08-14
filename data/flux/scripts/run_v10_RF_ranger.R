@@ -24,6 +24,9 @@ setwd("/mnt/gsdata/projects/panops/panops-data-registry/data/flux")
 if (dataset_type == "filtered") {
   output_base <- 'derived_tables/outputs_afterEGU_results/RF_v10'
   prefix <- 'v10_B'
+} else if (dataset_type == "tc50") {
+  output_base <- 'derived_tables/outputs_afterEGU_results/RF_v10_tc50'
+  prefix <- 'v10_tc50_B'
 } else if (dataset_type == "all_sites") {
   output_base <- 'derived_tables/outputs_afterEGU_results/RF_v10_all_sites'
   prefix <- 'v10_all_B'
@@ -133,6 +136,9 @@ for (resp in RESPONSE_VARS) {
   if (dataset_type == "filtered") {
     b1_file <- sprintf('derived_tables/outputs_afterEGU_results/v10/v10_B1_%s_harmonized.csv', resp)
     b2_file <- sprintf('derived_tables/outputs_afterEGU_results/v10/v10_B2_%s_harmonized.csv', resp)
+  } else if (dataset_type == "tc50") {
+    b1_file <- sprintf('derived_tables/outputs_afterEGU_results/v10_tc50/v10_tc50_B1_%s_harmonized.csv', resp)
+    b2_file <- sprintf('derived_tables/outputs_afterEGU_results/v10_tc50/v10_tc50_B2_%s_harmonized.csv', resp)
   } else {
     b1_file <- sprintf('derived_tables/outputs_afterEGU_results/v10_all_sites/v10_all_B1_%s_harmonized.csv', resp)
     b2_file <- sprintf('derived_tables/outputs_afterEGU_results/v10_all_sites/v10_all_B2_%s_harmonized.csv', resp)

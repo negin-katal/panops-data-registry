@@ -43,12 +43,15 @@ fam <- sub("_.*$", "", variant)                          # RF | XGB | LGB
 
 if (dataset_type == "filtered") {
   datadir <- "derived_tables/outputs_afterEGU_results/v10"; prefix <- "v10"
+} else if (dataset_type == "tc50") {
+  datadir <- "derived_tables/outputs_afterEGU_results/v10_tc50"; prefix <- "v10_tc50"
 } else {
   datadir <- "derived_tables/outputs_afterEGU_results/v10_all_sites"; prefix <- "v10_all"
 }
 output_base <- file.path("derived_tables/outputs_afterEGU_results",
                          sprintf("%s_repCV%s", variant,
-                                 if (dataset_type == "all_sites") "_all_sites" else ""))
+                                 if (dataset_type == "all_sites") "_all_sites"
+                                 else if (dataset_type == "tc50") "_tc50" else ""))
 dir.create(output_base, recursive = TRUE, showWarnings = FALSE)
 
 cat("\n", strrep("=", 78), "\n", sep = "")

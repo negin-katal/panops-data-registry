@@ -21,6 +21,9 @@ SEED <- 42; N_CORES <- 60
 if (dataset_type == "filtered") {
   output_base <- "derived_tables/outputs_afterEGU_results/RF_v10_tuned"
   datadir <- "derived_tables/outputs_afterEGU_results/v10"; prefix <- "v10"
+} else if (dataset_type == "tc50") {
+  output_base <- "derived_tables/outputs_afterEGU_results/RF_v10_tc50_tuned"
+  datadir <- "derived_tables/outputs_afterEGU_results/v10_tc50"; prefix <- "v10_tc50"
 } else if (dataset_type == "all_sites") {
   output_base <- "derived_tables/outputs_afterEGU_results/RF_v10_all_sites_tuned"
   datadir <- "derived_tables/outputs_afterEGU_results/v10_all_sites"; prefix <- "v10_all"

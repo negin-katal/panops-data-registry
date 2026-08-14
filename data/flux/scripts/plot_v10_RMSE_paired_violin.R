@@ -24,6 +24,9 @@ cat(strrep("=", 80), "\n\n", sep = "")
 if (dataset_type == "filtered") {
   pred_file <- "derived_tables/outputs_afterEGU_results/RF_v10/RF_predictions_LOSO.csv"
   out_dir   <- "plots/V10/sites_with_high_Tcover/RMSE"
+} else if (dataset_type == "tc50") {
+  pred_file <- "derived_tables/outputs_afterEGU_results/RF_v10_tc50/RF_predictions_LOSO.csv"
+  out_dir   <- "plots/V10/sites_tc50/RMSE"
 } else if (dataset_type == "all_sites") {
   pred_file <- "derived_tables/outputs_afterEGU_results/RF_v10_all_sites/RF_predictions_LOSO.csv"
   out_dir   <- "plots/V10/all_sites/RMSE"

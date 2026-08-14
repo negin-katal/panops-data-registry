@@ -34,6 +34,10 @@ if (dataset_type == "filtered") {
   pred_file <- "derived_tables/outputs_afterEGU_results/RF_v10/RF_predictions_LOSO.csv"
   shap_file <- "derived_tables/outputs_afterEGU_results/RF_v10/RF_site_shap_M04_M08.csv"
   out_dir   <- "plots/V10/sites_with_high_Tcover/IGBP_boards"
+} else if (dataset_type == "tc50") {
+  pred_file <- "derived_tables/outputs_afterEGU_results/RF_v10_tc50/RF_predictions_LOSO.csv"
+  shap_file <- "derived_tables/outputs_afterEGU_results/RF_v10_tc50/RF_site_shap_M04_M08.csv"
+  out_dir   <- "plots/V10/sites_tc50/IGBP_boards"
 } else if (dataset_type == "all_sites") {
   pred_file <- "derived_tables/outputs_afterEGU_results/RF_v10_all_sites/RF_predictions_LOSO.csv"
   shap_file <- "derived_tables/outputs_afterEGU_results/RF_v10_all_sites/RF_site_shap_M04_M08.csv"

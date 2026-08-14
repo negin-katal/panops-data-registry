@@ -29,6 +29,9 @@ GRID <- CJ(mtry_frac = c(0.20, 0.33, 0.50, 0.70, 1.00),
 if (dataset_type == "filtered") {
   b2 <- "derived_tables/outputs_afterEGU_results/v10/v10_B2_%s_harmonized.csv"
   out_dir <- "plots/V10/RF_tuning/exp01_hyperparams"
+} else if (dataset_type == "tc50") {
+  b2 <- "derived_tables/outputs_afterEGU_results/v10_tc50/v10_tc50_B2_%s_harmonized.csv"
+  out_dir <- "plots/V10/RF_tuning/exp01_hyperparams"
 } else if (dataset_type == "all_sites") {
   b2 <- "derived_tables/outputs_afterEGU_results/v10_all_sites/v10_all_B2_%s_harmonized.csv"
   out_dir <- "plots/V10/RF_tuning/exp01_hyperparams"
