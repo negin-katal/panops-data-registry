@@ -18,11 +18,14 @@ setwd("/mnt/gsdata/projects/panops/panops-data-registry/data/flux")
 args <- commandArgs(trailingOnly = TRUE)
 if (length(args) < 1) stop("Usage: Rscript run_v10_RF_ranger_exp02.R <filtered|all_sites>")
 dataset_type <- args[1]
-SEED <- 42; N_CORES <- 60
+SEED <- 42; N_CORES <- as.integer(Sys.getenv("V10_CORES", "60"))
 
 if (dataset_type == "filtered") {
   output_base <- "derived_tables/outputs_afterEGU_results/RF_v10_exp02"
   datadir <- "derived_tables/outputs_afterEGU_results/v10"; prefix <- "v10"
+} else if (dataset_type == "tc50") {
+  output_base <- "derived_tables/outputs_afterEGU_results/RF_v10_tc50_exp02"
+  datadir <- "derived_tables/outputs_afterEGU_results/v10_tc50"; prefix <- "v10_tc50"
 } else if (dataset_type == "all_sites") {
   output_base <- "derived_tables/outputs_afterEGU_results/RF_v10_all_sites_exp02"
   datadir <- "derived_tables/outputs_afterEGU_results/v10_all_sites"; prefix <- "v10_all"
