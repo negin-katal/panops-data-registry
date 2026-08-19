@@ -125,7 +125,7 @@
     <a href="#s10">10 · RF tuning</a>
     <a href="#s11">11 · XGBoost</a>
     <a href="#s12">12 · LightGBM</a>
-    <a href="#s13">13 · Model structures</a>
+    <a href="#s13">13 · Model structures</a><a href="#s14">14 · Decisions</a>
   </nav>
 </header>
 
@@ -791,6 +791,128 @@
       <code>daily_reports/2026-08-05-model-structures.md</code>.</p>
   </section>
 
+  <section id="s14">
+    <div class="secnum">SECTION 14 · DECISIONS</div>
+    <h2>What gets reported — and why</h2>
+    <p class="desc">The full grid is 3 datasets &times; 9 learners &times; 2 CV structures &times; 24 models.
+      This section records which cell goes in the manuscript, the evidence behind each choice, and the claims the
+      results do and do not support. Written 2026-08-19; source:
+      <code>daily_reports/2026-08-19-reporting-decisions.md</code>.</p>
+
+    <div class="tblwrap"><table class="metrics">
+      <thead><tr><th class="txt">Choice</th><th class="txt">Selected</th><th class="txt">Role</th></tr></thead>
+      <tbody>
+        <tr><td class="txt">Dataset</td><td class="txt">Tree cover &ge;30% — 93 sites, 395 site-years</td><td class="txt">main text</td></tr>
+        <tr><td class="txt">Cross-validation</td><td class="txt">Leave-one-site-out</td><td class="txt">main text</td></tr>
+        <tr><td class="txt"></td><td class="txt">Repeated LOSO-CV (3 &times; 80% of sites)</td><td class="txt">sanity check</td></tr>
+        <tr><td class="txt">Learner</td><td class="txt">XGBoost + Optuna</td><td class="txt">main text</td></tr>
+        <tr><td class="txt">Models</td><td class="txt">M3/M4 (no memory), M7/M8 raw (with memory)</td><td class="txt">main text</td></tr>
+        <tr><td class="txt">Everything else</td><td class="txt">3 &times; 9 &times; 2 full grid</td><td class="txt">appendix</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>The finding in four numbers</h3>
+    <p class="desc">tc&ge;30 &middot; LOSO &middot; XGB_optuna. Adding the disturbance block to a model that already
+      has climate and traits.</p>
+    <div class="tblwrap"><table class="metrics">
+      <thead><tr><th class="txt"></th><th class="txt">GPPsat</th><th class="txt">NEPmax</th></tr></thead>
+      <tbody>
+        <tr><td class="txt"><b>no memory</b> (M3&rarr;M4)</td>
+            <td class="txt">R&sup2; 0.191 &rarr; <b>0.359</b>, &minus;10.2% RMSE ***</td>
+            <td class="txt">R&sup2; 0.192 &rarr; <b>0.405</b>, &minus;8.9% RMSE ***</td></tr>
+        <tr><td class="txt"><b>raw memory</b> (M7&rarr;M8)</td>
+            <td class="txt">R&sup2; 0.677 &rarr; 0.693, &minus;2.2% *</td>
+            <td class="txt">R&sup2; 0.731 &rarr; 0.747, ns</td></tr>
+      </tbody>
+    </table></div>
+    <p class="desc">Disturbance roughly <b>doubles explained variance</b> for both carbon fluxes when EFP memory is
+      absent, and adds almost nothing once raw memory is included — raw EFP memory already carries most of the
+      information disturbance provides. 9 of 20 tests significant: 7/10 without memory, 2/10 with it.</p>
+
+    <h3>1 · Dataset — disturbance effect is not monotonic in tree cover</h3>
+    <p class="desc">1,620 paired comparisons (9 learners &times; 12 model pairs &times; 5 EFPs &times; 3 datasets),
+      each pair differing only by the disturbance block.</p>
+    <div class="tblwrap"><table class="metrics">
+      <thead><tr><th class="txt">Dataset</th><th>median &Delta;RMSE</th><th>improved</th><th>EFPs helped</th></tr></thead>
+      <tbody>
+        <tr><td class="txt"><b>tc&ge;30 (93)</b></td><td><b>&minus;4.74%</b></td><td><b>83.1%</b></td><td><b>4/5</b></td></tr>
+        <tr><td class="txt">all_sites (112)</td><td>&minus;2.11%</td><td>79.4%</td><td>4/5</td></tr>
+        <tr><td class="txt">tc&ge;50 (65)</td><td>&minus;0.75%</td><td>65.0%</td><td>3/5</td></tr>
+      </tbody>
+    </table></div>
+    <p class="desc">The most forested dataset is the <i>weakest</i>. But tc&ge;50 also has 42% less spread in
+      mortality rate (sd 3.18 vs 5.46) and fewer site-years, so this reflects less disturbance variance to
+      detect — not evidence that mortality matters less in dense forest.</p>
+
+    <h3>2 · Does disturbance matter more for forests? No evidence</h3>
+    <p class="desc">Tested at site level (one value per site, pooled over all 9 learners, so no pseudo-replication),
+      on all_sites which spans the full gradient:</p>
+    <ul class="desc">
+      <li>Tree cover vs disturbance benefit: <b>Spearman &rho; = 0.044, p = 0.65</b> — no relationship</li>
+      <li>Forest (83 sites) &minus;3.09% vs non-forest (29 sites) &minus;7.09%: <b>p = 0.163</b> — not significant,
+          and pointing opposite to the hypothesis</li>
+    </ul>
+    <p class="desc"><b>Caution:</b> pooling all site &times; pair &times; EFP rows gives "non-forest benefits more,
+      p = 1e-08". That is pseudo-replication — 60 non-independent rows per site — and the effect disappears once
+      aggregated per site. Do not quote the pooled version.</p>
+    <p class="desc"><b>Conclusion:</b> the disturbance effect is <b>EFP-specific, not ecosystem-specific</b>. It
+      depends on which function is predicted (carbon yes, water no), not on ecosystem type.</p>
+
+    <h3>3 · Cross-validation — agree on conclusions, differ in power</h3>
+    <p class="desc">3,240 matched rows. Model-rank agreement &rho; = 0.85–0.96; disturbance effect correlates at
+      <b>r = 0.966</b>; same best learner in 6/6 dataset &times; CV combinations; per-EFP sign agreement 13/15
+      (both exceptions are effectively-zero effects flipping around zero). Repeated CV is slightly <i>more</i>
+      optimistic, since it averages 3 predictions.</p>
+    <div class="tblwrap"><table class="metrics">
+      <thead><tr><th class="txt">tc&ge;30, XGB_optuna</th><th>significant</th><th>no-memory</th><th>raw-memory</th><th>median effect</th></tr></thead>
+      <tbody>
+        <tr><td class="txt"><b>LOSO</b></td><td><b>9/20</b></td><td>7/10</td><td>2/10</td><td>&minus;4.53%</td></tr>
+        <tr><td class="txt">repeated CV</td><td>4/20</td><td>4/10</td><td>0/10</td><td>&minus;4.00%</td></tr>
+      </tbody>
+    </table></div>
+    <p class="desc">Effect sizes nearly identical, but averaging 3 predictions smooths both models and shrinks the
+      paired differences. LOSO is therefore primary; repeated CV answers the reviewer question
+      <i>"is this an artefact of one split?"</i></p>
+
+    <h3>4 · Learner — why not the most accurate one</h3>
+    <p class="desc">RF_exp02 has the highest mean R&sup2; (0.372 vs XGB_optuna 0.358) but was rejected. Its
+      <code>always.split.variables = raw memory</code> hard-codes a structural privilege for one predictor block.
+      RF_exp02 and RF_base are <i>identical</i> without raw memory (0.234 both); the forcing is worth +0.244 R&sup2;
+      there and nothing elsewhere.</p>
+    <p class="desc">The defence that exists: memory is the <b>control</b> (an autoregressive nuisance term),
+      disturbance is the <b>treatment</b>; forcing the control is conservative — RF_exp02 shows the <i>weakest</i>
+      disturbance effect of the RF family. Forcing disturbance instead would be circular.</p>
+    <p class="desc"><b>But the forcing is unnecessary.</b> RF_optuna reaches essentially the same raw-memory
+      performance (<b>0.644 vs 0.648</b>) with no forcing — purely by tuning <code>mtry</code> to 0.72–0.91 of
+      predictors instead of ranger's <code>sqrt(p)</code> default (~0.05 when p &approx; 449). With ~21 of 449
+      predictors sampled per split, RF picked the memory variable by chance ~5% of the time. The forcing was a
+      workaround for a hyperparameter pathology, not a scientific statement.</p>
+    <p class="desc"><b>XGB_optuna selected:</b> highest R&sup2; of any non-forcing learner, hyperparameters from a
+      defined TPE search space, disturbance effect mid-pack (&minus;2.15%, 78.3% improved) so not cherry-picked, and
+      disturbance SHAP share 26.7% — slightly above RF_exp02's 25.9%.</p>
+    <p class="desc"><b>Caveat:</b> RF_base has the highest disturbance SHAP share (35.6%) partly <i>because it is the
+      worst model</i> — its raw-memory models underperform (0.404), so proportionally more attribution falls to
+      disturbance. Not evidence that disturbance matters more.</p>
+
+    <h3>5 · Six things to state explicitly in the manuscript</h3>
+    <ol class="desc">
+      <li><b>Justify tc&ge;30 a priori</b> — "the forest-relevant subset" — not because it showed the strongest
+        effect. The other two datasets are in the appendix showing the same direction.</li>
+      <li><b>The 2 raw-memory significant results are fragile.</b> GPPsat 12m and WUE 24m (* under LOSO) drop to
+        0/10 under repeated CV. The defensible line: <i>once raw EFP memory is included, disturbance adds no
+        consistent improvement.</i></li>
+      <li><b>ETmax is a consistent null</b> — ns in every configuration, slightly positive in places. An honest null
+        across 3 datasets &times; 9 learners &times; 2 CV structures is a result; report it.</li>
+      <li><b>uWUE/WUE are borderline</b> — significant at 24m, not 12m. Describe as weak and window-dependent.</li>
+      <li><b>Do not compare R&sup2; across datasets.</b> tc&ge;50's R&sup2; is depressed ~41% by range restriction
+        (GPPsat sd 8.72 &rarr; 6.97) while its RMSE <i>improves</i> ~6.7%. Use RMSE across datasets; R&sup2; only
+        for ranking models within one.</li>
+      <li><b>Robustness sentence available:</b> <i>"The disturbance effect is invariant across nine learner
+        configurations (RF, XGBoost, LightGBM, each with tuned and Optuna variants) and two resampling structures;
+        the adopted configuration yields a mid-range estimate."</i></li>
+    </ol>
+  </section>
+
   <div class="note">All figures are also available as PDF next to each PNG. This report references the image files by
     relative path, so keep it inside <code>plots/V10/</code>.</div>
 </main>
@@ -926,7 +1048,8 @@ function PS(){return LOOPATH[CFG]||'';}
 
 const META={
   all_sites:{sites:112,siteyears:414,igbp:'ENF 49 · DBF 26 · WET 17 · MF 6 · OSH 6 · WSA 3 · CSH 3 · EBF 2'},
-  sites_with_high_Tcover:{sites:93,siteyears:395,igbp:'ENF 45 · DBF 26 · WET 10 · MF 6 · CSH 2 · OSH 2 · WSA 1 · EBF 1'}
+  sites_with_high_Tcover:{sites:93,siteyears:395,igbp:'ENF 45 · DBF 26 · WET 10 · MF 6 · CSH 2 · OSH 2 · WSA 1 · EBF 1'},
+  sites_tc50:{sites:65,siteyears:287,igbp:'ENF 31 · DBF 24 · MF 6 · WET 2 · OSH 1 · EBF 1'}
 };
 
 let DS='all_sites';
@@ -1031,7 +1154,8 @@ function r11(){const v=document.getElementById('sel11_view').value;
   setImg('img_xgb',`XGBoost/${v}.png`);document.getElementById('cap_xgb').textContent=XGB_DESC[v]||'';}
 function r12(){const v=document.getElementById('sel12_view').value;
   setImg('img_lgb',`LightGBM/${v}.png`);document.getElementById('cap_lgb').textContent=LGB_DESC[v]||'';}
-function renderAll(){rMeta();renderMetrics();r1();r2();r3();r4();r5();r6();r7();r8();r9();r10();r11();r12();}
+function renderAll(){[rMeta,renderMetrics,r1,r2,r3,r4,r5,r6,r7,r8,r9,r10,r11,r12]
+  .forEach(f=>{try{f();}catch(e){console.error('renderAll: '+f.name+' failed',e);}});}
 
 // ---- listeners ----
 document.querySelectorAll('#cvToggle button').forEach(b=>b.addEventListener('click',()=>{
