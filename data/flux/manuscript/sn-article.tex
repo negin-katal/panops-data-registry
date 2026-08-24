@@ -280,49 +280,69 @@ These anticipated findings would suggest that integrating remotely sensed mortal
 
 \section{Methods}\label{sec11}
 
-\subsection*{Study sites and data sources}
+\subsection*{Study sites and data selection}
 
-We assembled a multi-network eddy covariance dataset spanning 166 sites and 644 site-years across the period 2017–2025, drawing from FLUXNET, ICOS, AmeriFlux, NEON, and OzFlux. Sites were included if they met two criteria: (i) at least four consecutive years of valid half-hourly flux observations within the study window, and (ii) availability of co-located forest cover and disturbance data from the deadtrees.earth platform \cite{mosig2026deadtrees}. The final dataset covers a range of IGBP land-cover classes including evergreen needleleaf forest (ENF; $n=58$ sites), deciduous broadleaf forest (DBF; $n=31$), mixed forest (MF; $n=7$), and open ecosystems including shrublands, savannas, and wetlands (OSH, WSA, SAV, CSH, WET; $n=70$).
+We assembled a multi-network eddy covariance dataset drawing from FLUXNET, ICOS, AmeriFlux, NEON and OzFlux, covering the period 2019--2025. Sites entered the analysis if they met three criteria: (i) at least four consecutive years of valid half-hourly flux observations within the study window, (ii) availability of co-located forest cover and disturbance data from the deadtrees.earth platform \cite{mosig2026deadtrees}, and (iii) complete data across all predictor columns after benchmark harmonisation (below). This yielded 112 sites and 414 site-years.
+
+Because the disturbance product characterises canopy mortality, we defined a tree-cover gradient by screening on mean tree cover within a 500\,m buffer, computed per site as the multi-year mean of \texttt{tree\_cover\_mean\_pct\_500m}. Three nested datasets were analysed (Table~\ref{tab:datasets}). The $\geq$30\,\% subset is used for all analyses reported in the main text; it retains the forest and woodland sites for which canopy mortality is a meaningful predictor while preserving sufficient sample size and disturbance variability. The unfiltered and $\geq$50\,\% datasets are reported in the Supplementary Information as sensitivity analyses.
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{lccl}
+\hline
+Dataset & Sites & Site-years & Tree-cover filter (500\,m buffer) \\
+\hline
+All sites & 112 & 414 & none \\
+\textbf{Tree cover $\geq$30\,\%} & \textbf{93} & \textbf{395} & mean tree cover $\geq$ 30\,\% \\
+Tree cover $\geq$50\,\% & 65 & 287 & mean tree cover $\geq$ 50\,\% \\
+\hline
+\end{tabular}
+\caption{The three nested datasets. All are constructed through an identical pipeline and share the same predictor structure, differing only in which sites they contain. The $\geq$30\,\% dataset is reported in the main text.}
+\label{tab:datasets}
+\end{table}
+
+The reported dataset comprises evergreen needleleaf forest (ENF, $n=45$ sites), deciduous broadleaf forest (DBF, $n=26$), wetland (WET, $n=10$), mixed forest (MF, $n=6$), closed and open shrubland (CSH, $n=2$; OSH, $n=2$), evergreen broadleaf forest (EBF, $n=1$) and woody savanna (WSA, $n=1$), with a median of four site-years per site.
 
 \subsection*{Ecosystem functional properties}
 
-Annual ecosystem functional properties (EFPs) were derived from half-hourly eddy covariance flux observations following the methodology of \cite{musavi2015imprint} and \cite{migliavacca2021three}. For each site-year, we computed:
-\begin{itemize}
-    \item Light-saturated gross primary productivity (\textbf{GPP$_\mathbf{sat}$}; $\mu$mol m$^{-2}$ s$^{-1}$): the upper quantile of the light-response curve fitted to half-hourly GPP observations,
-    \item Maximum net ecosystem production (\textbf{NEP$_\mathbf{max}$}; $\mu$mol m$^{-2}$ s$^{-1}$): the upper-envelope carbon uptake capacity,
-    \item Maximum evapotranspiration (\textbf{ET$_\mathbf{max}$}; mm d$^{-1}$): the upper-envelope water flux,
-    \item Underlying water-use efficiency (\textbf{uWUE}; g C mm$^{-1}$): defined as $\text{GPP} \cdot \sqrt{\text{VPD}} / \text{ET}$, which accounts for atmospheric demand \cite{migliavacca_three_2021},
-    \item Water-use efficiency (\textbf{WUE}; g C mm$^{-1}$): defined as GPP / ET.
-\end{itemize}
+Annual ecosystem functional properties (EFPs) were derived from half-hourly eddy covariance observations following \cite{musavi2015imprint} and \cite{migliavacca_three_2021}. For each site-year we computed light-saturated gross primary productivity (GPP$_\mathrm{sat}$; $\mu$mol\,m$^{-2}$\,s$^{-1}$), maximum net ecosystem production (NEP$_\mathrm{max}$; $\mu$mol\,m$^{-2}$\,s$^{-1}$), maximum evapotranspiration (ET$_\mathrm{max}$; mm\,d$^{-1}$), underlying water-use efficiency (uWUE $=\mathrm{GPP}\cdot\sqrt{\mathrm{VPD}}/\mathrm{ET}$; g\,C\,mm$^{-1}$) and water-use efficiency (WUE $=\mathrm{GPP}/\mathrm{ET}$; g\,C\,mm$^{-1}$).
 
-EFP estimation was anchored to the center of the growing season (CGS), defined as the date of maximum daily GPP after smoothing. This approach avoids phenological confounding and ensures predictors reflect antecedent conditions relative to peak carbon uptake.
+EFP estimation was anchored to the centre of the growing season (CGS), defined as the date of maximum daily GPP after smoothing, so that predictors describe antecedent conditions relative to peak carbon uptake rather than to an arbitrary calendar boundary.
 
-\subsection*{Meteorological predictors}
+\subsection*{Predictor blocks}
 
-Meteorological drivers were computed from on-site eddy covariance observations. For four variables --- vapor pressure deficit (VPD), air temperature (T$_\text{air}$), precipitation (P), and incoming shortwave radiation (SW$_\text{in}$) --- we derived monthly aggregates (mean, 5th and 95th percentiles for VPD and T$_\text{air}$; mean and cumulative sum for P; mean for SW$_\text{in}$) for each of the 24 calendar months preceding the CGS peak. This produced a set of time-lagged meteorological predictors capturing both seasonal and inter-annual climatic memory, with two window lengths evaluated: the 12 months immediately preceding the CGS (12m), and the full 24-month window (24m). The 24-month configuration was used as the primary benchmark.
+Predictors were organised into four blocks whose sizes are fixed across all models and datasets (Table~\ref{tab:blocks}).
 
-\subsection*{Plant functional trait data}
+\textit{Climate} (C). Monthly aggregates of vapour pressure deficit, air temperature, precipitation and incoming shortwave radiation, computed from on-site observations for each calendar month preceding the CGS peak (mean and 5th/95th percentiles for VPD and $T_\mathrm{air}$; mean and cumulative sum for precipitation; mean for radiation). Two window lengths were evaluated: the 12 months immediately preceding the CGS (143 predictors) and the full 24-month window (286 predictors). Both are reported.
 
-Site-level community-weighted mean (CWM) plant functional traits were obtained from the planttraits.earth database \cite{lusk2026crowdsourced}. Fourteen trait variables were included, covering leaf morphology (specific leaf area, leaf area, leaf thickness, leaf dry mass), leaf chemistry (leaf N and P content by mass and area, leaf C, leaf C:N ratio, leaf $\delta^{15}$N), and rooting depth. These traits represent time-invariant structural and physiological characteristics and were used to capture baseline differences in ecosystem functioning independent of recent disturbance.
+\textit{Traits} (T). Twenty-one site-level community-weighted mean plant functional traits from the planttraits.earth database \cite{lusk2026crowdsourced}, covering hydraulic traits ($P_{12}$, $P_{50}$, $P_{88}$, $g_\mathrm{s,max}$, maximum rooting depth), wood structure (specific stem density, conduit density and diameter) and leaf morphology and chemistry (specific leaf area, leaf area, thickness, width, dry mass, C, N by mass and area, P, C:N, $\delta^{15}$N). Traits are time-invariant and capture baseline differences in functioning independent of recent disturbance.
 
-\subsection*{Forest cover and disturbance metrics}
+\textit{Disturbance} (D). One hundred predictors derived from annual Sentinel-2--based forest cover and deadwood maps (deadtrees.earth v2-2 \cite{mosig2026deadtrees}). Eleven metric families --- absolute mortality, relative mortality, relative disturbance, new mortality rate, new deadwood gain, relative tree loss, and thresholded variants of the latter four --- were computed within circular buffers of five radii (100, 200, 300, 400 and 500\,m) delineated in the local UTM projection, at the current year and at a one-year lag.
 
-Spatially explicit annual forest cover and deadwood fraction maps were derived from the Sentinel-2--based deadtrees.earth platform \cite{mosig2026deadtrees} using version 2-2 of the disturbance product. For each flux tower, circular buffers of five radii (100, 200, 300, 400, and 500 m) were delineated in the local UTM projection. Within each buffer, the following quantities were computed for each year:
+\textit{EFP memory} (M). The previous year's value of the response variable itself, in two encodings: the raw lagged value (raw memory) and its $z$-score anomaly relative to the site mean (anomaly memory). Both are single predictors and are evaluated as alternatives, never jointly.
 
-\begin{itemize}
-    \item \textit{Forest cover fraction} (\texttt{forest\_mean\_pct}): mean canopy cover across all buffer pixels (\%),
-    \item \textit{Deadwood fraction} (\texttt{deadwood\_mean\_pct}): mean fraction of pixels classified as standing deadwood (\%),
-    \item \textit{Forest loss area} (\texttt{loss\_area\_frac}): fraction of pixels experiencing a year-on-year decrease in forest cover exceeding 20 percentage points,
-    \item \textit{Forest loss magnitude} (\texttt{loss\_mean\_pp}, \texttt{loss\_sum\_pp}): mean and total magnitude of forest cover loss across affected pixels,
-    \item \textit{Deadwood increase area} (\texttt{deadwood\_increase\_area\_frac}): fraction of pixels with a year-on-year increase in deadwood exceeding 20 percentage points,
-    \item \textit{Deadwood increase magnitude} (\texttt{deadwood\_increase\_mean\_pp}, \texttt{deadwood\_increase\_sum\_pp}): mean and total magnitude of deadwood increase.
-\end{itemize}
+\begin{table}[h!]
+\centering
+\small
+\begin{tabular}{llr}
+\hline
+Block & Contents & Predictors \\
+\hline
+C (12\,m) & monthly climate, 12 months pre-CGS & 143 \\
+C (24\,m) & monthly climate, 24 months pre-CGS & 286 \\
+T & community-weighted mean plant traits & 21 \\
+D & mortality/deadwood metrics, 5 buffers, 2 time points & 100 \\
+M & lagged EFP (raw or anomaly encoding) & 1 \\
+\hline
+\end{tabular}
+\caption{Predictor block sizes. Blocks are identical across datasets, learners and cross-validation structures, so differences between models reflect only which blocks are present.}
+\label{tab:blocks}
+\end{table}
 
-For each of these seven per-buffer metrics, we also included one- and two-year lagged values, yielding a total of 130 disturbance predictor variables. The 500 m buffer was used for all main analyses, as it best represents the flux tower footprint for the majority of sites. The \texttt{deadwood\_mean\_pct\_500m} variable --- representing the cumulative standing deadwood fraction --- emerged as the dominant disturbance signal in subsequent SHAP analyses and is used as the primary site-level disturbance descriptor throughout.
+\subsection*{Model configurations}
 
-\subsection*{Modeling framework}
-
-We trained Random Forest models \cite{breiman2001random} using the \texttt{ranger} implementation in R \cite{wright2017ranger} to predict annual EFPs from combinations of meteorological, trait, and disturbance predictors. Each forest consisted of 500 trees. To disentangle the contributions of different predictor groups, we defined eight model configurations (M01--M08) by systematically including or excluding three predictor blocks:
+Eight model structures (M1--M8) were defined by the presence or absence of the trait, disturbance and memory blocks over a climate baseline (Table~\ref{tab:models}). Crossing these with two climate windows (12\,m, 24\,m) and, for the memory-containing structures, two memory encodings gives 24 configurations per response variable, each trained independently for all five EFPs.
 
 \begin{table}[h!]
 \centering
@@ -331,55 +351,59 @@ We trained Random Forest models \cite{breiman2001random} using the \texttt{range
 \hline
 Model & Climate (C) & Traits (T) & Disturbance (D) & EFP memory (M) \\
 \hline
-M01 & \checkmark & & & \\
-M02 & \checkmark & & \checkmark & \\
-M03 & \checkmark & \checkmark & & \\
-M04 & \checkmark & \checkmark & \checkmark & \\
-M05 & \checkmark & & & \checkmark \\
-M06 & \checkmark & & \checkmark & \checkmark \\
-M07 & \checkmark & \checkmark & & \checkmark \\
-M08 & \checkmark & \checkmark & \checkmark & \checkmark \\
+M1 & \checkmark & & & \\
+M2 & \checkmark & & \checkmark & \\
+M3 & \checkmark & \checkmark & & \\
+M4 & \checkmark & \checkmark & \checkmark & \\
+M5 & \checkmark & & & \checkmark \\
+M6 & \checkmark & & \checkmark & \checkmark \\
+M7 & \checkmark & \checkmark & & \checkmark \\
+M8 & \checkmark & \checkmark & \checkmark & \checkmark \\
 \hline
 \end{tabular}
-\caption{Predictor block combinations for the eight model configurations. C = monthly meteorological aggregates; T = community-weighted mean plant traits; D = remote sensing--based disturbance and deadwood metrics; M = lagged EFP (ecosystem memory).}
+\caption{The eight model structures. The four pairs differing only in the disturbance block (M1$\rightarrow$M2, M3$\rightarrow$M4, M5$\rightarrow$M6, M7$\rightarrow$M8) isolate its contribution.}
 \label{tab:models}
 \end{table}
 
-EFP memory (M) was encoded in two ways: (i) as the z-score anomaly of the lagged EFP relative to the site-level mean (anomaly encoding, primary), and (ii) as the raw lagged EFP value (raw-lag encoding, presented as a sensitivity comparison). Models M01--M04 therefore operate without memory, while M05--M08 additionally condition on the previous year's ecosystem state.
+The main text reports M3$\rightarrow$M4 (climate and traits, without memory) and M7$\rightarrow$M8 with raw memory. These form a factorial contrast in which traits are always present and disturbance and memory vary independently, allowing the disturbance effect to be evaluated both in the absence of ecosystem memory and conditional on it.
 
-All 32 configurations (8 model structures $\times$ 2 memory types $\times$ 2 meteorological windows) were trained and evaluated independently for each of the five EFPs.
+To ensure that all models within a response variable are compared on identical data, the 12- and 24-month benchmark tables were harmonised to their common set of complete site-years before training; three variables with $>$85\,\% missingness ($R_b$, $R_{b,\max}$, aCUE) were excluded, as they are not predictors of interest and their retention would have discarded most site-years.
 
-\subsection*{Model validation}
+\subsection*{Learning algorithm and hyperparameter selection}
 
-Models were validated using leave-one-site-out cross-validation (LOSO-CV), in which all observations from one site are withheld as a test set while the remaining 165 sites form the training set. This procedure was repeated for each of the 166 sites, yielding out-of-sample predictions for all 644 site-years. LOSO-CV preserves spatial independence between training and test sets, providing a conservative estimate of model transferability to unseen sites \cite{roberts2017cross}. Performance was quantified using the root mean square error (RMSE) and coefficient of determination (R$^2$).
+Results in the main text use gradient-boosted regression trees (\texttt{xgboost} \cite{chen2016xgboost}) with hyperparameters selected by Tree-structured Parzen Estimator search (Optuna \cite{akiba2019optuna}; 50 trials per response variable) over grouped five-fold cross-validation, in which folds comprise disjoint groups of sites so that tuning cannot leak information across the site boundary used for evaluation. The search space covered learning rate ($10^{-2}$--0.3, log scale), number of boosting rounds (100--1000), maximum depth (1--8), minimum child weight (1--20), row subsampling (0.5--1.0), column subsampling (0.2--1.0) and L2 regularisation ($10^{-3}$--50, log scale). Selected configurations varied by response, with maximum depth between 2 and 8 and learning rates between 0.011 and 0.039.
+
+To establish that our conclusions do not depend on this choice, the identical analysis --- same data, same predictor blocks, same folds --- was repeated for nine learner configurations: random forests (\texttt{ranger} \cite{wright2017ranger}), XGBoost and LightGBM \cite{ke2017lightgbm}, each with default settings, a hand-tuned configuration and an Optuna-tuned configuration. These are reported in the Supplementary Information.
+
+We note that the highest overall accuracy was obtained by a random-forest configuration that forces the raw memory predictor into every tree split (\texttt{always.split.variables}), which raises mean $R^2$ of the memory-containing models from 0.404 to 0.648. This configuration was not adopted, because such forcing imposes a structural privilege on one predictor block that is not applied to the others. An Optuna-tuned random forest attains statistically indistinguishable performance on the same models ($R^2 = 0.644$) without any forcing, by selecting \texttt{mtry} between 0.72 and 0.91 of available predictors rather than the $\sqrt{p}$ default ($\approx$0.05 at $p \approx 449$); the forcing therefore compensated for a hyperparameter setting rather than expressing a modelling decision.
+
+\subsection*{Cross-validation}
+
+Models were validated by leave-one-site-out cross-validation (LOSO-CV): all observations from one site are withheld while the remaining sites form the training set, repeated for every site. This preserves spatial independence between training and test data and estimates transferability to unseen sites \cite{roberts2017cross}. Performance was quantified by root mean square error (RMSE) and the coefficient of determination ($R^2$).
+
+As a robustness check, every model was additionally evaluated under repeated leave-one-site-out cross-validation, in which each held-out site is predicted three times from independent random 80\,\% subsamples of the remaining sites and the predictions averaged. The two structures agree on every conclusion drawn here: model rankings correlate at Spearman $\rho = 0.85$--0.96 within dataset and response, the estimated disturbance effect correlates at $r = 0.966$ across all 1{,}620 model comparisons, and the same learner configuration is best under both structures in all three datasets. Repeated CV is marginally more optimistic, as averaging three predictions reduces variance, and has lower statistical power; LOSO-CV is therefore reported as the primary structure.
+
+Because $R^2$ depends on the variance of the response, it is not comparable across the three datasets: screening to higher tree cover reduces between-site variance, so $R^2$ falls even where absolute error improves. Cross-dataset comparisons are therefore made on RMSE, and $R^2$ is used only to rank models within a dataset.
 
 \subsection*{Quantifying the effect of disturbance}
 
-The contribution of disturbance predictors was assessed by comparing paired model configurations that differ only in the inclusion of the disturbance block (D): M01 vs.\ M02, M03 vs.\ M04, M05 vs.\ M06, and M07 vs.\ M08. For each site and model pair, we computed the per-site $\Delta$RMSE as:
-
+The contribution of the disturbance block was assessed by comparing model pairs that differ only in its inclusion. For each site $i$ and each pair, we computed the per-site RMSE with and without disturbance and expressed the difference in relative terms,
 \begin{equation}
-\Delta\text{RMSE} = \text{RMSE}_{\text{with D}} - \text{RMSE}_{\text{without D}}
+\Delta\mathrm{RMSE}_i \;=\; 100 \times \frac{\mathrm{RMSE}_{i,\,\mathrm{with\,D}} - \mathrm{RMSE}_{i,\,\mathrm{without\,D}}}{\mathrm{RMSE}_{i,\,\mathrm{without\,D}}},
 \end{equation}
+so that negative values denote improvement. Relative rather than absolute differences are used because the five EFPs differ by orders of magnitude in units.
 
-Negative values indicate that adding disturbance predictors improved prediction accuracy; positive values indicate degraded performance. The primary comparison was M03 vs.\ M04 (C+T vs.\ C+T+D), which represents the hardest test: disturbance must improve upon a model already informed by both climate and plant traits.
+Significance was assessed by a one-sided Wilcoxon signed-rank test on the site-level paired RMSE values, testing whether including disturbance reduces error. Sites are the unit of replication; tests were paired by site identifier. Because each response variable and model pair constitutes a separate test, $p$-values were adjusted within each figure by the Benjamini--Hochberg procedure controlling the false discovery rate at $q < 0.05$. We report the median paired relative change and the proportion of sites improving alongside each test, since a small median shift can reach significance with a large number of sites.
 
-To characterize the spatial heterogeneity of the disturbance effect, we stratified sites into three deadwood tiers based on their mean \texttt{deadwood\_mean\_pct\_500m}: Low ($<$5\%, $n=58$ sites), Medium (5--12\%, $n=83$ sites), and High ($>$12\%, $n=43$ sites). Additional stratification by IGBP land-cover class was used to assess biome-level differences in the disturbance response.
+Effect sizes are reported as the median of the paired per-site differences rather than the difference of medians. The two are not equivalent and disagreed in sign for 10 of 20 comparisons in preliminary analyses; only the former is consistent with the paired test.
 
-\subsection*{Variable importance and SHAP analysis}
+\subsection*{Variable importance}
 
-To interpret which disturbance variables drive model predictions, we computed SHapley Additive exPlanations (SHAP) values \cite{lundberg2017unified} using the \texttt{treeshap} package \cite{kozmarski2021treeshap} for models M04 and M08 across both memory encodings and lag windows. SHAP values quantify the marginal contribution of each predictor to each prediction, averaged over all possible predictor orderings. Predictors were grouped into four blocks (Climate, Traits, Disturbance, Memory) and grouped SHAP magnitudes were used to assess the relative importance of each block.
+To identify which predictors drive model behaviour, SHapley Additive exPlanations \cite{lundberg2017unified} were computed with the \texttt{treeshap} package \cite{kozmarski2021treeshap} for models M4 and M8 under both memory encodings and both climate windows, from models fitted to the complete dataset. Predictors were assigned to the four blocks (Climate, Traits, Disturbance, Memory) and block-level importance was summarised as the share of total mean absolute SHAP value. Because these models are fitted to all sites rather than to cross-validation folds, SHAP results are independent of the cross-validation structure.
 
+\subsection*{Code and data availability}
 
-
-
-% \begin{enumerate}[1.]
-% \item Approval: a statement which confirms that all experimental protocols were approved by a named institutional and/or licensing committee. Please identify the approving body in the methods section
-
-% \item Accordance: a statement explicitly saying that the methods were carried out in accordance with the relevant guidelines and regulations
-
-% \item Informed consent (for experiments involving humans or human tissue samples): include a statement confirming that informed consent was obtained from all participants and/or their legal guardian/s
-% \end{enumerate}
-
+All analysis code, derived tables and figures are archived in the project repository. An interactive browser presenting every figure across all three datasets, both cross-validation structures and all nine learner configurations accompanies this work.
 
 \section{Discussion}\label{sec12}
 
