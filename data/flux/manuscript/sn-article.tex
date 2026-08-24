@@ -29,7 +29,7 @@
 %%The option is available for: sn-basic.bst, sn-chicago.bst%  
  
 %%\documentclass[pdflatex,sn-nature]{sn-jnl}% Style for submissions to Nature Portfolio journals
-\documentclass[pdflatex,sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
+\documentclass[pdflatex,sn-nature]{sn-jnl}% Standard Nature Research Reference Style (Nature Climate Change)
 %%\documentclass[pdflatex,sn-mathphys-num]{sn-jnl}% Math and Physical Sciences Numbered Reference Style
 %%\documentclass[pdflatex,sn-mathphys-ay]{sn-jnl}% Math and Physical Sciences Author Year Reference Style
 %%\documentclass[pdflatex,sn-aps]{sn-jnl}% American Physical Society (APS) Reference Style
@@ -278,6 +278,13 @@ These anticipated findings would suggest that integrating remotely sensed mortal
 
 
 
+\section{Discussion}\label{sec12}
+
+
+\section{Conclusion}\label{sec13}
+
+
+
 \section{Methods}\label{sec11}
 
 \subsection*{Study sites and data selection}
@@ -401,69 +408,32 @@ Effect sizes are reported as the median of the paired per-site differences rathe
 
 To identify which predictors drive model behaviour, SHapley Additive exPlanations \cite{lundberg2017unified} were computed with the \texttt{treeshap} package \cite{kozmarski2021treeshap} for models M4 and M8 under both memory encodings and both climate windows, from models fitted to the complete dataset. Predictors were assigned to the four blocks (Climate, Traits, Disturbance, Memory) and block-level importance was summarised as the share of total mean absolute SHAP value. Because these models are fitted to all sites rather than to cross-validation folds, SHAP results are independent of the cross-validation structure.
 
-\subsection*{Code and data availability}
-
-All analysis code, derived tables and figures are archived in the project repository. An interactive browser presenting every figure across all three datasets, both cross-validation structures and all nine learner configurations accompanies this work.
-
-\section{Discussion}\label{sec12}
-
-
-\section{Conclusion}\label{sec13}
-
-
 
 \backmatter
 
-\bmhead{Supplementary information}
+\section*{Supplementary information}
 
-If your article has accompanying supplementary file/s please state so here. 
+Supplementary Information accompanies this paper. It reports the sensitivity analyses referenced in the Methods: results for the unfiltered (112-site) and $\geq$50\,\% tree-cover (65-site) datasets, for all nine learner configurations, and for the repeated leave-one-site-out cross-validation.
 
-Authors reporting data from electrophoretic gels and blots should supply the full unprocessed scans for key as part of their Supplementary information. This may be requested by the editorial team/s if it is missing.
+\section*{Data availability}
 
-Please refer to Journal-level guidance for any specific requirements.
+The eddy covariance flux data used in this study are available from the FLUXNET2015, ICOS, AmeriFlux, NEON and OzFlux networks under their respective data policies. Annual forest cover and deadwood maps are available from the deadtrees.earth platform \cite{mosig2026deadtrees}. Community-weighted mean plant functional traits are available from the planttraits.earth database \cite{lusk2026crowdsourced}. The derived site-year tables underlying all analyses, including the harmonised benchmark datasets for all three tree-cover subsets, are archived at [repository DOI to be inserted on acceptance].
 
-\bmhead{Acknowledgements}
+\section*{Code availability}
 
+All code used to construct the datasets, train and validate the models, compute SHAP values and generate the figures is archived at [repository DOI to be inserted on acceptance]. An interactive browser presenting every figure across all three datasets, both cross-validation structures and all nine learner configurations accompanies this work at [URL].
 
+\section*{Acknowledgements}
 
-\section*{Declarations}
+[To be completed.]
 
+\section*{Author contributions}
 
+[To be completed.]
 
-\begin{itemize}
-\item Funding
-\item Conflict of interest/Competing interests (check journal-specific guidelines for which heading to use)
-\item Ethics approval and consent to participate
-\item Consent for publication
-\item Data availability 
-\item Materials availability
-\item Code availability 
-\item Author contribution
-\end{itemize}
+\section*{Competing interests}
 
-\noindent
-If any of the sections are not relevant to your manuscript, please include the heading and write `Not applicable' for that section. 
-
-%%===================================================%%
-%% For presentation purpose, we have included        %%
-%% \bigskip command. Please ignore this.             %%
-%%===================================================%%
-\bigskip
-\begin{flushleft}%
-Editorial Policies for:
-
-\bigskip\noindent
-Springer journals and proceedings: \url{https://www.springer.com/gp/editorial-policies}
-
-\bigskip\noindent
-Nature Portfolio journals: \url{https://www.nature.com/nature-research/editorial-policies}
-
-\bigskip\noindent
-\textit{Scientific Reports}: \url{https://www.nature.com/srep/journal-policies/editorial-policies}
-
-\bigskip\noindent
-BMC journals: \url{https://www.biomedcentral.com/getpublished/editorial-policies}
-\end{flushleft}
+The authors declare no competing interests.
 
 \begin{appendices}
 
