@@ -154,23 +154,17 @@ Given these recent advances in data availability and modeling approaches, there 
 
 \section{Results}\label{sec2}
 
-\subsection{Overview of expected patterns}
+\subsection{Ecosystem functional properties across the site network}
 
-We expect ecosystem functional properties (EFPs) to vary substantially across sites and years, reflecting differences in climate, vegetation characteristics, and disturbance intensity. In particular, we expect light-saturated gross primary productivity (GPP$_{sat}$) and maximum net ecosystem production (NEP$_{max}$) to decline with increasing tree mortality and canopy disturbance, although the magnitude of this response will likely vary among sites and forest types.
+The analysis covers 93 sites and 395 site-years with mean tree cover of at least 30\,\% within a 500\,m buffer, spanning evergreen needleleaf ($n=45$ sites) and deciduous broadleaf forest ($n=26$), wetland ($n=10$), mixed forest ($n=6$), shrubland ($n=4$), evergreen broadleaf forest ($n=1$) and woody savanna ($n=1$), with a median of four years per site (Fig.~\ref{fig:efp_overview}).
 
-We further expect that models including forest cover and mortality-related variables will outperform models based only on meteorological and plant trait predictors. This improvement is anticipated to be strongest at sites with marked mortality events or strong temporal variation in canopy condition.
-
-\subsection{Spatial and temporal variation in ecosystem functional properties}
-
-Across the global network of forest eddy covariance sites, annual values of GPP$_{sat}$, NEP$_{max}$, ET$_{max}$, uWUE, and WUE are expected to show pronounced spatial variability. Part of this variability will likely be associated with broad climatic gradients, while another part may reflect structural ecosystem differences captured by community-weighted mean plant traits and forest cover.
-
-We also expect interannual variation within sites, particularly in years affected by disturbance, drought, or canopy decline. Sites experiencing stronger forest cover loss or deadwood accumulation are expected to exhibit reduced productivity and carbon uptake capacity relative to less disturbed years.
+All five ecosystem functional properties (EFPs) vary widely both among sites and among years within a site. Between-site variation dominates, and the two carbon-flux properties are the most variable: across the network, GPP$_{sat}$ has a standard deviation of 8.7\,$\mu$mol\,m$^{-2}$\,s$^{-1}$ about a mean of 26.2. This partitioning matters for interpretation, because leave-one-site-out validation asks models to predict an unobserved site rather than an unobserved year.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\linewidth]{fig1_site_map_EFP_distributions}
 \caption{\textbf{Study sites and ecosystem functional property distributions.}
-(\textbf{a}) Global distribution of 184 eddy covariance sites coloured by IGBP land-cover class.
+(\textbf{a}) Distribution of eddy covariance sites coloured by IGBP land-cover class.
 (\textbf{b--e}) Distributions of annual ecosystem functional properties across IGBP classes:
 gross primary productivity at light saturation (GPP$_{sat}$),
 maximum net ecosystem production (NEP$_{max}$),
@@ -180,103 +174,43 @@ Horizontal violins show the full distribution; inner boxplots indicate the inter
 \label{fig:efp_overview}
 \end{figure}
 
-\subsection{Patterns in forest cover, mortality, and deadwood metrics}
+\subsection{Disturbance improves prediction of carbon fluxes, but not water fluxes}
 
-Forest cover and mortality-related variables are expected to show strong heterogeneity among sites. Some sites will likely show relatively stable canopy conditions, whereas others may exhibit clear year-to-year decreases in forest cover or increases in deadwood fraction within the 500~m tower buffer.
+Adding the disturbance block to a model already containing climate and traits (M3\,$\rightarrow$\,M4) substantially improves prediction of both carbon-flux properties. For GPP$_{sat}$, cross-validated $R^2$ rises from 0.19 to 0.36 and site-level RMSE falls by a median of 10.2\,\% ($q<0.001$); for NEP$_{max}$, $R^2$ rises from 0.19 to 0.41 with a median RMSE reduction of 8.9\,\% ($q<0.001$). Disturbance information therefore roughly doubles the explained variance of both properties.
 
-Among the disturbance indicators, we expect the most informative variables to be those capturing both the extent and intensity of canopy loss and deadwood accumulation, such as \texttt{loss\_area\_frac\_500m}, \texttt{loss\_sum\_pp\_500m}, and \texttt{deadwood\_increase\_sum\_pp\_500m}. These variables are expected to provide complementary information about recent mortality dynamics around the flux towers.
+The water-flux properties behave differently. ET$_{max}$ shows no detectable response in any configuration ($-0.1$\,\% at the 12-month window, $+1.6$\,\% at 24 months; $q>0.7$ in both). uWUE and WUE improve modestly and inconsistently, reaching significance at the 24-month window ($-5.3$\,\% and $-3.8$\,\%, $q<0.05$) but not at 12 months. Across all four disturbance contrasts and five EFPs, 7 of the 10 tests without memory are significant, and the significant ones are concentrated in the carbon fluxes.
 
-\begin{figure}[ht]
-\centering
-\fbox{\rule{0pt}{2.2in}\rule{0.9\linewidth}{0pt}}
-\caption{Placeholder for a figure showing examples of forest cover, loss, and deadwood metrics around selected eddy covariance sites. This figure may later include maps, buffer summaries, or time series of disturbance indicators.}
-\label{fig:mortality_metrics}
-\end{figure}
+This asymmetry is the clearest signal in the analysis: canopy mortality carries information about how much carbon an ecosystem can fix, but little about how it partitions water.
 
-\subsection{Expected model performance across predictor sets}
+\input{tables/table_XGBoptuna_LOSO_v10.tex}
 
-We expect Random Forest models that include only meteorological variables (M1) to explain part of the variation in EFPs, especially for productivity-related variables that are strongly linked to climatic conditions. Adding plant traits (M2) is expected to improve performance by accounting for structural and physiological differences among ecosystems.
+\subsection{Ecosystem memory absorbs most of the disturbance signal}
 
-The strongest model performance is expected for models that additionally include forest cover and disturbance variables (M3). If tree mortality provides meaningful explanatory information beyond climate and trait variation, then M3 should show higher R$^2$ and lower RMSE than M1 and M2. This improvement is expected to be particularly visible for GPP$_{sat}$ and NEP$_{max}$, which are closely tied to canopy condition and carbon uptake.
+The previous year's value of an EFP is by far the strongest single predictor available. Adding it to a climate-only model raises $R^2$ for GPP$_{sat}$ from 0.20 to 0.70 and for NEP$_{max}$ from 0.18 to 0.74 --- a larger gain than any other predictor block produces.
 
+Once that memory term is present, the benefit of disturbance largely disappears. In the M7\,$\rightarrow$\,M8 contrast, which adds disturbance to a model already containing climate, traits and raw memory, GPP$_{sat}$ improves by only 2.2\,\% and NEP$_{max}$ not at all; none of the ten tests in this family is significant after correction for multiple comparisons under repeated cross-validation, and only two are under leave-one-site-out. Those two do not replicate between the two cross-validation structures and we do not interpret them as evidence of an effect.
 
+The SHAP decomposition shows the same displacement directly. Without memory (M4), disturbance is the second-largest predictor block, accounting for 32\,\% of total attribution against 41\,\% for climate and 27\,\% for traits. With raw memory present (M8), disturbance falls to 18\,\% while memory alone takes 36\,\%.
 
+The interpretation is not that disturbance is unimportant, but that its effect on ecosystem function is already encoded in the previous year's flux. A stand that lost canopy is a stand whose productivity was already reduced, and the lagged EFP captures that state without needing to observe the mortality itself. Disturbance data are therefore most valuable precisely where flux history is unavailable --- which is the situation at the great majority of forested locations.
 
+\subsection{The disturbance effect is highly heterogeneous among sites}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-\input{tables/table_RF_LOSO_results_v3.tex}
+The network-level medians conceal substantial site-to-site variation. For GPP$_{sat}$ (M3\,$\rightarrow$\,M4), 66\,\% of sites improve when disturbance is added, but the interquartile range of the per-site change spans $-25.3$\,\% to $+3.7$\,\%, and the 10th--90th percentile range spans $-45.9$\,\% to $+39.2$\,\%. Individual sites range from a 79.5\,\% error reduction to a 106.3\,\% degradation. NEP$_{max}$ behaves similarly (66\,\% of sites improving; interquartile range $-29.9$\,\% to $+5.8$\,\%).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%
+The disturbance block therefore helps at roughly two sites in three and is neutral or harmful at the remainder. This is consistent with disturbance information being informative only where disturbance actually occurred: at sites with stable canopies the block adds 100 predictors of noise.
 
+\subsection{The effect does not scale with tree cover}
 
-\subsection{Expected contribution of tree mortality variables}
+Because canopy mortality is a forest process, one might expect its predictive value to increase with tree cover. It does not. Repeating the full analysis on the unfiltered network (112 sites) and on a more strictly forested subset ($\geq$50\,\% tree cover, 65 sites) gives median RMSE changes of $-2.1$\,\% and $-0.8$\,\% respectively, against $-4.7$\,\% for the reported $\geq$30\,\% dataset --- a non-monotonic pattern in which the most forested subset shows the weakest effect.
 
-We expect the inclusion of mortality-related predictors to increase model explanatory power, although the magnitude of improvement will likely differ across response variables. The strongest contribution is expected for GPP$_{sat}$ and NEP$_{max}$, because tree mortality directly alters canopy structure, photosynthetic capacity, and stand-level carbon balance.
+Tested directly at site level, the disturbance benefit is unrelated to tree cover (Spearman $\rho = 0.04$, $p = 0.65$) and does not differ between forest and non-forest sites ($p = 0.16$). We caution against reading the weak result on the $\geq$50\,\% subset as evidence that mortality matters less in dense forest: that subset also contains 42\,\% less variance in mortality rate (standard deviation 3.18 against 5.46 for the full network) and fewer site-years, so it offers less signal to detect. The available evidence supports an effect that is specific to which function is being predicted, not to which ecosystem type it is predicted in.
 
-Variable importance analyses are expected to show that meteorological predictors remain dominant overall, but that mortality-related variables become particularly influential at disturbed sites or in years following canopy loss. This would support the hypothesis that tree mortality contributes meaningful additional information for explaining ecosystem functioning beyond climate and plant traits alone.
+\subsection{Robustness}
 
-\begin{figure}[ht]
-\centering
-\fbox{\rule{0pt}{2.2in}\rule{0.9\linewidth}{0pt}}
-\caption{Placeholder for variable importance plots comparing meteorological, trait, and mortality predictors across ecosystem functional properties.}
-\label{fig:varimp}
-\end{figure}
+The findings above are invariant to the analytical choices that could plausibly have produced them. Repeating the entire analysis across nine learner configurations --- random forests, XGBoost and LightGBM, each with default, hand-tuned and Optuna-tuned hyperparameters --- changes the magnitude of the disturbance effect (median RMSE change from $-1.3$\,\% to $-3.6$\,\%) but not its direction, its concentration in the carbon fluxes, or its displacement by memory. The reported configuration yields a mid-range estimate rather than the largest.
 
-\subsection{Expected site-level heterogeneity}
-
-The effect of tree mortality is not expected to be uniform across all sites. Instead, we anticipate strong site-level heterogeneity depending on background climate, vegetation type, disturbance history, and resilience capacity. Some sites may show clear reductions in GPP$_{sat}$ or NEP$_{max}$ following canopy loss, whereas other sites may exhibit weaker or delayed responses.
-
-This heterogeneity is expected to highlight that the role of mortality depends not only on the amount of canopy loss itself, but also on the broader environmental and ecological context in which mortality occurs.
-
-\begin{figure}[ht]
-\centering
-\fbox{\rule{0pt}{2.2in}\rule{0.9\linewidth}{0pt}}
-\caption{Placeholder for site-level model evaluation results, for example leave-one-site-out performance or site-specific response patterns to tree mortality.}
-\label{fig:site_level}
-\end{figure}
-
-%%%%%%%%
-
-
-\subsection{Interim interpretation}
-
-Taken together, the expected results support the working hypothesis that tree mortality is an important but spatially variable control on ecosystem functioning. While meteorological conditions and plant functional traits are expected to explain a substantial share of variation in EFPs, forest cover and mortality dynamics are likely to provide additional explanatory power, especially for productivity- and carbon-balance-related properties.
-
-These anticipated findings would suggest that integrating remotely sensed mortality information into flux-based analyses can improve our understanding of how forest disturbance shapes ecosystem functioning under ongoing environmental change.
-
-
-%%=============================================%%
-%% For presentation purpose, we have included  %%
-%% \bigskip command. Please ignore this.       %%
-%%=============================================%%
-% \bigskip
-% \begin{verbatim}
-% \begin{table}[<placement-specifier>]
-% \caption{<table-caption>}\label{<table-label>}%
-% \begin{tabular}{@{}llll@{}}
-% \toprule
-% Column 1 & Column 2 & Column 3 & Column 4\\
-% \midrule
-% row 1 & data 1 & data 2	 & data 3 \\
-% row 2 & data 4 & data 5\footnotemark[1] & data 6 \\
-% row 3 & data 7 & data 8	 & data 9\footnotemark[2]\\
-% \botrule
-% \end{tabular}
-% \footnotetext{Source: This is an example of table footnote. 
-% This is an example of table footnote.}
-% \footnotetext[1]{Example for a first table footnote.
-% This is an example of table footnote.}
-% \footnotetext[2]{Example for a second table footnote. 
-% This is an example of table footnote.}
-% \end{table}
-% \end{verbatim}
-% \bigskip
-%%=============================================%%
-%% For presentation purpose, we have included  %%
-%% \bigskip command. Please ignore this.       %%
-%%=============================================%%
-
-
+Repeating the analysis under repeated leave-one-site-out cross-validation, in which each site is predicted three times from independent 80\,\% subsamples of the remaining sites, likewise leaves the conclusions unchanged: model rankings correlate at Spearman $\rho = 0.85$--0.96 and the estimated disturbance effect at $r = 0.97$ across all 1{,}620 model comparisons. Full results for both sensitivity analyses are reported in the Supplementary Information.
 
 \section{Discussion}\label{sec12}
 
