@@ -214,10 +214,43 @@ Repeating the analysis under repeated leave-one-site-out cross-validation, in wh
 
 \section{Discussion}\label{sec12}
 
+\subsection{Canopy mortality informs carbon uptake, not water partitioning}
+
+Adding satellite-derived canopy mortality to models of ecosystem functional properties roughly doubles the explained variance of light-saturated productivity and maximum net ecosystem production, while leaving evapotranspiration and water-use efficiency essentially unchanged. This asymmetry is consistent with the mechanisms through which tree death alters ecosystem function. Mortality removes photosynthesising leaf area directly, so the capacity for carbon uptake declines in proportion to the canopy lost \cite{hicke2012effects,edburg2012cascading}. Its effect on water fluxes is more equivocal: transpiration from the remaining canopy declines, but evaporation from a more exposed soil surface and transpiration from released understorey vegetation both increase, and these terms partially offset one another \cite{edburg2012cascading}. Stand-level evapotranspiration can therefore remain close to its pre-disturbance value even where a substantial fraction of the overstorey has died.
+
+Our results are consistent with that compensation. ET$_{max}$ shows no detectable response to disturbance information in any of the configurations tested, across three datasets, nine learner configurations and two cross-validation structures. Given the number of independent opportunities for an effect to appear, we interpret this as a genuine null rather than a limitation of statistical power. The two water-use efficiency metrics, which combine carbon and water terms, respond weakly and only at the longer climate window --- as expected if their carbon numerator carries the signal and their water denominator dilutes it.
+
+\subsection{Ecosystem memory encodes the disturbance history}
+
+The most consequential result is that the benefit of disturbance information largely disappears once the previous year's value of the ecosystem functional property is available to the model. The lagged EFP is by far the strongest single predictor we tested, and with it present the disturbance block adds no consistent improvement and its share of SHAP attribution falls from 32\,\% to 18\,\%.
+
+We do not read this as evidence that mortality is unimportant. The more parsimonious interpretation is that the ecological effect of disturbance is slow relative to the annual time step and is therefore already expressed in the previous year's flux. Tree death is a pulse whose functional consequences persist for years to decades \cite{jentsch_theory_2019,gough_disturbance_2024}, propagating through altered stand structure, microclimate and decomposition long after the mortality event itself \cite{edburg2012cascading}. A stand that lost canopy last year is a stand whose productivity was already depressed last year. Conditioned on that state, knowing the cause adds little.
+
+This has a practical implication that we consider the main contribution of this work. Ecosystem memory is only available where flux observations already exist --- a few hundred towers globally. Satellite-derived mortality is available essentially everywhere forests occur. The regime in which disturbance data carry the most information is therefore precisely the regime that matters for extrapolation: locations with no flux history. Our M3\,$\rightarrow$\,M4 contrast, in which disturbance roughly doubles explained variance for both carbon fluxes, is the operationally relevant one, and the M7\,$\rightarrow$\,M8 null is a statement about what flux towers already tell us rather than about what mortality does.
+
+\subsection{The effect is functional, not ecosystem-specific}
+
+We found no evidence that disturbance matters more in more densely forested sites. The predictive benefit is unrelated to tree cover at site level, does not differ between forest and non-forest sites, and is not monotonic across the three tree-cover subsets we analysed. This was contrary to our expectation, and it deserves care in interpretation: the most strictly forested subset also contains substantially less variance in mortality rate, so it offers less signal for any model to exploit. A null result under range restriction is weak evidence of no effect.
+
+What the data support more strongly is that the effect is specific to which function is predicted rather than to where it is predicted. Across every stratification we examined --- dataset, ecosystem type, tree-cover band --- the carbon fluxes respond and the water fluxes do not. If mortality does interact with ecosystem type, detecting it will require stratifying by disturbance severity within forest types rather than by cover alone, and a network with more heavily disturbed sites than ours contains.
+
+\subsection{Site-level heterogeneity and its interpretation}
+
+Disturbance information improves prediction at roughly two sites in three and is neutral or harmful at the rest, with per-site effects ranging from a 79\,\% error reduction to a 106\,\% degradation. Heterogeneity of this magnitude is expected when a predictor block is informative only where the underlying process occurred: at sites with stable canopies, 100 disturbance predictors contribute noise rather than signal. It is also consistent with the broader observation that ecosystem responses to disturbance depend strongly on severity, type and antecedent condition \cite{gough_disturbance_2024,flower2015responses}. Reporting only the network median would misrepresent this; the distribution is the result.
+
+\subsection{Limitations}
+
+Three limitations bound our conclusions. First, the analysis is annual, while mortality is episodic; a stand that died in spring and one that died in autumn are indistinguishable in our data, which likely attenuates the estimated effect. Second, the deadtrees.earth product resolves standing deadwood and canopy loss but not their cause, so drought-induced dieback \cite{allen2010global,hammond2022global}, bark beetle outbreaks \cite{edburg2012cascading} and management are pooled --- agents with different functional consequences \cite{flower2015responses}. Third, our network is skewed towards relatively undisturbed sites: eddy covariance towers are rarely sited in stands undergoing severe mortality, and the resulting restriction in disturbance severity is likely to make our estimates conservative.
+
+We also note that the analysis is correlative. Models that predict better with disturbance information demonstrate that mortality carries statistical information about ecosystem function; they do not establish the causal pathway.
+
+\subsection{Implications}
+
+Forest disturbance is projected to intensify across Europe and other temperate regions through this century \cite{grunig_climate_2026,besnard_natural_2025}, with consequences for the persistence of the forest carbon sink \cite{pan2011large,migliavacca_securing_2025}. Our results indicate that openly available, centimetre-scale mortality maps \cite{mosig2026deadtrees} carry usable information about ecosystem carbon uptake capacity, and that this information is most valuable where it is most needed --- for the vast majority of forested land where no flux tower exists. They also suggest that models seeking to represent disturbance effects on the water cycle will need mechanisms beyond canopy loss, since canopy loss alone does not predict changes in evapotranspiration in our data.
 
 \section{Conclusion}\label{sec13}
 
-
+Satellite-derived canopy mortality substantially improves prediction of light-saturated productivity and maximum net ecosystem production across a network of 93 forested eddy covariance sites, roughly doubling explained variance relative to models informed only by climate and plant traits. It does not improve prediction of evapotranspiration or water-use efficiency. The benefit is largely superseded once the previous year's flux is known, indicating that ecosystem memory already encodes the functional consequences of past disturbance --- and that mortality data are therefore most valuable precisely where flux history is unavailable. These conclusions are invariant across three tree-cover subsets, nine learner configurations and two cross-validation structures.
 
 \section{Methods}\label{sec11}
 
