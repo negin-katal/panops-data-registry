@@ -85,7 +85,7 @@
 <header>
   <div class="hwrap">
     <h1>V10 · Disturbance effects on ecosystem functional properties</h1>
-    <p class="sub">Random-forest LOSO analysis of deadwood disturbance across FLUXNET sites — interactive plot browser</p>
+    <p class="sub">Disturbance effects on ecosystem functional properties across FLUXNET sites — 3 tree-cover datasets &times; 2 cross-validation structures &times; 9 learner configurations, interactive browser</p>
     <div class="toprow">
       <div class="toggle" id="cvToggle" title="Resampling structure used to validate the models">
         <button data-cv="loo" class="active">Leave-one-site-out</button>
@@ -93,10 +93,10 @@
       </div>
       <div class="toggle" id="dsToggle">
         <button data-ds="all_sites" class="active">All sites (112)</button>
-        <button data-ds="sites_with_high_Tcover">High tree cover (93)</button>
+        <button data-ds="sites_with_high_Tcover">Tree cover &ge;30% (93)</button>
         <button data-ds="sites_tc50">Tree cover &ge;50% (65)</button>
       </div>
-      <div class="toggle" id="cfgToggle" title="Baseline RF vs exp02-tuned (raw EFP-memory forced into every split)">
+      <div class="toggle" id="cfgToggle" title="Learner configuration - same data, same variables, same folds; only the model changes">
         <button data-cfg="baseline" class="active">Baseline RF</button>
         <button data-cfg="tuned">exp02-tuned</button>
         <button data-cfg="xgb">XGBoost</button>
@@ -134,11 +134,43 @@
   <section id="s0">
     <div class="secnum">OVERVIEW</div>
     <h2>About this analysis</h2>
-    <p class="itxt">This report presents results for <b>two datasets</b>. The first — <b>all sites (112)</b> — contains
-      every site that has data available for all predictor columns and at least <b>four years of continuous</b>
-      observations. The second — <b>high tree cover (93)</b> — is the same set after <b>filtering out sites with less
-      than 30&nbsp;% mean tree cover</b>. Use the toggle at the top to switch between them; every figure and the metrics
-      table update accordingly.</p>
+    <p class="itxt">This report presents results for <b>three datasets</b>, forming a tree-cover gradient. <b>All sites
+      (112)</b> contains every site with data for all predictor columns and at least <b>four years of continuous</b>
+      observations. <b>Tree cover &ge;30&nbsp;% (93)</b> and <b>Tree cover &ge;50&nbsp;% (65)</b> are the same set
+      after filtering on mean tree cover within a 500&nbsp;m buffer. All three are built through an identical pipeline
+      and share the same predictor structure, so they differ only in which sites they contain.</p>
+    <table class="deftbl">
+      <thead><tr><th>Dataset</th><th>Sites</th><th>Site-years</th><th>Filter</th></tr></thead>
+      <tbody>
+        <tr><td class="k">All sites</td><td>112</td><td>414</td><td>none</td></tr>
+        <tr><td class="k">Tree cover &ge;30%</td><td>93</td><td>395</td><td>mean tree cover &ge; 30% at 500&nbsp;m</td></tr>
+        <tr><td class="k">Tree cover &ge;50%</td><td>65</td><td>287</td><td>mean tree cover &ge; 50% at 500&nbsp;m</td></tr>
+      </tbody>
+    </table>
+    <p class="itxt" style="margin-top:10px"><b>Compare datasets on RMSE, not R&sup2;.</b> Screening to higher tree cover
+      removes between-site variance, so R&sup2; falls even where the model is more accurate — on the &ge;50&nbsp;% subset
+      R&sup2; drops ~41&nbsp;% versus the &ge;30&nbsp;% set while RMSE <i>improves</i> ~6.7&nbsp;%. R&sup2; remains valid for
+      ranking models <i>within</i> one dataset.</p>
+
+    <h3 class="mini">Cross-validation structures</h3>
+    <p class="itxt">Every result is available under <b>two resampling structures</b>, switchable at the top left:</p>
+    <div class="metricgrid">
+      <div class="metriccard">
+        <h4>Leave-one-site-out (LOSO)</h4>
+        <p>Each site is held out in turn and predicted by a model trained on all remaining sites. Tests extrapolation
+          to an unseen site. <b>Primary structure.</b></p>
+      </div>
+      <div class="metriccard">
+        <h4>Repeated LOSO-CV (3 &times; 80%)</h4>
+        <p>Each held-out site is predicted three times, each from a different random 80&nbsp;% subsample of the
+          remaining sites; predictions are averaged. Tests whether a result depends on one particular split, and yields
+          a per-prediction stability measure (<b>pred SD</b> in the metrics table).</p>
+      </div>
+    </div>
+    <p class="itxt">The two agree on every conclusion — model-rank agreement &rho;&nbsp;=&nbsp;0.85–0.96, disturbance
+      effect correlated at r&nbsp;=&nbsp;0.966, same best learner in all six dataset&nbsp;&times;&nbsp;CV combinations.
+      Repeated CV is slightly <i>more</i> optimistic (it averages three predictions) and has less statistical power, so
+      LOSO is used as the primary structure and repeated CV as a robustness check. See Section&nbsp;14.</p>
 
     <h3 class="mini">Disturbance metrics</h3>
     <p class="itxt">For visualisation and thresholding we define three disturbance metrics, all computed within a
@@ -164,7 +196,7 @@
     </div>
 
     <h3 class="mini">Random-forest models (M1–M8)</h3>
-    <p class="itxt">We ran several random-forest model sets with <b>leave-one-site-out (LOSO) cross-validation</b> on
+    <p class="itxt">Models are evaluated under both cross-validation structures above, on
       <b>identical site-years across all five responses</b> (GPP<sub>sat</sub>, NEP<sub>max</sub>, ET<sub>max</sub>,
       uWUE, WUE). Models are built from four predictor blocks:
       <span class="pill">C</span> climate / meteorology,
@@ -187,15 +219,27 @@
         <tr class="add"><td class="k">M8</td><td>C + T + M + D</td><td>vs M7</td></tr>
       </tbody>
     </table>
-    <p class="itxt" style="margin-top:10px"><b>RF structure toggle.</b> Use the
-      <span class="pill">Baseline&nbsp;RF</span> / <span class="pill">exp02-tuned</span> switch (top-right) to view either
-      the <b>baseline</b> ranger structure (default settings) or the <b>exp02-tuned</b> structure, which forces each
-      raw-memory model's own previous-year EFP into every tree split (<code>always.split.variables</code>, default mtry).
-      Tuning lifts the <b>raw-memory</b> models substantially (e.g. all-sites GPP<sub>sat</sub> M6 raw R² 0.55&nbsp;&rarr;&nbsp;0.72)
-      while leaving the anomaly and no-memory models unchanged. A third option, <span class="pill">XGBoost</span>, swaps the learner
-      entirely (gradient-boosted trees instead of random forest) on the <b>same data, same variables, same LOSO folds</b> —
-      see Section&nbsp;11 - and <span class="pill">LightGBM</span> does the same with a second, independent
-      boosting implementation (Section&nbsp;12). All model-based plots, the metrics table and SHAP update with the switch.</p>
+    <h3 class="mini">Learner configurations</h3>
+    <p class="itxt">The learner toggle offers <b>nine configurations</b> across three algorithms, all on the
+      <b>same data, same variables and same folds</b> — only the model changes. Every figure, the metrics table and SHAP
+      update with the switch.</p>
+    <table class="deftbl">
+      <thead><tr><th>Algorithm</th><th>Default</th><th>Hand-tuned</th><th>Optuna (TPE)</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Random forest (ranger)</td><td>Baseline RF</td><td>exp02-tuned</td><td>RF Optuna</td></tr>
+        <tr><td class="k">XGBoost</td><td>XGBoost</td><td>XGBoost tuned</td><td>XGBoost Optuna</td></tr>
+        <tr><td class="k">LightGBM</td><td>LightGBM</td><td>LightGBM tuned</td><td>LightGBM Optuna</td></tr>
+      </tbody>
+    </table>
+    <p class="itxt" style="margin-top:10px"><b>A note on exp02.</b> That configuration forces each raw-memory model's own
+      previous-year EFP into every tree split (<code>always.split.variables</code>). It lifts the <b>raw-memory</b> models
+      substantially (mean R&sup2; 0.404&nbsp;&rarr;&nbsp;0.648) and leaves anomaly and no-memory models untouched. It is,
+      however, a hand-placed structural privilege for one predictor block: <span class="pill">RF&nbsp;Optuna</span> reaches
+      essentially the same raw-memory performance (0.644) with no forcing at all, purely by tuning <code>mtry</code> to
+      0.72–0.91 of predictors instead of ranger's <code>sqrt(p)</code> default. The forcing compensated for a
+      hyperparameter pathology rather than expressing a scientific choice — which is why the reported results use
+      <span class="pill">XGBoost&nbsp;Optuna</span>, the best-performing configuration that forces nothing. See
+      Section&nbsp;14.</p>
 
     <h3 class="mini">Disturbance-level thresholds</h3>
     <p class="itxt">To classify each site's disturbance level into <b>Low / Mid / High</b> for each metric, we compare
@@ -389,8 +433,8 @@
     <h2>RF tuning experiments (exp01 · exp02)</h2>
     <p class="desc">Fine-tuning of the random-forest <b>structure</b> — datasets held fixed (112 / 93 sites, identical
       site-years) so results stay comparable. Hyperparameters are chosen with <b>grouped 5-fold CV</b> (folds = disjoint
-      groups of sites) to avoid leaking into the reported LOSO metrics. These figures span both datasets internally and
-      are independent of the dataset / RF-structure toggles above.</p>
+      groups of sites) to avoid leaking into the reported LOSO metrics. These figures span the 112- and 93-site datasets internally
+      (they predate the &ge;50% subsample) and are independent of the toggles above.</p>
 
     <h3 class="mini">What exp02 changes vs. baseline</h3>
     <table class="deftbl">
@@ -414,7 +458,7 @@
     <div class="imgwrap"><img id="img_exp" loading="lazy" alt="RF tuning experiment"></div>
     <div class="cap" id="cap_exp"></div>
     <table class="deftbl" style="margin-top:14px">
-      <thead><tr><th>RF structure</th><th>raw-memory mean R²<br>(all sites)</th><th>(high tree cover)</th><th>anomaly / no-memory models</th></tr></thead>
+      <thead><tr><th>RF structure</th><th>raw-memory mean R²<br>(all sites)</th><th>(TC &ge;30%)</th><th>anomaly / no-memory models</th></tr></thead>
       <tbody>
         <tr><td class="k">Baseline</td><td>0.484</td><td>0.431</td><td>—</td></tr>
         <tr><td class="k">exp01 — high mtry</td><td>0.693</td><td>0.677</td><td>&minus;0.02 to &minus;0.04 R² (slightly worse)</td></tr>
@@ -436,8 +480,8 @@
     <div class="secnum">SECTION 11</div>
     <h2>Changing the learner: random forest vs XGBoost</h2>
     <p class="desc">A full parallel run in which <b>only the learner changed</b> - gradient-boosted trees
-      (<code>xgboost</code>) instead of random forest (<code>ranger</code>). Same datasets (112 / 93 sites, same
-      harmonized site-years), same predictor blocks, same 24 model configs, same LOSO folds, same SHAP scheme.
+      (<code>xgboost</code>) instead of random forest (<code>ranger</code>). Same datasets (112 / 93 / 65 sites, same
+      harmonized site-years), same predictor blocks, same 24 model configs, same folds, same SHAP scheme.
       Select <span class="pill">XGBoost</span> in the RF-structure toggle at the top to browse every figure in this
       report rebuilt from the XGBoost outputs.</p>
 
@@ -537,7 +581,7 @@
         <tr class="add"><td class="k">raw memory (M5&rarr;M6, M7&rarr;M8)</td><td>&minus;0.003 / +0.028</td><td>+0.009 / +0.014</td><td>+0.005 / +0.023</td></tr>
       </tbody>
     </table>
-    <p class="itxt" style="margin-top:8px">(each cell = all sites / high tree cover)</p>
+    <p class="itxt" style="margin-top:8px">(each cell = all sites / TC &ge;30%)</p>
     <p class="itxt" style="margin-top:10px">The same contrast in <b>RMSE</b>, now including the
       <span class="pill">exp02-tuned RF</span> as a fourth learner (mean % change in LOSO RMSE from adding D;
       <b>negative = less error</b>):</p>
@@ -549,7 +593,7 @@
         <tr class="add"><td class="k">raw memory</td><td>&minus;0.28 / &minus;2.37</td><td>&minus;0.26 / &minus;0.10</td><td>&minus;1.21 / &minus;1.73</td><td>&minus;1.08 / &minus;3.10</td></tr>
       </tbody>
     </table>
-    <p class="itxt" style="margin-top:8px">(each cell = all sites / high tree cover). <b>RF and RF exp02 are identical
+    <p class="itxt" style="margin-top:8px">(each cell = all sites / TC &ge;30%). <b>RF and RF exp02 are identical
       on the no-memory and anomaly rows</b> - exp02 only ever changed the raw-memory models, so this is a useful
       internal check. Disturbance cuts error by <b>~6&ndash;8 %</b> wherever raw memory is absent, and by
       <b>only 0&ndash;3 %</b> once it is present, in every learner.</p>
@@ -589,7 +633,7 @@
       XGBoost got the same treatment: exhaustive grid search over <code>max_depth</code> ×
       <code>min_child_weight</code> under grouped 5-fold CV. <b>It did not reliably help.</b></p>
     <table class="deftbl">
-      <thead><tr><th>Model group</th><th colspan="2">all sites</th><th colspan="2">high tree cover</th></tr>
+      <thead><tr><th>Model group</th><th colspan="2">all sites</th><th colspan="2">TC &ge;30%</th></tr>
              <tr><th></th><th>shipped</th><th>tuned</th><th>shipped</th><th>tuned</th></tr></thead>
       <tbody>
         <tr><td class="k">no memory</td><td>0.248</td><td>0.238 <span style="color:#E8257A">&minus;0.011</span></td><td>0.250</td><td>0.250</td></tr>
@@ -778,7 +822,7 @@
     <h3 class="mini">Held fixed across every learner</h3>
     <table class="deftbl">
       <tbody>
-        <tr><td class="k">Datasets</td><td>all sites <b>112 sites / 414 site-years</b>; high tree cover <b>93 / 395</b></td></tr>
+        <tr><td class="k">Datasets</td><td>all sites <b>112 / 414</b>; tree cover &ge;30% <b>93 / 395</b>; tree cover &ge;50% <b>65 / 287</b> (sites / site-years)</td></tr>
         <tr><td class="k">Responses</td><td>GPP<sub>sat</sub>, NEP<sub>max</sub>, ET<sub>max</sub>, uWUE, WUE</td></tr>
         <tr><td class="k">Model set</td><td>24 configs (M1–M8 × raw/anom × 12m/24m)</td></tr>
         <tr><td class="k">Predictor selection</td><td><code>get_predictor_cols()</code>, copied verbatim across all learner scripts</td></tr>
@@ -955,7 +999,7 @@ const LGB_VIEWS=[
   ['RMSE_paired_5way','RMSE without D vs with D: all five'],
   ['deltaR2_4way','ΔR²: RF vs RF exp02 vs XGBoost vs LightGBM'],
   ['deltaR2_by_EFP_4way','ΔR² per EFP - all sites'],
-  ['deltaR2_by_EFP_4way_highTcover','ΔR² per EFP - high tree cover'],
+  ['deltaR2_by_EFP_4way_highTcover','ΔR² per EFP - TC ≥30%'],
   ['deltaRMSE_4way','ΔRMSE: RF vs RF exp02 vs XGBoost vs LightGBM'],
   ['RMSE_paired_4way','RMSE without D vs with D (four learners)'],
   ['deltaRMSE_by_EFP_4way','ΔRMSE per EFP (four learners)'],
@@ -1102,10 +1146,12 @@ function renderMetrics(){
     <td style="background:${r2color(r.R2)};color:#fff">${r.R2.toFixed(3)}</td>
     ${CV==='rep'?`<td>${r.pred_sd!=null?r.pred_sd:''}</td>`:''}</tr>`).join('');
   document.getElementById('th_predsd').style.display = (CV==='rep') ? '' : 'none';
-  document.getElementById('cap_metrics').textContent=`${rows.length} rows · dataset: ${DS} · CV: `+(CV==='rep'?'repeated (3 x 80% of sites, mean of reps; pred SD = stability across reps)':'leave-one-site-out');
+  document.getElementById('cap_metrics').textContent=`${rows.length} rows · dataset: ${dsName()} · CV: `+(CV==='rep'?'repeated (3 x 80% of sites, mean of reps; pred SD = stability across reps)':'leave-one-site-out');
   document.querySelectorAll('#metricsTbl th').forEach(th=>{th.classList.remove('sorted','desc');
     if(th.dataset.k===k){th.classList.add('sorted');if(d<0)th.classList.add('desc');}});
 }
+const DSLABEL={all_sites:'All sites (112)',sites_with_high_Tcover:'Tree cover \u226530% (93)',sites_tc50:'Tree cover \u226550% (65)'};
+function dsName(){return DSLABEL[DS]||DS;}
 function rMeta(){const m=META[DS];document.getElementById('metaBar').innerHTML=
   `<span class="chip"><b>${m.sites}</b> sites</span>`+
   `<span class="chip"><b>${m.siteyears}</b> site-years</span>`+
