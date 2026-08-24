@@ -45,16 +45,16 @@
 \usepackage{multirow}%
 \usepackage{amsmath,amssymb,amsfonts}%
 \usepackage{amsthm}%
-\usepackage{mathrsfs}%
+%\usepackage{mathrsfs}  % removed: unused (NCC: avoid non-standard packages)
 \usepackage[title]{appendix}%
-\usepackage{xcolor}%
-\usepackage{textcomp}%
-\usepackage{manyfoot}%
+%\usepackage{xcolor}  % removed: unused (NCC: avoid non-standard packages)
+%\usepackage{textcomp}  % removed: unused (NCC: avoid non-standard packages)
+%\usepackage{manyfoot}  % removed: unused (NCC: avoid non-standard packages)
 \usepackage{booktabs}%
-\usepackage{algorithm}%
-\usepackage{algorithmicx}%
-\usepackage{algpseudocode}%
-\usepackage{listings}%
+%\usepackage{algorithm}  % removed: unused (NCC: avoid non-standard packages)
+%\usepackage{algorithmicx}  % removed: unused (NCC: avoid non-standard packages)
+%\usepackage{algpseudocode}  % removed: unused (NCC: avoid non-standard packages)
+%\usepackage{listings}  % removed: unused (NCC: avoid non-standard packages)
 \usepackage{booktabs,rotating}
 %%%%
 
@@ -339,7 +339,7 @@ The main text reports M3$\rightarrow$M4 (climate and traits, without memory) and
 
 To ensure that all models within a response variable are compared on identical data, the 12- and 24-month benchmark tables were harmonised to their common set of complete site-years before training; three variables with $>$85\,\% missingness ($R_b$, $R_{b,\max}$, aCUE) were excluded, as they are not predictors of interest and their retention would have discarded most site-years.
 
-\subsection*{Learning algorithm and hyperparameter selection}
+\subsection*{Model training and tuning}
 
 Results in the main text use gradient-boosted regression trees (\texttt{xgboost} \cite{chen2016xgboost}) with hyperparameters selected by Tree-structured Parzen Estimator search (Optuna \cite{akiba2019optuna}; 50 trials per response variable) over grouped five-fold cross-validation, in which folds comprise disjoint groups of sites so that tuning cannot leak information across the site boundary used for evaluation. The search space covered learning rate ($10^{-2}$--0.3, log scale), number of boosting rounds (100--1000), maximum depth (1--8), minimum child weight (1--20), row subsampling (0.5--1.0), column subsampling (0.2--1.0) and L2 regularisation ($10^{-3}$--50, log scale). Selected configurations varied by response, with maximum depth between 2 and 8 and learning rates between 0.011 and 0.039.
 
@@ -355,7 +355,7 @@ As a robustness check, every model was additionally evaluated under repeated lea
 
 Because $R^2$ depends on the variance of the response, it is not comparable across the three datasets: screening to higher tree cover reduces between-site variance, so $R^2$ falls even where absolute error improves. Cross-dataset comparisons are therefore made on RMSE, and $R^2$ is used only to rank models within a dataset.
 
-\subsection*{Quantifying the effect of disturbance}
+\subsection*{Statistics}
 
 The contribution of the disturbance block was assessed by comparing model pairs that differ only in its inclusion. For each site $i$ and each pair, we computed the per-site RMSE with and without disturbance and expressed the difference in relative terms,
 \begin{equation}
@@ -393,6 +393,10 @@ All code used to construct the datasets, train and validate the models, compute 
 \section*{Author contributions}
 
 [To be completed.]
+
+\section*{Funding}
+
+[Funding statement to be completed. Recommended format: A.B.C. discloses support for the research of this work from Funder [grant number xxxx]. D.E.F. declares no relevant funding.]
 
 \section*{Competing interests}
 
