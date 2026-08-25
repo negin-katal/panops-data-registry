@@ -10,6 +10,7 @@
 
 library(data.table)
 library(ggplot2)
+library(ggh4x)   # per-facet y limits with free scales
 
 setwd("/mnt/gsdata/projects/panops/panops-data-registry/data/flux")
 
@@ -83,6 +84,10 @@ cols_def <- list(
 plot_rows <- list(); lab_rows <- list(); k <- 1; lk <- 1
 for (cd in cols_def) {
   for (pd in pairs_def) {
+    # M1-M4 carry no memory term, so mid() ignores memtype and the Anomaly and
+    # Raw-lag columns would show byte-identical violins. Draw them once, under
+    # Anomaly; the Raw-lag columns then hold only the memory-bearing pairs.
+    if (pd$wo %in% c("M1", "M3") && cd$mem == "raw") next
     m_wo <- mid(pd$wo, cd$mem, cd$win)
     m_wd <- mid(pd$wd, cd$mem, cd$win)
     for (resp in EFP_ORDER) {
@@ -161,9 +166,13 @@ labs[, col := factor(col, levels = COL_LEVELS)]
 labs[, pair := factor(pair, levels = PAIR_LEVELS)]
 
 # y position for labels = per-response max (shared y within a row via free_y)
-ymax <- dt[, .(ytop = quantile(rmse, 0.99, na.rm = TRUE)), by = response]
+# View limit: per-site RMSE has a long right tail, so on a full-range axis the
+# violins collapse into slivers. Set the view to the 95th percentile. This changes
+# only what is VISIBLE - densities, boxplots, medians and every statistic are still
+# computed on the complete data, and no rows are dropped.
+ymax <- dt[, .(ytop = quantile(rmse, 0.95, na.rm = TRUE)), by = response]
 labs <- merge(labs, ymax, by = "response")
-labs[, ylab := ytop * 1.02]
+labs[, ylab := ytop * 0.96]   # keep labels inside the zoomed view
 
 n_sites <- uniqueN(preds$SITE_ID)
 cat(sprintf("Sites: %d | plotting rows: %d\n", n_sites, nrow(dt)))
@@ -203,10 +212,16 @@ p <- ggplot(dt, aes(x = pair, y = rmse, fill = model_type)) +
             inherit.aes = FALSE, size = 2.3, fontface = "bold") +
   scale_fill_manual(values = c("Without D" = COL_WO, "With D" = COL_W)) +
   scale_colour_identity() +
-  facet_grid(response ~ col, scales = "free_y", labeller = resp_labeller, switch = "y") +
+  facet_grid(response ~ col, scales = "free", space = "free_x",
+             labeller = resp_labeller, switch = "y") +
+  ggh4x::facetted_pos_scales(
+    y = lapply(EFP_ORDER, function(r)
+      scale_y_continuous(limits = c(0, ymax[response == r, ytop] * 1.06),
+                         oob = scales::oob_keep))) +
+  coord_cartesian(clip = "on") +
   labs(x = NULL, y = NULL,
        title = "Effect of adding deadwood disturbance on per-site RMSE",
-       subtitle = sprintf("Paired violin: cyan = without D, pink = with D | LOSO CV | %d sites | %% = MEDIAN PAIRED change in per-site RMSE (negative = less error, green)\nstars = one-sided paired Wilcoxon, H1: adding D reduces RMSE, BH-FDR within figure (*** q<0.001, ** q<0.01, * q<0.05, ns) | %%\u2193 = share of sites whose RMSE improved", n_sites)) +
+       subtitle = sprintf("Paired violin: cyan = without D, pink = with D | LOSO CV | %d sites | %% = MEDIAN PAIRED change in per-site RMSE (negative = less error, green)\nstars = one-sided paired Wilcoxon, H1: adding D reduces RMSE, BH-FDR within figure (*** q<0.001, ** q<0.01, * q<0.05, ns) | %%\u2193 = share of sites whose RMSE improved\ny axis zoomed to the 95th percentile - no data removed; M1-M4 have no memory term and appear once, under Anomaly", n_sites)) +
   dark_theme +
   theme(strip.placement = "outside")
 
