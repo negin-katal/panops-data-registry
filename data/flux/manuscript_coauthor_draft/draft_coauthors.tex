@@ -175,6 +175,41 @@ relative disturbance = (deadwood + loss×100) / (forest + loss×100) × 100 (\%)
 \end{center}
 
 
+\section*{Figure 6: Which \emph{direction} does disturbance push? (signed SHAP)}
+\begin{itemize}
+  \item Figures 3--4 use $|$SHAP$|$, which says how much the disturbance block matters but not which
+        way it acts. Here we recompute SHAP keeping the \textbf{sign}: per site-year we sum the signed
+        SHAP across the 100 disturbance predictors --- the block's net push on the prediction, in
+        response units --- and average over the site's years. \textbf{Below zero = disturbance pulls the
+        prediction down.} XGBoost--Optuna, M4, both windows.
+  \item \textbf{This is a dose--response, and it is the clearest result in the draft.} At
+        \textbf{High}-disturbance sites the block pushes the carbon fluxes \emph{down}; at
+        \textbf{Low+Mid} sites it pushes them \emph{up}.
+  \item GPP$_{sat}$: High median $\mathbf{-1.15}$\,$\mu$mol\,m$^{-2}$\,s$^{-1}$ (71\,\% of sites negative,
+        $q<0.01$) vs Low+Mid $+1.00$. NEP$_{max}$: High $\mathbf{-1.81}$ (79\,\% negative, $q<0.01$) vs
+        Low+Mid $+1.29$.
+  \item WUE separates most sharply: High $-0.28$ with \textbf{86\,\% of sites negative} ($q<0.01$),
+        Low+Mid $+0.17$ ($q<0.01$).
+  \item \textbf{ET$_{max}$ stays at zero} --- medians $-0.002$ and $+0.001$, both ns. The same null as in
+        Figures 2 and 4, now shown to be a null in \emph{direction} as well as magnitude.
+  \item \textbf{This is what Figure 4 could not show.} There, High and Low+Mid looked similar because
+        both draw heavily on the disturbance block; the magnitudes are comparable but the
+        \emph{directions} are opposite, and taking absolute values cancelled them.
+  \item Absolute mortality separates less well than the two relative metrics --- consistent with
+        mortality mattering relative to how much canopy was there to lose.
+  \item \decide{does this replace Figure 4, or accompany it? It arguably supersedes it.}
+  \item \decide{add the other two learners, or keep XGBoost only?}
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=\linewidth]{figures/fig6_signed_shap_12m}\\[2pt]
+{\small \textbf{Fig.\ 6a} --- 12\,m window}
+\end{center}
+\begin{center}
+\includegraphics[width=\linewidth]{figures/fig6_signed_shap_24m}\\[2pt]
+{\small \textbf{Fig.\ 6b} --- 24\,m window}
+\end{center}
+
 \section*{Storyline}
 
 \begin{itemize}
