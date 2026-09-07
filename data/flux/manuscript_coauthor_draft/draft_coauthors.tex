@@ -16,47 +16,34 @@
 \maketitle
 \vspace{-1cm}
 
-\section*{Scope of this draft}
-\begin{itemize}
-  \item \textbf{Dataset:} tree cover $\geq$30\,\% within a 100 to 500\,m buffer  \textbf{93 sites, 395 site-years}.
-        The unfiltered network (112 sites) and a stricter $\geq$50\,\% subset (65 sites) exist and are held
-        for the supplement.
-  \item \textbf{Models shown:} \textbf{climate + trait} vs \textbf{climate + traits + disturbance} only.
-        The pair differs solely by the disturbance block, so it isolates its contribution.
-  \item \textbf{Learners:} Random forest, XGBoost and LightGBM, \textbf{all tuned with Optuna} (TPE, 50 trials
-        per response, grouped 5-fold CV on disjoint site groups).
-  \item \textbf{Windows:} 12-month and 24-month climate aggregation from center of growing season backward.
-  \item \textbf{Cross-validation:} leave-one-site-out \emph{and} repeated leave-one-site-out
-        (3 $\times$ 80\,\% of sites), both shown.
-  \item \textbf{Responses:} GPP$_{sat}$, NEP$_{max}$, ET$_{max}$, WUE.
-
-  \item \textbf{disturbance metrics}: For visualisation and thresholding we define three disturbance metrics, all computed within a 500 m buffer around each tower from the deadwood / tree-cover maps:
-
-\textbf{Absolute mortality}
-Standing deadwood cover as a percentage of the total buffer area — the absolute amount of dead canopy.
-absolute mortality = deadwood / area × 100 (\%)
-\\
-\textbf{Relative mortality}
-Deadwood relative to tree cover, what \% of the standing trees are currently dead (defined where tree cover $\geq$ 10 \%, capped at 100 \%).
-
-relative mortality = deadwood / tree cover × 100 (\%)
-\\
-\textbf{Relative disturbance}
-Combines standing deadwood and tree-cover loss relative to forest plus loss — captures both dead-standing and removed/lost canopy.
-
-relative disturbance = (deadwood + loss×100) / (forest + loss×100) × 100 (\%)
- 
+\section*{Introduction}
+    \begin{itemize}
+    \item Terrestrial ecosystems regulate global \textbf{carbon, water, and energy balances}; forest functioning is closely linked to vegetation structure and functional traits.
+    
+    \item Increasing \textbf{drought, heat, and biotic disturbances} are causing widespread tree mortality, with potentially large consequences for ecosystem functioning.
+    
+    \item Mortality alters \textbf{canopy structure and leaf area}, affecting carbon uptake, evapotranspiration, and energy partitioning, with cascading effects on soils, nutrients, and vegetation recovery.
+    
+    \item The magnitude and trajectory of these impacts likely depend on \textbf{vegetation type and functional trait composition}.
+    
+    \item However, quantitative understanding of mortality impacts across ecosystems remains limited due to \textbf{spatial and temporal constraints of field observations} and limited integration of mortality and trait data.
+    
+    \item Advances in \textbf{remote sensing, machine learning, citizen science, and trait databases} now enable large-scale assessments of mortality and ecosystem responses.
+    
+    \item This creates an opportunity to quantify how mortality affects ecosystem functioning and identify \textbf{vegetation types that are more sensitive or resilient}.
 \end{itemize}
 
-\section*{Figure 1: Sites and EFP distributions}
+\textbf{Figure 1: Sites and EFP distributions}
 \begin{itemize}
   \item 93 sites: ENF 45, DBF 26, WET 10, MF 6, CSH 2, OSH 2, EBF 1, WSA 1. Median 4 years per site, 2019--2025.
 
   
 \end{itemize}
+
+\section*{Results}
 \begin{center}\includegraphics[width=\linewidth]{figures/fig1_site_map}\end{center}
 
-\section*{Figure 2: Does disturbance/ mortality reduce error? (M3 $\rightarrow$ M4)}
+\textbf{Figure 2: Does disturbance/ mortality reduce error? (climate + trait $\rightarrow$ climate + trait + disturbance)}
 \begin{itemize}
   \item \textbf{Carbon fluxes: yes, consistently.} GPP$_{sat}$ significant in \textbf{12 of 12} configurations
         (median $-7.5$\,\%, range $-10.8$ to $-3.6$); NEP$_{max}$ \textbf{12 of 12} (median $-10.5$\,\%,
@@ -73,7 +60,7 @@ relative disturbance = (deadwood + loss×100) / (forest + loss×100) × 100 (\%)
   \item \decide{Should I report LOO in the main text and repeated CV in the supplement, or keep both here?}
 \end{itemize}
 
-%%%%%%%%%%%%%%%%%
+
 \begin{center}\includegraphics[width=\linewidth]{figures/fig2_disturbance_effect_M3M4}\end{center}
 
 \section*{Figure 3: What the models actually use (per-site SHAP)}
@@ -95,24 +82,7 @@ relative disturbance = (deadwood + loss×100) / (forest + loss×100) × 100 (\%)
   \item \decide{show one learner (XGBoost) or all three?}
 \end{itemize}
 
-\begin{center}
-\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_GPPsat}\\[2pt]
-{\small \textbf{Fig.\ 3a} --- GPP$_{sat}$, M4, 12\,m, XGBoost--Optuna}
-\end{center}
-\begin{center}
-\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_NEPmax}\\[2pt]
-{\small \textbf{Fig.\ 3b} --- NEP$_{max}$}
-\end{center}
-\begin{center}
-\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_ETmax}\\[2pt]
-{\small \textbf{Fig.\ 3c} --- ET$_{max}$ (note the much smaller disturbance share)}
-\end{center}
-\begin{center}
-\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_WUE}\\[2pt]
-{\small \textbf{Fig.\ 3d} --- WUE}
-\end{center}
-
-\section*{Figure 4: Which \emph{direction} does disturbance push? (signed SHAP)}
+Which \emph{direction} does disturbance push? (signed SHAP)
 \begin{itemize}
   \item Earlier versions of this figure used $|$SHAP$|$, which says how much the disturbance block
         matters but not which way it acts. Here SHAP is recomputed keeping the \textbf{sign}: per
@@ -159,7 +129,7 @@ relative disturbance = (deadwood + loss×100) / (forest + loss×100) × 100 (\%)
 {\small \textbf{Fig.\ 4b} --- 24\,m window}
 \end{center}
 
-\section*{Figure 5: Does it depend on ecosystem type or tree cover?}
+\textbf{Does it depend on ecosystem type or tree cover?}
 \begin{itemize}
   \item The report's Section-9 board, without uWUE, XGBoost--Optuna, M4, both windows.
         \textbf{Panels B and D now show the net signed disturbance SHAP} (as Figure 4), not the
@@ -198,41 +168,76 @@ relative disturbance = (deadwood + loss×100) / (forest + loss×100) × 100 (\%)
 {\small \textbf{Fig.\ 5b} --- XGBoost--Optuna, M4, \textbf{24\,m} window}
 \end{center}
 
-\section*{Storyline}
 
-\begin{itemize}
-    \item \textbf{Introduction}
-    \begin{itemize}
-    \item Terrestrial ecosystems regulate global \textbf{carbon, water, and energy balances}; forest functioning is closely linked to vegetation structure and functional traits.
-    
-    \item Increasing \textbf{drought, heat, and biotic disturbances} are causing widespread tree mortality, with potentially large consequences for ecosystem functioning.
-    
-    \item Mortality alters \textbf{canopy structure and leaf area}, affecting carbon uptake, evapotranspiration, and energy partitioning, with cascading effects on soils, nutrients, and vegetation recovery.
-    
-    \item The magnitude and trajectory of these impacts likely depend on \textbf{vegetation type and functional trait composition}.
-    
-    \item However, quantitative understanding of mortality impacts across ecosystems remains limited due to \textbf{spatial and temporal constraints of field observations} and limited integration of mortality and trait data.
-    
-    \item Advances in \textbf{remote sensing, machine learning, citizen science, and trait databases} now enable large-scale assessments of mortality and ecosystem responses.
-    
-    \item This creates an opportunity to quantify how mortality affects ecosystem functioning and identify \textbf{vegetation types that are more sensitive or resilient}.
-\end{itemize}
-    \item \textbf{Results}
-    \begin{itemize}
-        \item Ecosystem functional properties across the site network
-        \item Disturbance improves prediction of carbon fluxes, but not water fluxes
-        \item The disturbance effect is highly heterogeneous among sites
-        \item Robustness
-    \end{itemize}
-    \item \textbf{Discussions}
-    \begin{itemize}
+
+
+\section*{Discussions}
+
+ \begin{itemize}
         \item Canopy mortality informs carbon uptake, not water partitioning
         \item The effect is functional, not ecosystem-specific
         \item Site-level heterogeneity and its interpretation
         \item Limitations
         \item Implications
     \end{itemize}
-    \item \textbf{Methods}
+\section*{Conclusions}
+\section*{Methods}
+\begin{itemize}
+  \item \textbf{Dataset:} tree cover $\geq$30\,\% within a 100 to 500\,m buffer  \textbf{93 sites, 395 site-years}.
+        The unfiltered network (112 sites) and a stricter $\geq$50\,\% subset (65 sites) exist and are held
+        for the supplement.
+  \item \textbf{Models shown:} \textbf{climate + trait} vs \textbf{climate + traits + disturbance} only.
+        The pair differs solely by the disturbance block, so it isolates its contribution.
+  \item \textbf{Learners:} Random forest, XGBoost and LightGBM, \textbf{all tuned with Optuna} (TPE, 50 trials
+        per response, grouped 5-fold CV on disjoint site groups).
+  \item \textbf{Windows:} 12-month and 24-month climate aggregation from center of growing season backward.
+  \item \textbf{Cross-validation:} leave-one-site-out \emph{and} repeated leave-one-site-out
+        (3 $\times$ 80\,\% of sites), both shown.
+  \item \textbf{Responses:} GPP$_{sat}$, NEP$_{max}$, ET$_{max}$, WUE.
+
+  \item \textbf{disturbance metrics}: For visualisation and thresholding we define three disturbance metrics, all computed within a 500 m buffer around each tower from the deadwood / tree-cover maps:
+
+\textbf{Absolute mortality}
+Standing deadwood cover as a percentage of the total buffer area — the absolute amount of dead canopy.
+absolute mortality = deadwood / area × 100 (\%)
+\\
+\textbf{Relative mortality}
+Deadwood relative to tree cover, what \% of the standing trees are currently dead (defined where tree cover $\geq$ 10 \%, capped at 100 \%).
+
+relative mortality = deadwood / tree cover × 100 (\%)
+\\
+\textbf{Relative disturbance}
+Combines standing deadwood and tree-cover loss relative to forest plus loss — captures both dead-standing and removed/lost canopy.
+
+relative disturbance = (deadwood + loss×100) / (forest + loss×100) × 100 (\%)
+ 
+\end{itemize}
+
+
+
+
+%%%%%%%%%%%%%%%%%
+
+
+\begin{center}
+\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_GPPsat}\\[2pt]
+{\small \textbf{Fig.\ 3a} --- GPP$_{sat}$, M4, 12\,m, XGBoost--Optuna}
+\end{center}
+\begin{center}
+\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_NEPmax}\\[2pt]
+{\small \textbf{Fig.\ 3b} --- NEP$_{max}$}
+\end{center}
+\begin{center}
+\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_ETmax}\\[2pt]
+{\small \textbf{Fig.\ 3c} --- ET$_{max}$ (note the much smaller disturbance share)}
+\end{center}
+\begin{center}
+\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_WUE}\\[2pt]
+{\small \textbf{Fig.\ 3d} --- WUE}
+\end{center}
+
+
+
     \begin{itemize}
         \item Study sites and data selection
         \item Ecosystem functional properties
@@ -240,25 +245,15 @@ relative disturbance = (deadwood + loss×100) / (forest + loss×100) × 100 (\%)
         \item Model configurations
         \item Model training and tunings
         \item Cross validation 
-        \item Statistical analysis
-        \item Variable importance 
-    \end{itemize}
-    
-\end{itemize}
-    
-
-
-\section*{Notes on the underlying results}
-\begin{itemize}
-  \item Statistics: one-sided paired Wilcoxon signed-rank on per-site RMSE, sites as the unit of replication,
-        Benjamini--Hochberg FDR within each figure. Effect size is the \emph{median of the paired per-site
-        differences}, not the difference of medians, the two disagree in sign for some comparisons.
-  \item Violin y-axes are zoomed to the 95th percentile for readability; no data are removed and all statistics
+        \item Statistical analysis: Statistics: one-sided paired Wilcoxon signed-rank on per-site RMSE, sites as the unit of replication, Benjamini--Hochberg FDR within each figure. Effect size is the \emph{median of the paired per-site
+        differences}, not the difference of medians, the two disagree in sign for some comparisons. Violin y-axes are zoomed to the 95th percentile for readability; no data are removed and all statistics
         use every site.
-  
-  \item Full results (three datasets, nine learner configurations, both CV structures, all 24 model
+        \item Variable importance 
+        \item Full results (three datasets, nine learner configurations, both CV structures, all 24 model
         configurations) are in the interactive report:
         \url{https://negin-katal.github.io/fluxVSmortality/v10/index.html}
-\end{itemize}
+    
+    \end{itemize}
+    
 
 \end{document}
