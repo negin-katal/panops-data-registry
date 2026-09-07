@@ -8,8 +8,7 @@
 \setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=3pt}
 \newcommand{\decide}[1]{\textcolor{red!75!black}{\textbf{[DECISION: #1]}}}
 
-\title{\vspace{-1.5cm}Tree mortality and ecosystem functional properties\\[2pt]
-\large Working draft for coauthors --- bullet points and figures only}
+\title{\vspace{-1.5cm}Tree mortality and ecosystem functional properties\\[2pt]}
 \author{}
 \date{\today}
 
@@ -19,34 +18,45 @@
 
 \section*{Scope of this draft}
 \begin{itemize}
-  \item \textbf{Dataset:} tree cover $\geq$30\,\% within a 500\,m buffer --- \textbf{93 sites, 395 site-years}.
+  \item \textbf{Dataset:} tree cover $\geq$30\,\% within a 100 to 500\,m buffer  \textbf{93 sites, 395 site-years}.
         The unfiltered network (112 sites) and a stricter $\geq$50\,\% subset (65 sites) exist and are held
         for the supplement.
-  \item \textbf{Models shown:} \textbf{M3 (climate + traits)} vs \textbf{M4 (climate + traits + disturbance)} only.
+  \item \textbf{Models shown:} \textbf{climate + trait} vs \textbf{climate + traits + disturbance} only.
         The pair differs solely by the disturbance block, so it isolates its contribution.
   \item \textbf{Learners:} Random forest, XGBoost and LightGBM, \textbf{all tuned with Optuna} (TPE, 50 trials
         per response, grouped 5-fold CV on disjoint site groups).
-  \item \textbf{Windows:} 12-month and 24-month climate aggregation, both shown.
+  \item \textbf{Windows:} 12-month and 24-month climate aggregation from center of growing season backward.
   \item \textbf{Cross-validation:} leave-one-site-out \emph{and} repeated leave-one-site-out
         (3 $\times$ 80\,\% of sites), both shown.
-  \item \textbf{Responses:} GPP$_{sat}$, NEP$_{max}$, ET$_{max}$, WUE. \textbf{uWUE is dropped} from this version.
-  \item Everything is filtered from results already computed; no models were retrained.
+  \item \textbf{Responses:} GPP$_{sat}$, NEP$_{max}$, ET$_{max}$, WUE.
+
+  \item \textbf{disturbance metrics}: For visualisation and thresholding we define three disturbance metrics, all computed within a 500 m buffer around each tower from the deadwood / tree-cover maps:
+
+\textbf{Absolute mortality}
+Standing deadwood cover as a percentage of the total buffer area — the absolute amount of dead canopy.
+absolute mortality = deadwood / area × 100 (\%)
+\\
+\textbf{Relative mortality}
+Deadwood relative to tree cover, what \% of the standing trees are currently dead (defined where tree cover $\geq$ 10 \%, capped at 100 \%).
+
+relative mortality = deadwood / tree cover × 100 (\%)
+\\
+\textbf{Relative disturbance}
+Combines standing deadwood and tree-cover loss relative to forest plus loss — captures both dead-standing and removed/lost canopy.
+
+relative disturbance = (deadwood + loss×100) / (forest + loss×100) × 100 (\%)
+ 
 \end{itemize}
 
-\section*{Figure 1 --- Sites and EFP distributions}
+\section*{Figure 1: Sites and EFP distributions}
 \begin{itemize}
   \item 93 sites: ENF 45, DBF 26, WET 10, MF 6, CSH 2, OSH 2, EBF 1, WSA 1. Median 4 years per site, 2019--2025.
-  \item \textbf{Violins use the 395 modelling site-years} --- the same data the models are fitted and validated
-        on, so the figure and the results describe exactly the same rows. (The report version shows all 600
-        site-years with a valid EFP, including those dropped for incomplete predictor coverage.)
-  \item \textbf{uWUE dropped}; panels are GPP$_{sat}$, NEP$_{max}$, ET$_{max}$, WUE.
-  \item Between-site variation dominates within-site variation --- which is what leave-one-site-out tests.
-  \item Values are clipped at the 99th percentile for display, as in the report.
-  \item \decide{is the 500\,m buffer worth showing on the map, or is the site distribution enough?}
-\end{itemize}
-\begin{center}\includegraphics[width=0.95\linewidth]{figures/fig1_site_map}\end{center}
 
-\section*{Figure 2 --- Does disturbance reduce error? (M3 $\rightarrow$ M4)}
+  
+\end{itemize}
+\begin{center}\includegraphics[width=\linewidth]{figures/fig1_site_map}\end{center}
+
+\section*{Figure 2: Does disturbance/ mortality reduce error? (M3 $\rightarrow$ M4)}
 \begin{itemize}
   \item \textbf{Carbon fluxes: yes, consistently.} GPP$_{sat}$ significant in \textbf{12 of 12} configurations
         (median $-7.5$\,\%, range $-10.8$ to $-3.6$); NEP$_{max}$ \textbf{12 of 12} (median $-10.5$\,\%,
@@ -56,29 +66,30 @@
   \item \textbf{WUE: intermediate.} 8 of 12 significant, median $-4.0$\,\% --- significant for XGBoost and
         LightGBM, not for random forest.
   \item \textbf{Learner matters little:} XGBoost 12/12, LightGBM 12/12, random forest 8/12 significant.
-  \item \textbf{Cross-validation matters not at all:} \textbf{16 significant under LOO, 16 under repeated CV} ---
+  \item \textbf{Cross-validation matters not at all:} \textbf{16 significant under LOO, 16 under repeated CV} 
         identical counts, and the same tests.
   \item Roughly \textbf{60--78\,\% of sites} improve where the effect is significant; the effect is a shift in a
         broad distribution, not a uniform gain.
-  \item \decide{report LOO in the main text and repeated CV in the supplement, or keep both here?}
-  \item \decide{is WUE worth keeping given it is learner-dependent?}
+  \item \decide{Should I report LOO in the main text and repeated CV in the supplement, or keep both here?}
 \end{itemize}
+
+%%%%%%%%%%%%%%%%%
 \begin{center}\includegraphics[width=\linewidth]{figures/fig2_disturbance_effect_M3M4}\end{center}
 
-\section*{Figure 3 --- What the models actually use (per-site SHAP)}
+\section*{Figure 3: What the models actually use (per-site SHAP)}
 \begin{itemize}
-  \item These are the figures already in the interactive report, unchanged: M4, 12-month window,
+  \item M4, 12-month window,
         per-site stacked driver-group composition, sites ordered by disturbance share, IGBP on the right,
         and the three dot columns giving each site's absolute mortality, relative mortality and relative
         disturbance. Shown here for \textbf{XGBoost--Optuna}; the random-forest and LightGBM versions exist
         and are identical in structure.
   \item SHAP comes from full-data models, so these are the same under both cross-validation structures.
-  \item \textbf{Disturbance (gold) is a large, consistent share} for the carbon fluxes --- 29\,\% for
-        GPP$_{sat}$ and 31\,\% for NEP$_{max}$ on average across the three learners --- and reaches
+  \item \textbf{Disturbance (gold) is a large, consistent share} of the carbon fluxes: 29\,\% for
+        GPP$_{sat}$ and 31\,\% for NEP$_{max}$ on average across the three learners, and reaches
         $\sim$50\,\% at the most disturbed sites.
   \item \textbf{ET$_{max}$ is the exception:} disturbance takes only 13\,\%, climate 54\,\%. This matches its
-        null result in Figure 2 --- two independent lines of evidence agreeing.
-  \item WUE draws the \emph{most} on disturbance (38\,\%) but with far less trait signal (12\,\%).
+        null result in Figure 2, two independent lines of evidence agreeing.
+  \item \textbf{WUE} draws the \emph{most} on disturbance (38\,\%) but with far less trait signal (12\,\%).
   \item Sites vary widely: the top of each panel draws little from disturbance, the bottom draws heavily.
   \item \decide{one EFP in the main text and the rest in the supplement, or all four?}
   \item \decide{show one learner (XGBoost) or all three?}
@@ -101,20 +112,21 @@
 {\small \textbf{Fig.\ 3d} --- WUE}
 \end{center}
 
-\section*{Figure 4 --- Disturbance SHAP by disturbance level (Low+Mid vs High)}
+\section*{Figure 4: Disturbance SHAP by disturbance level (Low+Mid vs High)}
 \begin{itemize}
-  \item The report's Section-9 figure, regenerated \textbf{without uWUE}: M4, 12-month window, \textbf{natural-breaks} thresholds
+  \item  M4, 12-month window, \textbf{natural-breaks} thresholds
         (mean $\pm$ 0.5\,SD), with \textbf{Low and Mid merged} against High. Three rows = the three 500\,m
         mortality metrics. One page per learner.
   \item \textbf{The separation is weak.} Low+Mid and High overlap heavily for GPP$_{sat}$ and NEP$_{max}$; if
         anything GPP$_{sat}$ shifts slightly \emph{down} at High.
-  \item \textbf{WUE separates most clearly} --- High sits visibly above Low+Mid on all three metrics.
+  \item \textbf{WUE separates most clearly} Sites with High mortality visibly above Low+Mid on all three metrics.
   \item ET$_{max}$ sits near 11--13\,\% throughout, barely moving between categories.
   \item Read together with Figure 2: models draw on disturbance at similar rates whether or not a site is
         heavily disturbed, so the block carries information about \emph{stand state} rather than only about
         \emph{recent mortality events}.
+  
   \item \decide{keep all three learners, or only the reported one?}
-  \item \decide{main text or supplement --- this is largely a negative result.}
+  
 \end{itemize}
 
 \begin{center}
@@ -130,7 +142,7 @@
 {\small \textbf{Fig.\ 4c} --- LightGBM--Optuna}
 \end{center}
 
-\section*{Figure 5 --- Does it depend on ecosystem type or tree cover? (Section 9 board)}
+\section*{Figure 5: Does it depend on ecosystem type or tree cover?}
 \begin{itemize}
   \item The report's Section-9 four-panel board, regenerated \textbf{without uWUE}, for
         \textbf{XGBoost--Optuna}, M4, at \textbf{both} climate windows. Panels:
@@ -162,35 +174,67 @@
 {\small \textbf{Fig.\ 5b} --- XGBoost--Optuna, M4, \textbf{24\,m} window}
 \end{center}
 
-\section*{Open decisions}
+
+\section*{Storyline}
+
 \begin{itemize}
-  \item \textbf{Story.} Two candidate framings: (i) disturbance improves carbon-flux prediction but not water
-        fluxes; (ii) the same, plus the memory result --- that the benefit largely disappears once the previous
-        year's flux is known, so mortality data matter most where no flux tower exists. Framing (ii) is the
-        stronger claim but needs M7/M8, which this draft excludes.
-  \item \textbf{Dataset choice.} $\geq$30\,\% is shown. The disturbance effect is weaker on both the unfiltered
-        network and the stricter $\geq$50\,\% subset, and does not scale with tree cover
-        (Spearman $\rho = 0.04$, $p = 0.65$ at site level). Needs an \emph{a priori} justification in the text.
-  \item \textbf{Learner to report.} XGBoost--Optuna suggested: best accuracy among configurations that impose no
-        hand-set structure, and a mid-range disturbance effect rather than the largest.
-  \item \textbf{uWUE.} Dropped here. It was the weakest and least consistent response throughout.
-  \item \textbf{Figure style.} Dark background, matching the interactive report. Trivial to switch to white for
-        submission.
+    \item \textbf{Introduction}
+    \begin{itemize}
+    \item Terrestrial ecosystems regulate global \textbf{carbon, water, and energy balances}; forest functioning is closely linked to vegetation structure and functional traits.
+    
+    \item Increasing \textbf{drought, heat, and biotic disturbances} are causing widespread tree mortality, with potentially large consequences for ecosystem functioning.
+    
+    \item Mortality alters \textbf{canopy structure and leaf area}, affecting carbon uptake, evapotranspiration, and energy partitioning, with cascading effects on soils, nutrients, and vegetation recovery.
+    
+    \item The magnitude and trajectory of these impacts likely depend on \textbf{vegetation type and functional trait composition}.
+    
+    \item However, quantitative understanding of mortality impacts across ecosystems remains limited due to \textbf{spatial and temporal constraints of field observations} and limited integration of mortality and trait data.
+    
+    \item Advances in \textbf{remote sensing, machine learning, citizen science, and trait databases} now enable large-scale assessments of mortality and ecosystem responses.
+    
+    \item This creates an opportunity to quantify how mortality affects ecosystem functioning and identify \textbf{vegetation types that are more sensitive or resilient}.
 \end{itemize}
+    \item \textbf{Results}
+    \begin{itemize}
+        \item Ecosystem functional properties across the site network
+        \item Disturbance improves prediction of carbon fluxes, but not water fluxes
+        \item The disturbance effect is highly heterogeneous among sites
+        \item Robustness
+    \end{itemize}
+    \item \textbf{Discussions}
+    \begin{itemize}
+        \item Canopy mortality informs carbon uptake, not water partitioning
+        \item The effect is functional, not ecosystem-specific
+        \item Site-level heterogeneity and its interpretation
+        \item Limitations
+        \item Implications
+    \end{itemize}
+    \item \textbf{Methods}
+    \begin{itemize}
+        \item Study sites and data selection
+        \item Ecosystem functional properties
+        \item Predictor blocks
+        \item Model configurations
+        \item Model training and tunings
+        \item Cross validation 
+        \item Statistical analysis
+        \item Variable importance 
+    \end{itemize}
+    
+\end{itemize}
+    
+
 
 \section*{Notes on the underlying results}
 \begin{itemize}
   \item Statistics: one-sided paired Wilcoxon signed-rank on per-site RMSE, sites as the unit of replication,
         Benjamini--Hochberg FDR within each figure. Effect size is the \emph{median of the paired per-site
-        differences}, not the difference of medians --- the two disagree in sign for some comparisons.
+        differences}, not the difference of medians, the two disagree in sign for some comparisons.
   \item Violin y-axes are zoomed to the 95th percentile for readability; no data are removed and all statistics
         use every site.
-  \item \textbf{Known issue:} the random-forest Optuna SHAP table lost the names of the 14 trait variables whose
-        names contain spaces, parentheses or slashes, placing $\sim$35\,\% of attribution in an unlabelled group.
-        Group membership is unambiguous (14 unnamed + 7 named = the 21 traits the other learners show) and has
-        been reassigned to Traits in the summary percentages quoted above. Figure 3 is taken unchanged from the report and Figure 4 was regenerated from the same pipeline, so the random-forest panels of both still carry the unfixed grouping; the extraction in \texttt{run\_v10\_RF\_optuna\_SHAP.R} should be fixed at source.
-  \item Full results --- three datasets, nine learner configurations, both CV structures, all 24 model
-        configurations --- are in the interactive report:
+  
+  \item Full results (three datasets, nine learner configurations, both CV structures, all 24 model
+        configurations) are in the interactive report:
         \url{https://negin-katal.github.io/fluxVSmortality/v10/index.html}
 \end{itemize}
 
