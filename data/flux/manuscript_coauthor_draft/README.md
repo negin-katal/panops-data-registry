@@ -42,3 +42,41 @@ attribution in an unlabelled group. Group membership is unambiguous — 14 unnam
 the 21 traits the other two learners show — so the draft scripts reassign them to Traits.
 The extraction in `scripts/run_v10_RF_optuna_SHAP.R` should still be fixed at source; this
 also affects the RF-Optuna panels of Sections 8–9 in the interactive report.
+
+## Sharing with coauthors via Overleaf
+
+Overleaf cannot create a project from a git push, so the project has to exist first.
+
+### Option A — upload the zip (fastest, no git)
+
+1. `coauthor_draft_overleaf.zip` (3.9 MB) is in this folder.
+2. overleaf.com → **New Project → Upload Project** → pick that zip.
+3. **Menu → Share** → invite coauthors, or turn on link sharing.
+
+Re-uploading later creates a *new* project, so use Option B if you expect to iterate.
+
+### Option B — link it to git (keeps one project, updates in place)
+
+1. overleaf.com → **New Project → Blank Project**, name it e.g. *EFP mortality — coauthor draft*.
+2. Copy the 24-character id from the URL: `https://www.overleaf.com/project/<PROJECT_ID>`.
+3. Run once with the id:
+
+```bash
+cd /mnt/gsdata/projects/panops/panops-data-registry/data/flux
+bash scripts/push_coauthor_draft_to_overleaf.sh <PROJECT_ID> "initial coauthor draft"
+```
+
+The id is remembered afterwards, so later updates are just:
+
+```bash
+bash scripts/push_coauthor_draft_to_overleaf.sh "" "update figures"
+```
+
+4. **Menu → Share** → invite coauthors (or link sharing for comment-only access).
+
+The script reuses the Overleaf token already stored in the main manuscript clone
+(`/home/nk1125/overleaf_panops`), so no new credential is created or stored. It syncs only
+`draft_coauthors.tex` and `figures/` — the CSVs, README and zip stay out of Overleaf.
+
+**Note:** this is a *separate* Overleaf project from the main manuscript
+(`698b0715a5817a2efadd24b6`), so coauthors commenting on the draft cannot touch the submission.
