@@ -103,7 +103,7 @@
 
 \section*{Figure 4 --- Disturbance SHAP by disturbance level (Low+Mid vs High)}
 \begin{itemize}
-  \item Again the existing report figures, unchanged: M4, 12-month window, \textbf{natural-breaks} thresholds
+  \item The report's Section-9 figure, regenerated \textbf{without uWUE}: M4, 12-month window, \textbf{natural-breaks} thresholds
         (mean $\pm$ 0.5\,SD), with \textbf{Low and Mid merged} against High. Three rows = the three 500\,m
         mortality metrics. One page per learner.
   \item \textbf{The separation is weak.} Low+Mid and High overlap heavily for GPP$_{sat}$ and NEP$_{max}$; if
@@ -113,11 +113,8 @@
   \item Read together with Figure 2: models draw on disturbance at similar rates whether or not a site is
         heavily disturbed, so the block carries information about \emph{stand state} rather than only about
         \emph{recent mortality events}.
-  \item \textbf{These figures still include uWUE}, since they are taken unchanged from the report. If uWUE is
-        dropped everywhere, they need regenerating without it.
   \item \decide{keep all three learners, or only the reported one?}
   \item \decide{main text or supplement --- this is largely a negative result.}
-  \item \decide{regenerate without uWUE for consistency with the rest of the draft?}
 \end{itemize}
 
 \begin{center}
@@ -159,7 +156,7 @@
   \item \textbf{Known issue:} the random-forest Optuna SHAP table lost the names of the 14 trait variables whose
         names contain spaces, parentheses or slashes, placing $\sim$35\,\% of attribution in an unlabelled group.
         Group membership is unambiguous (14 unnamed + 7 named = the 21 traits the other learners show) and has
-        been reassigned to Traits in the summary percentages quoted above. Figures 3 and 4 are taken unchanged from the report, so the random-forest panels of Figure 4 still carry the unfixed grouping; the extraction in \texttt{run\_v10\_RF\_optuna\_SHAP.R} should be fixed at source.
+        been reassigned to Traits in the summary percentages quoted above. Figure 3 is taken unchanged from the report and Figure 4 was regenerated from the same pipeline, so the random-forest panels of both still carry the unfixed grouping; the extraction in \texttt{run\_v10\_RF\_optuna\_SHAP.R} should be fixed at source.
   \item Full results --- three datasets, nine learner configurations, both CV structures, all 24 model
         configurations --- are in the interactive report:
         \url{https://negin-katal.github.io/fluxVSmortality/v10/index.html}
