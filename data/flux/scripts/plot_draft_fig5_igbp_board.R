@@ -2,7 +2,7 @@
 # ============================================================================
 # V10: IGBP "board" — 4 stacked panels per model set (like fig_IGBP_treecover
 # plus an added SHAP-by-IGBP violin panel):
-#   A) ΔRMSE by IGBP (violin)      B) Disturbance SHAP % by IGBP (violin)
+#   A) ΔRMSE by IGBP (violin)      B) NET SIGNED disturbance SHAP by IGBP (violin)
 #   C) ΔRMSE vs tree cover (scatter)  D) SHAP % vs tree cover (scatter)
 # One board per with-D model: M4 (M3vsM4), M6 (M5vsM6), M8 (M7vsM8).
 # ============================================================================
@@ -85,12 +85,22 @@ site_rmse <- preds[, .(rmse = sqrt(mean((observed - predicted)^2))),
 
 # ── per-site disturbance SHAP % ──────────────────────────────
 shap <- fread(shap_file)
+# DRAFT: panels B and D switch from the |SHAP| share to the NET SIGNED contribution of the
+# disturbance block, matching Figure 4. The sign is not recoverable from shap_file, so read
+# the separately computed signed table.
+signed_file <- sub("_site_shap_M04_M08\\.csv$", "_site_signed_shap_M4.csv", shap_file)
+signed <- if (file.exists(signed_file)) {
+  fread(signed_file)[group == "Disturbance",
+     .(test_site, model, response, dist_signed = mean_signed_shap)]
+} else { message("signed SHAP not found: ", signed_file); NULL }
 shap[, is_dist := grepl("^(absolute_|relative_|new_mortality|disturbance_)", variable)]
 shap_sum <- shap[, .(total = sum(mean_abs_shap, na.rm = TRUE),
                      dist = sum(mean_abs_shap[is_dist], na.rm = TRUE)),
                  by = .(model, response, test_site)]
 shap_sum[, dist_pct := dist / total * 100]
 shap_sum <- shap_sum[is.finite(dist_pct)]
+if (!is.null(signed))
+  shap_sum <- merge(shap_sum, signed, by = c("test_site","model","response"), all.x = TRUE)
 
 # ── model sets (with-D model drives both) ────────────────────
 sets <- list(
@@ -153,6 +163,11 @@ for (s in sets) {
   sh <- shap_sum[model == s$wd]
   sh <- merge(sh, site_meta, by.x = "test_site", by.y = "SITE_ID")
   sh <- sh[response %in% EFP_ORDER & !is.na(IGBP)]
+  # DRAFT: signed SHAP was only computed for M4, so skip any other spec rather than
+  # failing inside geom_violin on an all-NA column.
+  if (!"dist_signed" %in% names(sh) || all(is.na(sh$dist_signed))) {
+    cat(sprintf("  skip %s - no signed SHAP\n", s$wd)); next
+  }
   sh[, response := factor(response, levels = EFP_ORDER)]
 
   if (nrow(dR) == 0 || nrow(sh) == 0) { cat("  skip:", s$wd, "\n"); next }
@@ -160,15 +175,15 @@ for (s in sets) {
   pA <- violin_igbp(dR, "delta_rmse", expression(Delta*"RMSE (with D - without D)"),
                     "A · ΔRMSE by IGBP class",
                     "White dot = median | Yellow diamond = mean | negative = D improved", TRUE)
-  pB <- violin_igbp(sh, "dist_pct", "Disturbance SHAP (%)",
-                    "B · Disturbance SHAP % by IGBP class",
-                    "% of per-site SHAP from disturbance variables", FALSE)
+  pB <- violin_igbp(sh, "dist_signed", "Net signed disturbance SHAP",
+                    "B · Direction of the disturbance effect by IGBP class",
+                    "Net signed SHAP of the disturbance block, response units | below zero = pulls the prediction down", TRUE)
   pC <- scatter_tc(dR, "delta_rmse", expression(Delta*"RMSE (with D - without D)"),
                    "C · Tree cover vs. disturbance benefit",
                    "Each point = one site | Loess trend with 95% CI", TRUE, FALSE)
-  pD <- scatter_tc(sh, "dist_pct", "Disturbance SHAP (%)",
-                   "D · Tree cover vs. disturbance SHAP importance",
-                   "Each point = one site | Loess trend with 95% CI", FALSE, TRUE)
+  pD <- scatter_tc(sh, "dist_signed", "Net signed disturbance SHAP",
+                   "D · Tree cover vs. direction of the disturbance effect",
+                   "Each point = one site | Loess trend with 95% CI | below zero = pulls the prediction down", TRUE, TRUE)
 
   board <- (pA / pB / pC / pD) +
     plot_annotation(

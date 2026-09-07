@@ -153,24 +153,31 @@ relative disturbance = (deadwood + loss×100) / (forest + loss×100) × 100 (\%)
 
 \section*{Figure 5: Does it depend on ecosystem type or tree cover?}
 \begin{itemize}
-  \item The report's Section-9 four-panel board, regenerated \textbf{without uWUE}, for
-        \textbf{XGBoost--Optuna}, M4, at \textbf{both} climate windows. Panels:
-        \textbf{A} $\Delta$RMSE by IGBP class, \textbf{B} disturbance SHAP \% by IGBP class,
-        \textbf{C} tree cover vs disturbance benefit, \textbf{D} tree cover vs disturbance SHAP.
-  \item \textbf{This is the direct evidence on the ecosystem-type question}, and it is largely negative.
-  \item \textbf{Panels C and D are flat.} The loess trends against tree cover are close to horizontal with
-        wide confidence bands for every EFP --- neither the benefit of disturbance nor its SHAP share
-        scales with how forested a site is. (Site-level test across all learners: Spearman
-        $\rho = 0.04$, $p = 0.65$.)
-  \item \textbf{Panel B runs slightly against the forest hypothesis:} the open classes take a
-        \emph{larger} disturbance share than the forest classes --- OSH 38.0\,\% and WET 35.0\,\% versus
-        ENF 30.0\,\% and DBF 30.3\,\% for GPP$_{sat}$. Pooled, non-forest 34.4\,\% vs forest 30.1\,\%.
-  \item \textbf{Treat the small classes with caution:} WSA $n=1$, EBF $n=1$, CSH $n=2$, OSH $n=2$ sites.
-        Only ENF (45), DBF (26) and WET (10) carry enough sites to read confidently.
-  \item Panel A shows the $\Delta$RMSE benefit is negative (D helps) for most classes but with large
-        within-class spread --- the same site-level heterogeneity as Figure 2.
-  \item The 12\,m and 24\,m boards are near-identical in pattern, differing mainly in level.
-  \item \decide{is this a main-text figure? It is the cleanest statement of a negative result.}
+  \item The report's Section-9 board, without uWUE, XGBoost--Optuna, M4, both windows.
+        \textbf{Panels B and D now show the net signed disturbance SHAP} (as Figure 4), not the
+        $|$SHAP$|$ share. \textbf{A} $\Delta$RMSE by IGBP, \textbf{B} direction by IGBP,
+        \textbf{C} tree cover vs benefit, \textbf{D} tree cover vs direction.
+  \item \textbf{This reverses what the magnitude version showed.} On $|$SHAP$|$ the disturbance share
+        was unrelated to tree cover (Spearman $\rho = 0.04$, $p = 0.65$). On the \emph{signed} value the
+        relationship is strong and highly significant:
+        GPP$_{sat}$ $\rho = +0.66$ ($p = 5\times10^{-13}$), NEP$_{max}$ $\rho = +0.64$
+        ($p = 4\times10^{-12}$), WUE $\rho = +0.67$ ($p = 3\times10^{-13}$),
+        ET$_{max}$ $\rho = +0.31$ ($p = 0.003$).
+  \item \textbf{Panel D, read plainly:} at low tree cover disturbance pulls predicted carbon uptake
+        \emph{down}; at high tree cover it pushes it \emph{up}. The sign flips at roughly 50\,\% cover.
+  \item \textbf{Panel B says the same by class} (median net signed SHAP, GPP$_{sat}$):
+        open and wet classes negative --- OSH $-4.84$, WET $-4.16$, CSH $-2.91$, WSA $-1.46$;
+        forest classes positive --- MF $+1.94$, DBF $+1.06$, EBF $+0.60$, ENF $+0.26$.
+  \item \textbf{So the earlier conclusion needs qualifying.} The \emph{magnitude} of the disturbance
+        effect does not depend on ecosystem type; its \emph{direction} clearly does. Only the signed
+        analysis can see this, and it is invisible in Figures 3 and 4 of earlier drafts.
+  \item \textbf{Caveats.} WET carries $n=10$ sites and the tree-cover correlation uses all 93, so those
+        are solid; OSH, CSH ($n=2$) and WSA, EBF ($n=1$) are not individually interpretable. It is also
+        worth asking how much of this is mechanical --- at low canopy cover there is less to lose, and
+        the disturbance predictors may encode something different.
+  \item Panels A and C are unchanged and remain weak: the $\Delta$RMSE benefit does not track tree cover.
+  \item \decide{does this change the framing from "functional, not ecosystem-specific" to a
+        direction-vs-magnitude distinction?}
   \item \decide{drop the $n\leq2$ IGBP classes from panels A and B, or keep them with a caveat?}
 \end{itemize}
 
@@ -182,7 +189,6 @@ relative disturbance = (deadwood + loss×100) / (forest + loss×100) × 100 (\%)
 \includegraphics[width=0.88\linewidth]{figures/fig5_igbp_board_24m}\\[2pt]
 {\small \textbf{Fig.\ 5b} --- XGBoost--Optuna, M4, \textbf{24\,m} window}
 \end{center}
-
 
 \section*{Storyline}
 
