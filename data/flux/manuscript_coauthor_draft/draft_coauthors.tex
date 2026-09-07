@@ -36,11 +36,15 @@
 \section*{Figure 1 --- Sites and EFP distributions}
 \begin{itemize}
   \item 93 sites: ENF 45, DBF 26, WET 10, MF 6, CSH 2, OSH 2, EBF 1, WSA 1. Median 4 years per site, 2019--2025.
-  \item Violins cover all 600 site-years with a valid EFP; modelling uses the 395 with complete predictor coverage.
+  \item \textbf{Violins use the 395 modelling site-years} --- the same data the models are fitted and validated
+        on, so the figure and the results describe exactly the same rows. (The report version shows all 600
+        site-years with a valid EFP, including those dropped for incomplete predictor coverage.)
+  \item \textbf{uWUE dropped}; panels are GPP$_{sat}$, NEP$_{max}$, ET$_{max}$, WUE.
   \item Between-site variation dominates within-site variation --- which is what leave-one-site-out tests.
-  \item \decide{keep all five EFPs in this figure, or drop uWUE here too for consistency?}
+  \item Values are clipped at the 99th percentile for display, as in the report.
+  \item \decide{is the 500\,m buffer worth showing on the map, or is the site distribution enough?}
 \end{itemize}
-\begin{center}\includegraphics[width=\linewidth]{figures/fig1_site_map}\end{center}
+\begin{center}\includegraphics[width=0.95\linewidth]{figures/fig1_site_map}\end{center}
 
 \section*{Figure 2 --- Does disturbance reduce error? (M3 $\rightarrow$ M4)}
 \begin{itemize}
