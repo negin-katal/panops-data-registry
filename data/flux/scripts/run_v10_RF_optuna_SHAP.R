@@ -135,6 +135,12 @@ for (resp in RESPONSE_VARS) {
     o  <- TUNED[[resp]]
     mt <- max(1L, min(length(xvars), as.integer(round(o$mtry_frac * length(xvars)))))
     Xdf <- as.data.frame(df_model[, xvars, drop = FALSE])
+    # BUGFIX: Xdf previously kept the ORIGINAL names while to_orig is keyed by the
+    # SANITISED ones, so treeshap returned e.g. "Leaf C" and to_orig["Leaf C"] was NA.
+    # That silently blanked the 14 trait names containing spaces, parentheses or
+    # slashes and dumped ~35% of the attribution into an unlabelled group. Train and
+    # explain in sanitised space, exactly as the comment above intends.
+    colnames(Xdf) <- safe
     rf <- tryCatch(ranger(x = Xdf, y = df_model[[resp]],
                           num.trees = as.integer(o$num_trees), mtry = mt,
                           min.node.size = as.integer(o$min_node_size),
@@ -149,6 +155,7 @@ for (resp in RESPONSE_VARS) {
     fold_shap <- mclapply(sites_test, function(test_site) {
       test_df <- df_model[df_model$SITE_ID == test_site, xvars, drop = FALSE]
       if (nrow(test_df) == 0) return(NULL)
+      colnames(test_df) <- safe            # match the sanitised training space
       sr <- tryCatch(treeshap(unified, test_df, verbose = FALSE), error = function(e) NULL)
       if (is.null(sr)) return(NULL)
       shap_mat <- as.data.table(sr$shaps)
@@ -156,6 +163,9 @@ for (resp in RESPONSE_VARS) {
       out <- melt(mean_abs_shap, measure.vars = names(mean_abs_shap),
                   variable.name = "variable", value.name = "mean_abs_shap")
       out[, variable := to_orig[as.character(variable)]]   # back to original names
+      if (anyNA(out$variable))                                # never fail silently again
+        stop(sprintf("SHAP name mapping lost %d variable name(s) for %s/%s",
+                     sum(is.na(out$variable)), model_id, resp))
       out[, `:=`(model = model_id, response = resp, test_site = test_site)]
       out
     }, mc.cores = N_CORES)
