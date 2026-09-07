@@ -9,7 +9,7 @@
 #   positive = disturbance pushes it UP
 # Categories and thresholds match Figure 4 (natural breaks, Low+Mid vs High).
 # ============================================================================
-suppressMessages({library(data.table); library(ggplot2)})
+suppressMessages({library(data.table); library(ggplot2); library(ggh4x)})
 setwd("/mnt/gsdata/projects/panops/panops-data-registry/data/flux")
 B <- "derived_tables/outputs_afterEGU_results"
 OUT <- "manuscript_coauthor_draft/figures"; dir.create(OUT, showWarnings = FALSE, recursive = TRUE)
@@ -79,8 +79,8 @@ for (w in c("12m","24m")) {
     geom_text(data=sst, aes(x=metric, y=hi*1.10, label=sig, group=cat2),
               position=position_dodge(width=0.85), inherit.aes=FALSE, colour="white", size=3, fontface="bold") +
     scale_fill_manual(values=CAT_COLS) +
-    facet_grid(learner ~ response, scales="free_y",
-               labeller=labeller(response=EFP_LAB)) +
+    ggh4x::facet_grid2(learner ~ response, scales="free_y", independent="y",
+                       labeller=labeller(response=EFP_LAB)) +
     labs(x=NULL, y="Net signed disturbance SHAP  (response units)",
          title=sprintf("Direction of the disturbance effect — M4, %s window", w),
          subtitle=paste0("Tree cover ≥30 % (93 sites) · net signed contribution of the ",
