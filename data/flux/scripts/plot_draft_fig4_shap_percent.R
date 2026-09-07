@@ -81,6 +81,10 @@ if (MERGE) {
 }
 ## --- optional model-family override (XGBoost etc.); no-op when unset ---
 source("scripts/v10_model_family.R"); v10_apply_override()
+# DRAFT SAFETY: without this the shared path logic writes into the report's own figure
+# tree and regenerates ~180 figures as 4-EFP versions. Set V10_DRAFT_OUT to stage them
+# somewhere harmless instead.
+if (nzchar(Sys.getenv("V10_DRAFT_OUT"))) output_dir <- Sys.getenv("V10_DRAFT_OUT")
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
 df_harm <- as.data.frame(fread(harm_file))

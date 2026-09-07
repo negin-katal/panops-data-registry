@@ -130,6 +130,34 @@
 {\small \textbf{Fig.\ 4c} --- LightGBM--Optuna}
 \end{center}
 
+\section*{Figure 5 --- Does the climate window change the picture? (12\,m vs 24\,m)}
+\begin{itemize}
+  \item Same Section-9 figure as Figure 4, restricted to \textbf{XGBoost--Optuna} and shown for
+        \textbf{both climate windows}: M4, natural-breaks thresholds, Low+Mid vs High.
+  \item \textbf{The window changes the level, not the pattern.} Every EFP draws a somewhat smaller
+        disturbance share at 24\,m than at 12\,m --- median for High-disturbance sites:
+        GPP$_{sat}$ 30.6\,\% $\rightarrow$ 27.8\,\%, NEP$_{max}$ 32.4 $\rightarrow$ 30.4,
+        WUE 40.0 $\rightarrow$ 33.6, ET$_{max}$ 16.5 $\rightarrow$ 11.0.
+  \item Mechanically this is expected: the 24\,m window doubles the climate block from 143 to 286
+        predictors while the disturbance block stays at 100, so climate takes a larger share of a
+        fixed total.
+  \item \textbf{The High vs Low+Mid ordering is preserved at both windows} for all four EFPs, so the
+        (weak) separation seen in Figure 4 is not an artefact of the 12\,m choice.
+  \item WUE again shows the widest gap between categories at both windows (40.0 vs 35.2 at 12\,m;
+        33.6 vs 28.7 at 24\,m).
+  \item \decide{report one window in the main text and the other in the supplement, or keep both?}
+  \item \decide{does this belong as its own figure, or as extra panels on Figure 4?}
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.80\linewidth]{figures/fig5_shap_percent_XGB_12m}\\[2pt]
+{\small \textbf{Fig.\ 5a} --- XGBoost--Optuna, M4, \textbf{12\,m} window}
+\end{center}
+\begin{center}
+\includegraphics[width=0.80\linewidth]{figures/fig5_shap_percent_XGB_24m}\\[2pt]
+{\small \textbf{Fig.\ 5b} --- XGBoost--Optuna, M4, \textbf{24\,m} window}
+\end{center}
+
 \section*{Open decisions}
 \begin{itemize}
   \item \textbf{Story.} Two candidate framings: (i) disturbance improves carbon-flux prediction but not water
