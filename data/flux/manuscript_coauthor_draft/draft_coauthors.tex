@@ -130,31 +130,35 @@
 {\small \textbf{Fig.\ 4c} --- LightGBM--Optuna}
 \end{center}
 
-\section*{Figure 5 --- Does the climate window change the picture? (12\,m vs 24\,m)}
+\section*{Figure 5 --- Does it depend on ecosystem type or tree cover? (Section 9 board)}
 \begin{itemize}
-  \item Same Section-9 figure as Figure 4, restricted to \textbf{XGBoost--Optuna} and shown for
-        \textbf{both climate windows}: M4, natural-breaks thresholds, Low+Mid vs High.
-  \item \textbf{The window changes the level, not the pattern.} Every EFP draws a somewhat smaller
-        disturbance share at 24\,m than at 12\,m --- median for High-disturbance sites:
-        GPP$_{sat}$ 30.6\,\% $\rightarrow$ 27.8\,\%, NEP$_{max}$ 32.4 $\rightarrow$ 30.4,
-        WUE 40.0 $\rightarrow$ 33.6, ET$_{max}$ 16.5 $\rightarrow$ 11.0.
-  \item Mechanically this is expected: the 24\,m window doubles the climate block from 143 to 286
-        predictors while the disturbance block stays at 100, so climate takes a larger share of a
-        fixed total.
-  \item \textbf{The High vs Low+Mid ordering is preserved at both windows} for all four EFPs, so the
-        (weak) separation seen in Figure 4 is not an artefact of the 12\,m choice.
-  \item WUE again shows the widest gap between categories at both windows (40.0 vs 35.2 at 12\,m;
-        33.6 vs 28.7 at 24\,m).
-  \item \decide{report one window in the main text and the other in the supplement, or keep both?}
-  \item \decide{does this belong as its own figure, or as extra panels on Figure 4?}
+  \item The report's Section-9 four-panel board, regenerated \textbf{without uWUE}, for
+        \textbf{XGBoost--Optuna}, M4, at \textbf{both} climate windows. Panels:
+        \textbf{A} $\Delta$RMSE by IGBP class, \textbf{B} disturbance SHAP \% by IGBP class,
+        \textbf{C} tree cover vs disturbance benefit, \textbf{D} tree cover vs disturbance SHAP.
+  \item \textbf{This is the direct evidence on the ecosystem-type question}, and it is largely negative.
+  \item \textbf{Panels C and D are flat.} The loess trends against tree cover are close to horizontal with
+        wide confidence bands for every EFP --- neither the benefit of disturbance nor its SHAP share
+        scales with how forested a site is. (Site-level test across all learners: Spearman
+        $\rho = 0.04$, $p = 0.65$.)
+  \item \textbf{Panel B runs slightly against the forest hypothesis:} the open classes take a
+        \emph{larger} disturbance share than the forest classes --- OSH 38.0\,\% and WET 35.0\,\% versus
+        ENF 30.0\,\% and DBF 30.3\,\% for GPP$_{sat}$. Pooled, non-forest 34.4\,\% vs forest 30.1\,\%.
+  \item \textbf{Treat the small classes with caution:} WSA $n=1$, EBF $n=1$, CSH $n=2$, OSH $n=2$ sites.
+        Only ENF (45), DBF (26) and WET (10) carry enough sites to read confidently.
+  \item Panel A shows the $\Delta$RMSE benefit is negative (D helps) for most classes but with large
+        within-class spread --- the same site-level heterogeneity as Figure 2.
+  \item The 12\,m and 24\,m boards are near-identical in pattern, differing mainly in level.
+  \item \decide{is this a main-text figure? It is the cleanest statement of a negative result.}
+  \item \decide{drop the $n\leq2$ IGBP classes from panels A and B, or keep them with a caveat?}
 \end{itemize}
 
 \begin{center}
-\includegraphics[width=0.80\linewidth]{figures/fig5_shap_percent_XGB_12m}\\[2pt]
+\includegraphics[width=0.88\linewidth]{figures/fig5_igbp_board_12m}\\[2pt]
 {\small \textbf{Fig.\ 5a} --- XGBoost--Optuna, M4, \textbf{12\,m} window}
 \end{center}
 \begin{center}
-\includegraphics[width=0.80\linewidth]{figures/fig5_shap_percent_XGB_24m}\\[2pt]
+\includegraphics[width=0.88\linewidth]{figures/fig5_igbp_board_24m}\\[2pt]
 {\small \textbf{Fig.\ 5b} --- XGBoost--Optuna, M4, \textbf{24\,m} window}
 \end{center}
 
