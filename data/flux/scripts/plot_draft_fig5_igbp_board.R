@@ -175,15 +175,15 @@ for (s in sets) {
   pA <- violin_igbp(dR, "delta_rmse", expression(Delta*"RMSE (with D - without D)"),
                     "A · ΔRMSE by IGBP class",
                     "White dot = median | Yellow diamond = mean | negative = D improved", TRUE)
-  pB <- violin_igbp(sh, "dist_signed", "Net signed disturbance SHAP",
+  pB <- violin_igbp(sh, "dist_signed", "Net signed disturbance SHAP\n(effect on PREDICTED value)",
                     "B · Direction of the disturbance effect by IGBP class",
-                    "Net signed SHAP of the disturbance block, response units | below zero = pulls the prediction down", TRUE)
+                    "Net signed SHAP of the disturbance block | below zero = model predicts a LOWER EFP value (not worse accuracy)", TRUE)
   pC <- scatter_tc(dR, "delta_rmse", expression(Delta*"RMSE (with D - without D)"),
                    "C · Tree cover vs. disturbance benefit",
                    "Each point = one site | Loess trend with 95% CI", TRUE, FALSE)
-  pD <- scatter_tc(sh, "dist_signed", "Net signed disturbance SHAP",
+  pD <- scatter_tc(sh, "dist_signed", "Net signed disturbance SHAP\n(effect on PREDICTED value)",
                    "D · Tree cover vs. direction of the disturbance effect",
-                   "Each point = one site | Loess trend with 95% CI | below zero = pulls the prediction down", TRUE, TRUE)
+                   "Each point = one site | Loess trend with 95% CI | below zero = model predicts a LOWER EFP value", TRUE, TRUE)
 
   board <- (pA / pB / pC / pD) +
     plot_annotation(

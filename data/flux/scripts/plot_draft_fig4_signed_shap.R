@@ -81,7 +81,7 @@ for (w in c("12m","24m")) {
     scale_fill_manual(values=CAT_COLS) +
     ggh4x::facet_grid2(learner ~ response, scales="free_y", independent="y",
                        labeller=labeller(response=EFP_LAB)) +
-    labs(x=NULL, y="Net signed disturbance SHAP  (response units)",
+    labs(x=NULL, y="Net signed disturbance SHAP\n(effect on the PREDICTED value, response units)",
          title=sprintf("Direction of the disturbance effect — M4, %s window", w),
          subtitle=paste0("Tree cover ≥30 % (93 sites) · net signed contribution of the ",
                          "disturbance block per site\nbelow zero = disturbance pulls the prediction DOWN · ",

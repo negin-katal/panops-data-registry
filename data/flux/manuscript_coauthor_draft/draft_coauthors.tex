@@ -118,10 +118,18 @@ relative disturbance = (deadwood + loss×100) / (forest + loss×100) × 100 (\%)
         matters but not which way it acts. Here SHAP is recomputed keeping the \textbf{sign}: per
         site-year we sum the signed SHAP across the 100 disturbance predictors --- the block's net push
         on the prediction, in response units --- and average over the site's years.
-        \textbf{Below zero = disturbance pulls the prediction down.} M4, natural-breaks thresholds,
+        \textbf{Below zero means the model predicts a LOWER value of the EFP at that site} --- not
+        that it predicts less accurately. Accuracy is Figure 2, where negative $\Delta$RMSE means
+        \emph{less error}; here negative means \emph{lower predicted carbon uptake}. M4, natural-breaks thresholds,
         Low+Mid vs High, all three Optuna learners, both windows.
-  \item \textbf{A clear dose--response.} At \textbf{High}-disturbance sites the block pushes the carbon
-        fluxes \emph{down}; at \textbf{Low+Mid} sites it pushes them \emph{up}.
+  \item \textbf{A clear dose--response.} At \textbf{High}-disturbance sites the block pushes predicted
+        carbon uptake \emph{down}; at \textbf{Low+Mid} sites it pushes it \emph{up}.
+  \item \textbf{And the model is right to do so.} Sites where disturbance pushes the prediction down
+        have nearly twice the mortality (25.2\,\% vs 16.8\,\%) and markedly lower \emph{observed}
+        GPP$_{sat}$ (19.2 vs 30.7). Across sites the signed contribution tracks mortality
+        ($\rho = -0.56$, $p = 8\times10^{-9}$) and observed productivity ($\rho = +0.73$).
+        The two figures are consistent: disturbance improves accuracy (Figure 2) \emph{because} it
+        correctly lowers predictions at damaged sites.
   \item GPP$_{sat}$ at High: $-1.15$ (XGBoost), $-0.89$ (random forest), $-0.92$ (LightGBM)
         $\mu$mol\,m$^{-2}$\,s$^{-1}$; 71--79\,\% of High sites negative. Low+Mid is positive in every
         learner ($+0.69$ to $+1.00$).
