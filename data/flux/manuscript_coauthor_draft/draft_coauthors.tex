@@ -63,34 +63,71 @@
 
 \section*{Figure 3 --- What the models actually use (per-site SHAP)}
 \begin{itemize}
-  \item Driver-group composition per site for M4, 12-month window. SHAP comes from full-data models, so it is
-        identical under both CV structures.
-  \item \textbf{Disturbance is consistently the second or third block}, never negligible where it matters:
-        GPP$_{sat}$ 29\,\%, NEP$_{max}$ 31\,\%, WUE 38\,\%, ET$_{max}$ 13\,\% (mean across the three learners).
-  \item \textbf{ET$_{max}$ is the outlier} --- climate takes 54\,\% and disturbance only 13\,\%, matching its
-        null result in Figure 2. The two lines of evidence agree.
-  \item Learners agree closely: the disturbance share spans only 27--31\,\% (GPP$_{sat}$) and 26--33\,\%
-        (NEP$_{max}$) across the three.
-  \item Strong \textbf{between-site spread} --- sites are ordered by disturbance share, and the left-hand sites
-        draw almost nothing from the disturbance block.
-  \item \decide{show the 24-month window as well, or keep 12-month only?}
+  \item These are the figures already in the interactive report, unchanged: M4, 12-month window,
+        per-site stacked driver-group composition, sites ordered by disturbance share, IGBP on the right,
+        and the three dot columns giving each site's absolute mortality, relative mortality and relative
+        disturbance. Shown here for \textbf{XGBoost--Optuna}; the random-forest and LightGBM versions exist
+        and are identical in structure.
+  \item SHAP comes from full-data models, so these are the same under both cross-validation structures.
+  \item \textbf{Disturbance (gold) is a large, consistent share} for the carbon fluxes --- 29\,\% for
+        GPP$_{sat}$ and 31\,\% for NEP$_{max}$ on average across the three learners --- and reaches
+        $\sim$50\,\% at the most disturbed sites.
+  \item \textbf{ET$_{max}$ is the exception:} disturbance takes only 13\,\%, climate 54\,\%. This matches its
+        null result in Figure 2 --- two independent lines of evidence agreeing.
+  \item WUE draws the \emph{most} on disturbance (38\,\%) but with far less trait signal (12\,\%).
+  \item Sites vary widely: the top of each panel draws little from disturbance, the bottom draws heavily.
+  \item \decide{one EFP in the main text and the rest in the supplement, or all four?}
+  \item \decide{show one learner (XGBoost) or all three?}
 \end{itemize}
-\begin{center}\includegraphics[width=\linewidth]{figures/fig3_site_shap_composition}\end{center}
 
-\section*{Figure 4 --- Does the disturbance share scale with disturbance level?}
+\begin{center}
+\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_GPPsat}\\[2pt]
+{\small \textbf{Fig.\ 3a} --- GPP$_{sat}$, M4, 12\,m, XGBoost--Optuna}
+\end{center}
+\begin{center}
+\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_NEPmax}\\[2pt]
+{\small \textbf{Fig.\ 3b} --- NEP$_{max}$}
+\end{center}
+\begin{center}
+\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_ETmax}\\[2pt]
+{\small \textbf{Fig.\ 3c} --- ET$_{max}$ (note the much smaller disturbance share)}
+\end{center}
+\begin{center}
+\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_WUE}\\[2pt]
+{\small \textbf{Fig.\ 3d} --- WUE}
+\end{center}
+
+\section*{Figure 4 --- Disturbance SHAP by disturbance level (Low+Mid vs High)}
 \begin{itemize}
-  \item Disturbance share of $|$SHAP$|$ split by Low / Mid / High category, using tertile thresholds on three
-        500\,m metrics (absolute mortality, relative mortality, relative disturbance).
-  \item \textbf{Largely no.} Only \textbf{2 of 36} Kruskal--Wallis tests are significant after FDR correction,
-        both for WUE. GPP$_{sat}$, NEP$_{max}$ and ET$_{max}$: 0 of 9 each.
-  \item Models draw on the disturbance block at similar rates whether a site is heavily disturbed or not ---
-        the block carries information about \emph{stand state}, not only about \emph{recent mortality events}.
-  \item Consistent with the site-level heterogeneity in Figure 2: which sites benefit is not simply the
-        most-disturbed ones.
-  \item \decide{is this a main-text figure or a supplementary one? It is largely a negative result.}
-  \item \decide{tertiles, equal-width or natural-breaks thresholds? All three exist; tertiles shown here.}
+  \item Again the existing report figures, unchanged: M4, 12-month window, \textbf{natural-breaks} thresholds
+        (mean $\pm$ 0.5\,SD), with \textbf{Low and Mid merged} against High. Three rows = the three 500\,m
+        mortality metrics. One page per learner.
+  \item \textbf{The separation is weak.} Low+Mid and High overlap heavily for GPP$_{sat}$ and NEP$_{max}$; if
+        anything GPP$_{sat}$ shifts slightly \emph{down} at High.
+  \item \textbf{WUE separates most clearly} --- High sits visibly above Low+Mid on all three metrics.
+  \item ET$_{max}$ sits near 11--13\,\% throughout, barely moving between categories.
+  \item Read together with Figure 2: models draw on disturbance at similar rates whether or not a site is
+        heavily disturbed, so the block carries information about \emph{stand state} rather than only about
+        \emph{recent mortality events}.
+  \item \textbf{These figures still include uWUE}, since they are taken unchanged from the report. If uWUE is
+        dropped everywhere, they need regenerating without it.
+  \item \decide{keep all three learners, or only the reported one?}
+  \item \decide{main text or supplement --- this is largely a negative result.}
+  \item \decide{regenerate without uWUE for consistency with the rest of the draft?}
 \end{itemize}
-\begin{center}\includegraphics[width=\linewidth]{figures/fig4_grouped_disturbance_shap}\end{center}
+
+\begin{center}
+\includegraphics[width=0.80\linewidth]{figures/fig4_grouped_shap_XGB}\\[2pt]
+{\small \textbf{Fig.\ 4a} --- XGBoost--Optuna, M4, 12\,m, natural breaks, Low+Mid vs High}
+\end{center}
+\begin{center}
+\includegraphics[width=0.80\linewidth]{figures/fig4_grouped_shap_RF}\\[2pt]
+{\small \textbf{Fig.\ 4b} --- Random forest--Optuna}
+\end{center}
+\begin{center}
+\includegraphics[width=0.80\linewidth]{figures/fig4_grouped_shap_LGB}\\[2pt]
+{\small \textbf{Fig.\ 4c} --- LightGBM--Optuna}
+\end{center}
 
 \section*{Open decisions}
 \begin{itemize}
@@ -118,7 +155,7 @@
   \item \textbf{Known issue:} the random-forest Optuna SHAP table lost the names of the 14 trait variables whose
         names contain spaces, parentheses or slashes, placing $\sim$35\,\% of attribution in an unlabelled group.
         Group membership is unambiguous (14 unnamed + 7 named = the 21 traits the other learners show) and has
-        been reassigned to Traits in Figures 3 and 4. The underlying extraction should still be fixed.
+        been reassigned to Traits in the summary percentages quoted above. Figures 3 and 4 are taken unchanged from the report, so the random-forest panels of Figure 4 still carry the unfixed grouping; the extraction in \texttt{run\_v10\_RF\_optuna\_SHAP.R} should be fixed at source.
   \item Full results --- three datasets, nine learner configurations, both CV structures, all 24 model
         configurations --- are in the interactive report:
         \url{https://negin-katal.github.io/fluxVSmortality/v10/index.html}

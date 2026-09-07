@@ -20,8 +20,10 @@ Everything is filtered from results already computed. No models were retrained.
 - `draft_coauthors.tex` — the draft (compile with pdflatex, no bibliography needed)
 - `figures/fig1_site_map.*` — sites and EFP distributions (copied from the report)
 - `figures/fig2_disturbance_effect_M3M4.*` — paired violins, 4 EFPs × 3 learners × (12m/24m × LOO/rep)
-- `figures/fig3_site_shap_composition.*` — per-site SHAP composition, M4, 12 m
-- `figures/fig4_grouped_disturbance_shap.*` — disturbance SHAP share by Low/Mid/High category
+- `figures/fig3_site_shap_<EFP>.*` — per-site SHAP composition, M4, 12 m, XGBoost-Optuna
+  (taken unchanged from the report, Section 8)
+- `figures/fig4_grouped_shap_<learner>.*` — disturbance SHAP by Low+Mid vs High, M4, 12 m,
+  natural breaks (taken unchanged from the report, Section 9; still includes uWUE)
 - `fig2_statistics.csv`, `fig3_shap_shares.csv`, `fig4_statistics.csv` — the numbers behind each figure
 
 ## Regenerating
@@ -39,7 +41,8 @@ $RS scripts/plot_draft_fig4_grouped_shap.R
 `RF_v10_optuna`'s SHAP table lost the names of the 14 trait variables containing spaces,
 parentheses or slashes (`Leaf C`, `Leaf N (area)`, `Leaf C/N ratio`, …), leaving ~35% of the
 attribution in an unlabelled group. Group membership is unambiguous — 14 unnamed + 7 named =
-the 21 traits the other two learners show — so the draft scripts reassign them to Traits.
+the 21 traits the other two learners show — so the summary percentages quoted in the draft reassign them to Traits. Figures 3 and 4 are
+copied unchanged from the report, so the RF panels of Fig 4 still carry the unfixed grouping.
 The extraction in `scripts/run_v10_RF_optuna_SHAP.R` should still be fixed at source; this
 also affects the RF-Optuna panels of Sections 8–9 in the interactive report.
 
