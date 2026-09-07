@@ -1,0 +1,37 @@
+learner,response,metric,p,q,sig
+Random forest (Optuna),GPPsat,Absolute mortality,0.171,0.319,ns
+Random forest (Optuna),GPPsat,Relative mortality,0.594,0.594,ns
+Random forest (Optuna),GPPsat,Relative disturbance,0.475,0.518,ns
+XGBoost (Optuna),GPPsat,Absolute mortality,0.0171,0.128,ns
+XGBoost (Optuna),GPPsat,Relative mortality,0.18,0.319,ns
+XGBoost (Optuna),GPPsat,Relative disturbance,0.377,0.468,ns
+LightGBM (Optuna),GPPsat,Absolute mortality,0.186,0.319,ns
+LightGBM (Optuna),GPPsat,Relative mortality,0.331,0.441,ns
+LightGBM (Optuna),GPPsat,Relative disturbance,0.296,0.41,ns
+Random forest (Optuna),NEPmax,Absolute mortality,0.503,0.522,ns
+Random forest (Optuna),NEPmax,Relative mortality,0.191,0.319,ns
+Random forest (Optuna),NEPmax,Relative disturbance,0.348,0.448,ns
+XGBoost (Optuna),NEPmax,Absolute mortality,0.195,0.319,ns
+XGBoost (Optuna),NEPmax,Relative mortality,0.138,0.31,ns
+XGBoost (Optuna),NEPmax,Relative disturbance,0.212,0.332,ns
+LightGBM (Optuna),NEPmax,Absolute mortality,0.0993,0.275,ns
+LightGBM (Optuna),NEPmax,Relative mortality,0.0464,0.219,ns
+LightGBM (Optuna),NEPmax,Relative disturbance,0.0969,0.275,ns
+Random forest (Optuna),ETmax,Absolute mortality,0.428,0.486,ns
+Random forest (Optuna),ETmax,Relative mortality,0.0257,0.154,ns
+Random forest (Optuna),ETmax,Relative disturbance,0.0177,0.128,ns
+XGBoost (Optuna),ETmax,Absolute mortality,0.12,0.309,ns
+XGBoost (Optuna),ETmax,Relative mortality,0.172,0.319,ns
+XGBoost (Optuna),ETmax,Relative disturbance,0.411,0.486,ns
+LightGBM (Optuna),ETmax,Absolute mortality,0.432,0.486,ns
+LightGBM (Optuna),ETmax,Relative mortality,0.256,0.369,ns
+LightGBM (Optuna),ETmax,Relative disturbance,0.0867,0.275,ns
+Random forest (Optuna),WUE,Absolute mortality,0.507,0.522,ns
+Random forest (Optuna),WUE,Relative mortality,0.0547,0.219,ns
+Random forest (Optuna),WUE,Relative disturbance,0.000377,0.0136,*
+XGBoost (Optuna),WUE,Absolute mortality,0.242,0.363,ns
+XGBoost (Optuna),WUE,Relative mortality,0.0953,0.275,ns
+XGBoost (Optuna),WUE,Relative disturbance,0.00515,0.0618,ns
+LightGBM (Optuna),WUE,Absolute mortality,0.137,0.31,ns
+LightGBM (Optuna),WUE,Relative mortality,0.0514,0.219,ns
+LightGBM (Optuna),WUE,Relative disturbance,0.00118,0.0212,*

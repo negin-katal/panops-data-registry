@@ -1,0 +1,97 @@
+learner,response,grp,median_pct,sites_improved,p,q,sig
+Random forest (Optuna),GPPsat,"12m
+LOO",-4.23,60.2,0.000435,0.00104,**
+Random forest (Optuna),GPPsat,"24m
+LOO",-3.69,59.1,0.000472,0.00108,**
+Random forest (Optuna),GPPsat,"12m
+rep",-3.64,64.5,0.000839,0.00168,**
+Random forest (Optuna),GPPsat,"24m
+rep",-4.59,64.5,0.000726,0.00158,**
+XGBoost (Optuna),GPPsat,"12m
+LOO",-10.15,65.6,0.000114,0.000456,***
+XGBoost (Optuna),GPPsat,"24m
+LOO",-7.17,64.5,0.000766,0.0016,**
+XGBoost (Optuna),GPPsat,"12m
+rep",-7.57,67.7,0.000106,0.000456,***
+XGBoost (Optuna),GPPsat,"24m
+rep",-7.5,65.6,0.000136,0.000489,***
+LightGBM (Optuna),GPPsat,"12m
+LOO",-10.81,62.4,0.000339,0.000916,***
+LightGBM (Optuna),GPPsat,"24m
+LOO",-8.45,62.4,0.000363,0.000917,***
+LightGBM (Optuna),GPPsat,"12m
+rep",-8.32,67.7,4.36e-05,0.000233,***
+LightGBM (Optuna),GPPsat,"24m
+rep",-7.61,65.6,0.000203,0.000608,***
+Random forest (Optuna),NEPmax,"12m
+LOO",-6.46,65.6,0.000158,0.000506,***
+Random forest (Optuna),NEPmax,"24m
+LOO",-3.49,63.4,0.000343,0.000916,***
+Random forest (Optuna),NEPmax,"12m
+rep",-6.9,78.5,5.8e-07,1.61e-05,***
+Random forest (Optuna),NEPmax,"24m
+rep",-7,69.9,1.29e-05,0.00011,***
+XGBoost (Optuna),NEPmax,"12m
+LOO",-8.86,65.6,1.84e-05,0.00011,***
+XGBoost (Optuna),NEPmax,"24m
+LOO",-11.79,65.6,0.000143,0.000489,***
+XGBoost (Optuna),NEPmax,"12m
+rep",-13.35,74.2,1.09e-06,1.61e-05,***
+XGBoost (Optuna),NEPmax,"24m
+rep",-13.12,68.8,1.34e-06,1.61e-05,***
+LightGBM (Optuna),NEPmax,"12m
+LOO",-12.98,71,5.19e-05,0.000249,***
+LightGBM (Optuna),NEPmax,"24m
+LOO",-9.25,69.9,1.43e-05,0.00011,***
+LightGBM (Optuna),NEPmax,"12m
+rep",-12.72,76.3,1.13e-06,1.61e-05,***
+LightGBM (Optuna),NEPmax,"24m
+rep",-12.52,72,1.84e-05,0.00011,***
+Random forest (Optuna),ETmax,"12m
+LOO",0.2,48.4,0.673,0.78,ns
+Random forest (Optuna),ETmax,"24m
+LOO",1.21,41.9,0.955,0.955,ns
+Random forest (Optuna),ETmax,"12m
+rep",-0.3,51.6,0.381,0.494,ns
+Random forest (Optuna),ETmax,"24m
+rep",0.44,47.3,0.442,0.544,ns
+XGBoost (Optuna),ETmax,"12m
+LOO",-0.08,50.5,0.433,0.544,ns
+XGBoost (Optuna),ETmax,"24m
+LOO",1.62,40.9,0.945,0.955,ns
+XGBoost (Optuna),ETmax,"12m
+rep",1.7,46.2,0.751,0.819,ns
+XGBoost (Optuna),ETmax,"24m
+rep",0.84,45.2,0.689,0.78,ns
+LightGBM (Optuna),ETmax,"12m
+LOO",0.71,47.3,0.813,0.848,ns
+LightGBM (Optuna),ETmax,"24m
+LOO",2.05,47.3,0.77,0.822,ns
+LightGBM (Optuna),ETmax,"12m
+rep",0.85,46.2,0.699,0.78,ns
+LightGBM (Optuna),ETmax,"24m
+rep",0.94,47.3,0.62,0.744,ns
+Random forest (Optuna),WUE,"12m
+LOO",-6.3,59.1,0.0452,0.0638,ns
+Random forest (Optuna),WUE,"24m
+LOO",-4.95,60.2,0.0387,0.0562,ns
+Random forest (Optuna),WUE,"12m
+rep",-2.88,57,0.118,0.158,ns
+Random forest (Optuna),WUE,"24m
+rep",-2.48,57,0.0963,0.132,ns
+XGBoost (Optuna),WUE,"12m
+LOO",-3.09,59.1,0.00867,0.0149,*
+XGBoost (Optuna),WUE,"24m
+LOO",-3.76,53.8,0.00392,0.00723,**
+XGBoost (Optuna),WUE,"12m
+rep",-3.86,57,0.0133,0.0212,*
+XGBoost (Optuna),WUE,"24m
+rep",-4.13,55.9,0.0169,0.0262,*
+LightGBM (Optuna),WUE,"12m
+LOO",-6.62,59.1,0.00991,0.0164,*
+LightGBM (Optuna),WUE,"24m
+LOO",-4.51,60.2,0.00203,0.00389,**
+LightGBM (Optuna),WUE,"12m
+rep",-3.79,57,0.0211,0.0317,*
+LightGBM (Optuna),WUE,"24m
+rep",-6.59,59.1,0.00572,0.0102,*
