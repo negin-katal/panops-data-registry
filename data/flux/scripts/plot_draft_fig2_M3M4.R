@@ -18,8 +18,8 @@ B <- "derived_tables/outputs_afterEGU_results"
 OUT <- "manuscript_coauthor_draft/figures"
 dir.create(OUT, showWarnings = FALSE, recursive = TRUE)
 
-DARK_BG <- "#0D0D0D"; PANEL_BG <- "#111111"; GRID_COL <- "#333333"
-TEXT_COL <- "#FFFFFF"; AXIS_COL <- "#CCCCCC"
+DARK_BG <- "white"; PANEL_BG <- "white"; GRID_COL <- "#D9D9D9"
+TEXT_COL <- "#111111"; AXIS_COL <- "#444444"
 COL_WO <- "#22C4E0"; COL_W <- "#E8257A"
 COL_UP <- "#2ECC71"; COL_NC <- "#9AA0A6"; COL_DN <- "#E74C3C"
 
@@ -90,7 +90,7 @@ th <- theme_bw(base_size = 11) + theme(
   panel.border = element_rect(colour = GRID_COL, fill = NA, linewidth = 0.4),
   panel.grid.major = element_line(colour = GRID_COL, linewidth = 0.2),
   panel.grid.minor = element_blank(),
-  strip.background = element_rect(fill = "#1A1A1A", colour = GRID_COL),
+  strip.background = element_rect(fill = "#EFEFEF", colour = GRID_COL),
   strip.text = element_text(colour = TEXT_COL, size = 10, face = "bold"),
   axis.text.x = element_text(colour = AXIS_COL, size = 8),
   axis.text.y = element_text(colour = AXIS_COL, size = 9),
@@ -106,7 +106,7 @@ p <- ggplot(dt, aes(x = grp, y = rmse, fill = model_type)) +
               width = 0.78, alpha = 0.75, trim = TRUE) +
   geom_boxplot(aes(group = interaction(grp, model_type)),
                position = position_dodge(width = 0.8), width = 0.15,
-               outlier.shape = NA, colour = "white", fill = NA, linewidth = 0.3) +
+               outlier.shape = NA, colour = "#222222", fill = NA, linewidth = 0.3) +
   geom_text(data = labs, aes(x = grp, y = ylab, label = label, colour = lcol),
             inherit.aes = FALSE, size = 2.5, fontface = "bold") +
   scale_fill_manual(values = setNames(c(COL_WO, COL_W), c("Without D (M3)", "With D (M4)"))) +

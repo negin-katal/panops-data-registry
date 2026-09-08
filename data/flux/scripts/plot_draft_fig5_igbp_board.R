@@ -21,8 +21,8 @@ cat("\n", strrep("=", 80), "\n", sep = "")
 cat(sprintf("V10 IGBP BOARDS: %s\n", toupper(dataset_type)))
 cat(strrep("=", 80), "\n\n", sep = "")
 
-DARK_BG <- "#0D0D0D"; PANEL_BG <- "#111111"; GRID_COL <- "#333333"
-TEXT_COL <- "#FFFFFF"; AXIS_COL <- "#CCCCCC"
+DARK_BG <- "white"; PANEL_BG <- "white"; GRID_COL <- "#D9D9D9"
+TEXT_COL <- "#111111"; AXIS_COL <- "#444444"
 IGBP_ORDER <- c("ENF","EBF","DNF","DBF","MF","CSH","OSH","WSA","SAV","WET")
 IGBP_COL <- c(ENF="#1F6B3A", EBF="#33A14A", DNF="#7BC87E", DBF="#B2DF8A",
               MF="#FDBF6F", CSH="#E5820B", OSH="#D4A017", WSA="#C4A85C",
@@ -57,7 +57,7 @@ dark_theme <- theme_bw(base_size = 9) +
     panel.border = element_rect(colour = GRID_COL, fill = NA),
     panel.grid.major = element_line(colour = GRID_COL, linewidth = 0.25),
     panel.grid.minor = element_blank(),
-    strip.background = element_rect(fill = "#1A1A1A", colour = GRID_COL),
+    strip.background = element_rect(fill = "#EFEFEF", colour = GRID_COL),
     strip.text = element_text(colour = TEXT_COL, size = 8, face = "bold"),
     axis.text = element_text(colour = AXIS_COL, size = 7),
     axis.title = element_text(colour = AXIS_COL, size = 8.5),
@@ -121,8 +121,8 @@ violin_igbp <- function(d, yvar, ytitle, ptitle, subtitle, dashed0) {
   if (dashed0) p <- p + geom_hline(yintercept = 0, colour = "#888888", linewidth = 0.4, linetype = "dashed")
   p +
     geom_violin(trim = TRUE, scale = "width", width = 0.75, colour = NA, alpha = 0.85) +
-    geom_boxplot(width = 0.18, outlier.shape = NA, colour = "white", fill = NA, linewidth = 0.3) +
-    stat_summary(fun = median, geom = "point", colour = "white", size = 1.1) +
+    geom_boxplot(width = 0.18, outlier.shape = NA, colour = "#222222", fill = NA, linewidth = 0.3) +
+    stat_summary(fun = median, geom = "point", colour = "#222222", size = 1.1) +
     stat_summary(fun = mean, geom = "point", colour = "yellow", size = 1.1, shape = 18) +
     scale_fill_manual(values = IGBP_COL, guide = "none") +
     facet_wrap(~response, nrow = 1, scales = "free_y", labeller = EFP_LAB) +
@@ -136,7 +136,7 @@ scatter_tc <- function(d, yvar, ytitle, ptitle, subtitle, dashed0, show_leg) {
   if (dashed0) p <- p + geom_hline(yintercept = 0, colour = "#888888", linewidth = 0.35, linetype = "dashed")
   p <- p +
     geom_point(size = 1.3, alpha = 0.7) +
-    geom_smooth(aes(group = 1), method = "loess", span = 0.9, colour = "white",
+    geom_smooth(aes(group = 1), method = "loess", span = 0.9, colour = "#222222",
                 fill = "#444444", linewidth = 0.7, se = TRUE) +
     scale_colour_manual(values = IGBP_COL, name = "IGBP") +
     facet_wrap(~response, nrow = 1, scales = "free_y", labeller = EFP_LAB) +

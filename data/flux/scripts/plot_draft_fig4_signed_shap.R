@@ -14,8 +14,8 @@ setwd("/mnt/gsdata/projects/panops/panops-data-registry/data/flux")
 B <- "derived_tables/outputs_afterEGU_results"
 OUT <- "manuscript_coauthor_draft/figures"; dir.create(OUT, showWarnings = FALSE, recursive = TRUE)
 
-DARK_BG <- "#0D0D0D"; PANEL_BG <- "#111111"; GRID_COL <- "#333333"
-TEXT_COL <- "#FFFFFF"; AXIS_COL <- "#CCCCCC"
+DARK_BG <- "white"; PANEL_BG <- "white"; GRID_COL <- "#D9D9D9"
+TEXT_COL <- "#111111"; AXIS_COL <- "#444444"
 CAT_COLS <- c("Low+Mid" = "#22C4E0", "High" = "#E8257A")
 EFP_ORDER <- c("GPPsat","NEPmax","ETmax","WUE")
 EFP_LAB <- c(GPPsat="GPPsat  (µmol m⁻² s⁻¹)", NEPmax="NEPmax  (µmol m⁻² s⁻¹)",
@@ -60,7 +60,7 @@ th <- theme_bw(base_size=11) + theme(
   plot.background=element_rect(fill=DARK_BG,colour=NA), panel.background=element_rect(fill=PANEL_BG,colour=NA),
   panel.border=element_rect(colour=GRID_COL,fill=NA,linewidth=0.4),
   panel.grid.major=element_line(colour=GRID_COL,linewidth=0.2), panel.grid.minor=element_blank(),
-  strip.background=element_rect(fill="#1A1A1A",colour=GRID_COL),
+  strip.background=element_rect(fill="#EFEFEF",colour=GRID_COL),
   strip.text=element_text(colour=TEXT_COL,size=9.5,face="bold"),
   axis.text.x=element_text(colour=AXIS_COL,size=8,lineheight=0.9),
   axis.text.y=element_text(colour=AXIS_COL,size=8.5), axis.title=element_text(colour=AXIS_COL,size=10,face="bold"),
@@ -72,19 +72,19 @@ th <- theme_bw(base_size=11) + theme(
 for (w in c("12m","24m")) {
   sub <- dt[window==w]; sst <- st[window==w]
   p <- ggplot(sub, aes(x=metric, y=mean_signed_shap, fill=cat2)) +
-    geom_hline(yintercept=0, colour="#888888", linewidth=0.5) +
+    geom_hline(yintercept=0, colour="#666666", linewidth=0.5) +
     geom_violin(position=position_dodge(width=0.85), colour=NA, width=0.8, alpha=0.75, trim=TRUE) +
     geom_boxplot(aes(group=interaction(metric,cat2)), position=position_dodge(width=0.85),
-                 width=0.13, outlier.shape=NA, colour="white", fill=NA, linewidth=0.28) +
+                 width=0.13, outlier.shape=NA, colour="#222222", fill=NA, linewidth=0.28) +
     geom_text(data=sst, aes(x=metric, y=hi*1.10, label=sig, group=cat2),
-              position=position_dodge(width=0.85), inherit.aes=FALSE, colour="white", size=3, fontface="bold") +
+              position=position_dodge(width=0.85), inherit.aes=FALSE, colour="#222222", size=3, fontface="bold") +
     scale_fill_manual(values=CAT_COLS) +
     ggh4x::facet_grid2(learner ~ response, scales="free_y", independent="y",
                        labeller=labeller(response=EFP_LAB)) +
     labs(x=NULL, y="Net signed disturbance SHAP\n(effect on the PREDICTED value, response units)",
          title=sprintf("Direction of the disturbance effect — M4, %s window", w),
          subtitle=paste0("Tree cover ≥30 % (93 sites) · net signed contribution of the ",
-                         "disturbance block per site\nbelow zero = disturbance pulls the prediction DOWN · ",
+                         "disturbance block per site\nbelow zero = the model predicts a LOWER value of the EFP (not worse accuracy) · ",
                          "natural-breaks thresholds · stars = Wilcoxon vs zero, BH-FDR")) +
     th
   ggsave(file.path(OUT, sprintf("fig4_signed_shap_%s.png", w)), p, width=15, height=13, dpi=300, bg=DARK_BG)

@@ -70,9 +70,9 @@ cat(sprintf("Sites for map: %d | site-years for violins: %d\n", nrow(sites), nro
 world <- map_data("world")
 p_map <- ggplot() +
   geom_polygon(data = world, aes(x = long, y = lat, group = group),
-               fill = "#1C2733", colour = "#2E3F50", linewidth = 0.15) +
+               fill = "#F0F0F0", colour = "#CCCCCC", linewidth = 0.15) +
   geom_point(data = sites, aes(x = LOCATION_LONG, y = LOCATION_LAT, fill = IGBP),
-             shape = 21, size = 2.4, colour = "white", stroke = 0.3) +
+             shape = 21, size = 2.4, colour = "#333333", stroke = 0.3) +
   # drop = TRUE so the legend lists only the IGBP classes actually present in the
   # 93-site subset (the report version keeps empty DNF and SAV entries)
   scale_fill_manual(values = IGBP_COL, name = "IGBP", drop = TRUE,
@@ -82,14 +82,14 @@ p_map <- ggplot() +
   labs(tag = "a", x = NULL, y = NULL) +
   theme_void(base_size = 9) +
   theme(
-    plot.background = element_rect(fill = "#0D1117", colour = NA),
-    panel.background = element_rect(fill = "#0D1117", colour = NA),
+    plot.background = element_rect(fill = "white", colour = NA),
+    panel.background = element_rect(fill = "white", colour = NA),
     legend.position = "bottom",
-    legend.text = element_text(colour = "#C9D1D9", size = 7.5),
-    legend.title = element_text(colour = "#C9D1D9", size = 8, face = "bold"),
+    legend.text = element_text(colour = "#333333", size = 7.5),
+    legend.title = element_text(colour = "#333333", size = 8, face = "bold"),
     legend.key = element_rect(fill = NA, colour = NA),
     legend.background = element_rect(fill = NA, colour = NA),
-    plot.tag = element_text(colour = "#C9D1D9", face = "bold", size = 10),
+    plot.tag = element_text(colour = "#333333", face = "bold", size = 10),
     plot.tag.position = c(0.01, 0.97)
   )
 
@@ -100,8 +100,8 @@ make_violin <- function(efp_col, tag_label, acc = 0.1, nbrk = 4) {
   sub$IGBP <- factor(sub$IGBP, levels = rev(present))
   ggplot(sub, aes(x = IGBP, y = .data[[efp_col]], fill = IGBP)) +
     geom_violin(trim = TRUE, scale = "width", width = 0.85, colour = NA, alpha = 0.85) +
-    geom_boxplot(width = 0.18, outlier.shape = NA, colour = "white", fill = NA, linewidth = 0.4) +
-    stat_summary(fun = median, geom = "point", colour = "white", size = 1.2) +
+    geom_boxplot(width = 0.18, outlier.shape = NA, colour = "#222222", fill = NA, linewidth = 0.4) +
+    stat_summary(fun = median, geom = "point", colour = "#222222", size = 1.2) +
     scale_fill_manual(values = IGBP_COL, guide = "none") +
     scale_y_continuous(breaks = breaks_pretty(n = nbrk),
                        labels = number_format(accuracy = acc)) +
@@ -109,16 +109,16 @@ make_violin <- function(efp_col, tag_label, acc = 0.1, nbrk = 4) {
     labs(tag = tag_label, x = NULL, y = EFP_LABELS[[efp_col]]) +
     theme_bw(base_size = 9) +
     theme(
-      plot.background = element_rect(fill = "#0D1117", colour = NA),
+      plot.background = element_rect(fill = "white", colour = NA),
       panel.background = element_rect(fill = "#131B24", colour = NA),
       panel.grid.major.y = element_blank(),
       panel.grid.minor = element_blank(),
-      panel.grid.major.x = element_line(colour = "#2E3F50", linewidth = 0.3),
-      panel.border = element_rect(colour = "#2E3F50", fill = NA),
-      axis.text.y = element_text(colour = "#C9D1D9", size = 8),
-      axis.text.x = element_text(colour = "#C9D1D9", size = 6.5),
-      axis.title.x = element_text(colour = "#9CA3AF", size = 8.5),
-      plot.tag = element_text(colour = "#C9D1D9", face = "bold", size = 10),
+      panel.grid.major.x = element_line(colour = "#CCCCCC", linewidth = 0.3),
+      panel.border = element_rect(colour = "#CCCCCC", fill = NA),
+      axis.text.y = element_text(colour = "#333333", size = 8),
+      axis.text.x = element_text(colour = "#333333", size = 6.5),
+      axis.title.x = element_text(colour = "#555555", size = 8.5),
+      plot.tag = element_text(colour = "#333333", face = "bold", size = 10),
       plot.tag.position = c(0.01, 0.97)
     )
 }
@@ -134,12 +134,12 @@ BCDE
 "
 fig1 <- p_map + p_gpp + p_nep + p_et + p_wue +
   plot_layout(design = layout, heights = c(1.4, 1)) &
-  theme(plot.background = element_rect(fill = "#0D1117", colour = NA))
+  theme(plot.background = element_rect(fill = "white", colour = NA))
 
 out_dir <- "manuscript_coauthor_draft/figures"
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 stem <- file.path(out_dir, "fig1_site_map")
-ggsave(paste0(stem, ".png"), fig1, width = 170, height = 195, units = "mm", dpi = 300, bg = "#0D1117")
-ggsave(paste0(stem, ".pdf"), fig1, width = 170, height = 195, units = "mm", bg = "#0D1117")
+ggsave(paste0(stem, ".png"), fig1, width = 170, height = 195, units = "mm", dpi = 300, bg = "white")
+ggsave(paste0(stem, ".pdf"), fig1, width = 170, height = 195, units = "mm", bg = "white")
 cat("\n=== V10 Fig 1 saved ===\n")
 cat("PNG:", paste0(stem, ".png"), "\n")
