@@ -110,10 +110,10 @@ make_violin <- function(efp_col, tag_label, acc = 0.1, nbrk = 4) {
     theme_bw(base_size = 9) +
     theme(
       plot.background = element_rect(fill = "white", colour = NA),
-      panel.background = element_rect(fill = "#131B24", colour = NA),
+      panel.background = element_rect(fill = "white", colour = NA),
       panel.grid.major.y = element_blank(),
       panel.grid.minor = element_blank(),
-      panel.grid.major.x = element_line(colour = "#CCCCCC", linewidth = 0.3),
+      panel.grid.major.x = element_line(colour = "#DDDDDD", linewidth = 0.3),
       panel.border = element_rect(colour = "#CCCCCC", fill = NA),
       axis.text.y = element_text(colour = "#333333", size = 8),
       axis.text.x = element_text(colour = "#333333", size = 6.5),
