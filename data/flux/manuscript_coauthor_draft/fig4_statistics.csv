@@ -1,289 +1,33 @@
-learner,response,window,metric,cat2,median,pct_negative,p,q,sig
-Random forest (Optuna),GPPsat,12m,"Absolute
-mortality",High,-0.544,68,0.0236,0.0668,ns
-Random forest (Optuna),GPPsat,12m,"Relative
-mortality",High,-0.909,75.9,0.000332,0.00252,**
-Random forest (Optuna),GPPsat,12m,"Relative
-disturbance",High,-0.893,75,0.000473,0.00266,**
-Random forest (Optuna),GPPsat,24m,"Absolute
-mortality",High,-0.605,68,0.0105,0.0309,*
-Random forest (Optuna),GPPsat,24m,"Relative
-mortality",High,-0.866,75.9,0.00011,0.00159,**
-Random forest (Optuna),GPPsat,24m,"Relative
-disturbance",High,-0.868,75,0.000172,0.00187,**
-Random forest (Optuna),GPPsat,12m,"Absolute
-mortality",Low+Mid,0.61,38.2,0.351,0.393,ns
-Random forest (Optuna),GPPsat,12m,"Relative
-mortality",Low+Mid,0.712,32.8,0.0385,0.089,ns
-Random forest (Optuna),GPPsat,12m,"Relative
-disturbance",Low+Mid,0.691,33.8,0.0389,0.089,ns
-Random forest (Optuna),GPPsat,24m,"Absolute
-mortality",Low+Mid,0.526,36.8,0.281,0.343,ns
-Random forest (Optuna),GPPsat,24m,"Relative
-mortality",Low+Mid,0.747,31.2,0.0262,0.0676,ns
-Random forest (Optuna),GPPsat,24m,"Relative
-disturbance",Low+Mid,0.721,32.3,0.0254,0.0676,ns
-XGBoost (Optuna),GPPsat,12m,"Absolute
-mortality",High,-0.416,60,0.0957,0.147,ns
-XGBoost (Optuna),GPPsat,12m,"Relative
-mortality",High,-1.032,72.4,0.000499,0.00266,**
-XGBoost (Optuna),GPPsat,12m,"Relative
-disturbance",High,-1.154,71.4,0.000583,0.0029,**
-XGBoost (Optuna),GPPsat,24m,"Absolute
-mortality",High,-0.427,64,0.0667,0.117,ns
-XGBoost (Optuna),GPPsat,24m,"Relative
-mortality",High,-1.02,79.3,0.000195,0.00187,**
-XGBoost (Optuna),GPPsat,24m,"Relative
-disturbance",High,-1.191,78.6,0.000194,0.00187,**
-XGBoost (Optuna),GPPsat,12m,"Absolute
-mortality",Low+Mid,0.844,39.7,0.342,0.388,ns
-XGBoost (Optuna),GPPsat,12m,"Relative
-mortality",Low+Mid,1.031,32.8,0.029,0.0709,ns
-XGBoost (Optuna),GPPsat,12m,"Relative
-disturbance",Low+Mid,1,33.8,0.0263,0.0676,ns
-XGBoost (Optuna),GPPsat,24m,"Absolute
-mortality",Low+Mid,0.909,41.2,0.355,0.393,ns
-XGBoost (Optuna),GPPsat,24m,"Relative
-mortality",Low+Mid,1.138,32.8,0.0316,0.0745,ns
-XGBoost (Optuna),GPPsat,24m,"Relative
-disturbance",Low+Mid,1.122,33.8,0.0291,0.0709,ns
-LightGBM (Optuna),GPPsat,12m,"Absolute
-mortality",High,-0.321,60,0.134,0.185,ns
-LightGBM (Optuna),GPPsat,12m,"Relative
-mortality",High,-0.988,69,0.00801,0.0256,*
-LightGBM (Optuna),GPPsat,12m,"Relative
-disturbance",High,-0.917,67.9,0.00886,0.0277,*
-LightGBM (Optuna),GPPsat,24m,"Absolute
-mortality",High,-0.238,52,0.2,0.265,ns
-LightGBM (Optuna),GPPsat,24m,"Relative
-mortality",High,-0.737,65.5,0.00922,0.0282,*
-LightGBM (Optuna),GPPsat,24m,"Relative
-disturbance",High,-0.732,67.9,0.0103,0.0308,*
-LightGBM (Optuna),GPPsat,12m,"Absolute
-mortality",Low+Mid,0.796,38.2,0.342,0.388,ns
-LightGBM (Optuna),GPPsat,12m,"Relative
-mortality",Low+Mid,1.044,32.8,0.0625,0.113,ns
-LightGBM (Optuna),GPPsat,12m,"Relative
-disturbance",Low+Mid,1.004,33.8,0.0673,0.117,ns
-LightGBM (Optuna),GPPsat,24m,"Absolute
-mortality",Low+Mid,0.768,38.2,0.257,0.319,ns
-LightGBM (Optuna),GPPsat,24m,"Relative
-mortality",Low+Mid,0.931,31.2,0.0459,0.0972,ns
-LightGBM (Optuna),GPPsat,24m,"Relative
-disturbance",Low+Mid,0.915,30.8,0.0507,0.104,ns
-Random forest (Optuna),NEPmax,12m,"Absolute
-mortality",High,-0.469,68,0.0255,0.0676,ns
-Random forest (Optuna),NEPmax,12m,"Relative
-mortality",High,-1.065,82.8,0.000451,0.00266,**
-Random forest (Optuna),NEPmax,12m,"Relative
-disturbance",High,-1.286,82.1,0.000583,0.0029,**
-Random forest (Optuna),NEPmax,24m,"Absolute
-mortality",High,-0.47,72,0.0136,0.039,*
-Random forest (Optuna),NEPmax,24m,"Relative
-mortality",High,-1.093,82.8,0.000299,0.00252,**
-Random forest (Optuna),NEPmax,24m,"Relative
-disturbance",High,-1.313,82.1,0.000425,0.00266,**
-Random forest (Optuna),NEPmax,12m,"Absolute
-mortality",Low+Mid,0.603,42.6,0.318,0.372,ns
-Random forest (Optuna),NEPmax,12m,"Relative
-mortality",Low+Mid,0.893,34.4,0.0562,0.105,ns
-Random forest (Optuna),NEPmax,12m,"Relative
-disturbance",Low+Mid,0.829,35.4,0.0547,0.105,ns
-Random forest (Optuna),NEPmax,24m,"Absolute
-mortality",Low+Mid,0.492,42.6,0.33,0.383,ns
-Random forest (Optuna),NEPmax,24m,"Relative
-mortality",Low+Mid,0.831,35.9,0.0529,0.105,ns
-Random forest (Optuna),NEPmax,24m,"Relative
-disturbance",Low+Mid,0.756,36.9,0.0539,0.105,ns
-XGBoost (Optuna),NEPmax,12m,"Absolute
-mortality",High,-0.536,60,0.071,0.122,ns
-XGBoost (Optuna),NEPmax,12m,"Relative
-mortality",High,-1.582,75.9,0.00153,0.00546,**
-XGBoost (Optuna),NEPmax,12m,"Relative
-disturbance",High,-1.805,78.6,0.00155,0.00546,**
-XGBoost (Optuna),NEPmax,24m,"Absolute
-mortality",High,-0.57,60,0.0422,0.0934,ns
-XGBoost (Optuna),NEPmax,24m,"Relative
-mortality",High,-1.43,75.9,0.00117,0.00468,**
-XGBoost (Optuna),NEPmax,24m,"Relative
-disturbance",High,-1.853,78.6,0.00106,0.00451,**
-XGBoost (Optuna),NEPmax,12m,"Absolute
-mortality",Low+Mid,1.011,41.2,0.415,0.442,ns
-XGBoost (Optuna),NEPmax,12m,"Relative
-mortality",Low+Mid,1.323,32.8,0.0589,0.107,ns
-XGBoost (Optuna),NEPmax,12m,"Relative
-disturbance",Low+Mid,1.289,32.3,0.0564,0.105,ns
-XGBoost (Optuna),NEPmax,24m,"Absolute
-mortality",Low+Mid,0.907,41.2,0.355,0.393,ns
-XGBoost (Optuna),NEPmax,24m,"Relative
-mortality",Low+Mid,1.286,32.8,0.0562,0.105,ns
-XGBoost (Optuna),NEPmax,24m,"Relative
-disturbance",Low+Mid,1.195,32.3,0.0555,0.105,ns
-LightGBM (Optuna),NEPmax,12m,"Absolute
-mortality",High,-0.642,64,0.0422,0.0934,ns
-LightGBM (Optuna),NEPmax,12m,"Relative
-mortality",High,-1.783,79.3,0.000408,0.00266,**
-LightGBM (Optuna),NEPmax,12m,"Relative
-disturbance",High,-2.117,82.1,0.000381,0.00266,**
-LightGBM (Optuna),NEPmax,24m,"Absolute
-mortality",High,-0.488,60,0.0588,0.107,ns
-LightGBM (Optuna),NEPmax,24m,"Relative
-mortality",High,-1.8,75.9,0.000888,0.00388,**
-LightGBM (Optuna),NEPmax,24m,"Relative
-disturbance",High,-1.867,75,0.000792,0.00356,**
-LightGBM (Optuna),NEPmax,12m,"Absolute
-mortality",Low+Mid,0.99,42.6,0.589,0.597,ns
-LightGBM (Optuna),NEPmax,12m,"Relative
-mortality",Low+Mid,1.5,34.4,0.0939,0.145,ns
-LightGBM (Optuna),NEPmax,12m,"Relative
-disturbance",Low+Mid,1.491,33.8,0.0869,0.136,ns
-LightGBM (Optuna),NEPmax,24m,"Absolute
-mortality",Low+Mid,0.944,42.6,0.477,0.505,ns
-LightGBM (Optuna),NEPmax,24m,"Relative
-mortality",Low+Mid,1.409,34.4,0.078,0.128,ns
-LightGBM (Optuna),NEPmax,24m,"Relative
-disturbance",Low+Mid,1.381,35.4,0.0755,0.126,ns
-Random forest (Optuna),ETmax,12m,"Absolute
-mortality",High,-0.001,64,0.287,0.348,ns
-Random forest (Optuna),ETmax,12m,"Relative
-mortality",High,-0.001,72.4,0.048,0.1,ns
-Random forest (Optuna),ETmax,12m,"Relative
-disturbance",High,-0.001,71.4,0.0662,0.117,ns
-Random forest (Optuna),ETmax,24m,"Absolute
-mortality",High,-0.001,72,0.21,0.275,ns
-Random forest (Optuna),ETmax,24m,"Relative
-mortality",High,-0.001,79.3,0.0308,0.0739,ns
-Random forest (Optuna),ETmax,24m,"Relative
-disturbance",High,-0.001,78.6,0.0451,0.097,ns
-Random forest (Optuna),ETmax,12m,"Absolute
-mortality",Low+Mid,0,47.1,0.265,0.326,ns
-Random forest (Optuna),ETmax,12m,"Relative
-mortality",Low+Mid,0.001,42.2,0.108,0.162,ns
-Random forest (Optuna),ETmax,12m,"Relative
-disturbance",Low+Mid,0,43.1,0.128,0.182,ns
-Random forest (Optuna),ETmax,24m,"Absolute
-mortality",Low+Mid,0,45.6,0.339,0.388,ns
-Random forest (Optuna),ETmax,24m,"Relative
-mortality",Low+Mid,0.001,40.6,0.13,0.183,ns
-Random forest (Optuna),ETmax,24m,"Relative
-disturbance",Low+Mid,0.001,41.5,0.164,0.223,ns
-XGBoost (Optuna),ETmax,12m,"Absolute
-mortality",High,-0.002,64,0.252,0.316,ns
-XGBoost (Optuna),ETmax,12m,"Relative
-mortality",High,-0.002,62.1,0.369,0.403,ns
-XGBoost (Optuna),ETmax,12m,"Relative
-disturbance",High,-0.002,60.7,0.522,0.537,ns
-XGBoost (Optuna),ETmax,24m,"Absolute
-mortality",High,-0.002,72,0.134,0.185,ns
-XGBoost (Optuna),ETmax,24m,"Relative
-mortality",High,-0.002,65.5,0.213,0.277,ns
-XGBoost (Optuna),ETmax,24m,"Relative
-disturbance",High,-0.002,64.3,0.245,0.31,ns
-XGBoost (Optuna),ETmax,12m,"Absolute
-mortality",Low+Mid,0.002,35.3,0.11,0.163,ns
-XGBoost (Optuna),ETmax,12m,"Relative
-mortality",Low+Mid,0.001,34.4,0.0815,0.13,ns
-XGBoost (Optuna),ETmax,12m,"Relative
-disturbance",Low+Mid,0.001,35.4,0.138,0.189,ns
-XGBoost (Optuna),ETmax,24m,"Absolute
-mortality",Low+Mid,0.001,39.7,0.306,0.364,ns
-XGBoost (Optuna),ETmax,24m,"Relative
-mortality",Low+Mid,0.001,40.6,0.358,0.393,ns
-XGBoost (Optuna),ETmax,24m,"Relative
-disturbance",Low+Mid,0.001,41.5,0.396,0.425,ns
-LightGBM (Optuna),ETmax,12m,"Absolute
-mortality",High,-0.002,72,0.0802,0.13,ns
-LightGBM (Optuna),ETmax,12m,"Relative
-mortality",High,-0.002,69,0.076,0.126,ns
-LightGBM (Optuna),ETmax,12m,"Relative
-disturbance",High,-0.002,67.9,0.0993,0.15,ns
-LightGBM (Optuna),ETmax,24m,"Absolute
-mortality",High,-0.002,64,0.0755,0.126,ns
-LightGBM (Optuna),ETmax,24m,"Relative
-mortality",High,-0.001,69,0.0274,0.0692,ns
-LightGBM (Optuna),ETmax,24m,"Relative
-disturbance",High,-0.002,71.4,0.0247,0.0676,ns
-LightGBM (Optuna),ETmax,12m,"Absolute
-mortality",Low+Mid,0.001,39.7,0.0821,0.13,ns
-LightGBM (Optuna),ETmax,12m,"Relative
-mortality",Low+Mid,0.001,39.1,0.122,0.177,ns
-LightGBM (Optuna),ETmax,12m,"Relative
-disturbance",Low+Mid,0.001,40,0.123,0.177,ns
-LightGBM (Optuna),ETmax,24m,"Absolute
-mortality",Low+Mid,0,47.1,0.242,0.308,ns
-LightGBM (Optuna),ETmax,24m,"Relative
-mortality",Low+Mid,0.001,43.8,0.196,0.261,ns
-LightGBM (Optuna),ETmax,24m,"Relative
-disturbance",Low+Mid,0.001,43.1,0.178,0.24,ns
-Random forest (Optuna),WUE,12m,"Absolute
-mortality",High,-0.109,68,0.12,0.176,ns
-Random forest (Optuna),WUE,12m,"Relative
-mortality",High,-0.256,82.8,2.11e-05,0.000686,***
-Random forest (Optuna),WUE,12m,"Relative
-disturbance",High,-0.272,89.3,1.88e-06,0.000136,***
-Random forest (Optuna),WUE,24m,"Absolute
-mortality",High,-0.09,68,0.0451,0.097,ns
-Random forest (Optuna),WUE,24m,"Relative
-mortality",High,-0.251,82.8,2.84e-06,0.000136,***
-Random forest (Optuna),WUE,24m,"Relative
-disturbance",High,-0.272,89.3,5.22e-07,7.51e-05,***
-Random forest (Optuna),WUE,12m,"Absolute
-mortality",Low+Mid,0.145,33.8,0.303,0.364,ns
-Random forest (Optuna),WUE,12m,"Relative
-mortality",Low+Mid,0.183,25,0.000173,0.00187,**
-Random forest (Optuna),WUE,12m,"Relative
-disturbance",Low+Mid,0.188,23.1,5.53e-05,0.00114,**
-Random forest (Optuna),WUE,24m,"Absolute
-mortality",Low+Mid,0.151,33.8,0.23,0.296,ns
-Random forest (Optuna),WUE,24m,"Relative
-mortality",Low+Mid,0.178,25,0.000104,0.00159,**
-Random forest (Optuna),WUE,24m,"Relative
-disturbance",Low+Mid,0.179,23.1,3.33e-05,0.000799,***
-XGBoost (Optuna),WUE,12m,"Absolute
-mortality",High,-0.04,60,0.491,0.512,ns
-XGBoost (Optuna),WUE,12m,"Relative
-mortality",High,-0.29,79.3,0.00117,0.00468,**
-XGBoost (Optuna),WUE,12m,"Relative
-disturbance",High,-0.284,85.7,8.2e-05,0.00148,**
-XGBoost (Optuna),WUE,24m,"Absolute
-mortality",High,-0.06,60,0.381,0.412,ns
-XGBoost (Optuna),WUE,24m,"Relative
-mortality",High,-0.281,79.3,0.000499,0.00266,**
-XGBoost (Optuna),WUE,24m,"Relative
-disturbance",High,-0.237,85.7,2.38e-05,0.000686,***
-XGBoost (Optuna),WUE,12m,"Absolute
-mortality",Low+Mid,0.105,38.2,0.488,0.512,ns
-XGBoost (Optuna),WUE,12m,"Relative
-mortality",Low+Mid,0.172,28.1,0.00128,0.00473,**
-XGBoost (Optuna),WUE,12m,"Relative
-disturbance",Low+Mid,0.173,26.2,0.000746,0.00347,**
-XGBoost (Optuna),WUE,24m,"Absolute
-mortality",Low+Mid,0.107,36.8,0.312,0.368,ns
-XGBoost (Optuna),WUE,24m,"Relative
-mortality",Low+Mid,0.152,26.6,0.000409,0.00266,**
-XGBoost (Optuna),WUE,24m,"Relative
-disturbance",Low+Mid,0.173,24.6,0.000317,0.00252,**
-LightGBM (Optuna),WUE,12m,"Absolute
-mortality",High,-0.028,56,0.731,0.731,ns
-LightGBM (Optuna),WUE,12m,"Relative
-mortality",High,-0.258,75.9,0.00299,0.00979,**
-LightGBM (Optuna),WUE,12m,"Relative
-disturbance",High,-0.276,82.1,0.000306,0.00252,**
-LightGBM (Optuna),WUE,24m,"Absolute
-mortality",High,-0.038,56,0.56,0.572,ns
-LightGBM (Optuna),WUE,24m,"Relative
-mortality",High,-0.269,75.9,0.00167,0.00571,**
-LightGBM (Optuna),WUE,24m,"Relative
-disturbance",High,-0.291,82.1,0.000135,0.00177,**
-LightGBM (Optuna),WUE,12m,"Absolute
-mortality",Low+Mid,0.122,38.2,0.662,0.667,ns
-LightGBM (Optuna),WUE,12m,"Relative
-mortality",Low+Mid,0.184,28.1,0.00217,0.00726,**
-LightGBM (Optuna),WUE,12m,"Relative
-disturbance",Low+Mid,0.206,26.2,0.00125,0.00473,**
-LightGBM (Optuna),WUE,24m,"Absolute
-mortality",Low+Mid,0.105,38.2,0.507,0.526,ns
-LightGBM (Optuna),WUE,24m,"Relative
-mortality",Low+Mid,0.16,28.1,0.00125,0.00473,**
-LightGBM (Optuna),WUE,24m,"Relative
-disturbance",Low+Mid,0.18,26.2,0.000746,0.00347,**
+metric,learner,response,window,n_low,n_high,med_low,med_high,p,q,sig
+relative mortality,XGBoost (Optuna),GPPsat,12m,64,29,1.031,-1.032,6.52e-05,0.000174,***
+relative mortality,XGBoost (Optuna),GPPsat,24m,64,29,1.138,-1.02,5.09e-05,0.000163,***
+relative mortality,LightGBM (Optuna),GPPsat,12m,64,29,1.044,-0.988,0.00131,0.00175,**
+relative mortality,LightGBM (Optuna),GPPsat,24m,64,29,0.931,-0.737,0.000473,0.000688,***
+relative mortality,XGBoost (Optuna),NEPmax,12m,64,29,1.323,-1.582,0.000431,0.000688,***
+relative mortality,XGBoost (Optuna),NEPmax,24m,64,29,1.286,-1.43,0.000392,0.000688,***
+relative mortality,LightGBM (Optuna),NEPmax,12m,64,29,1.5,-1.783,0.000267,0.000535,***
+relative mortality,LightGBM (Optuna),NEPmax,24m,64,29,1.409,-1.8,0.000267,0.000535,***
+relative mortality,XGBoost (Optuna),ETmax,12m,64,29,0.001,-0.002,0.0947,0.0997,ns
+relative mortality,XGBoost (Optuna),ETmax,24m,64,29,0.001,-0.002,0.0997,0.0997,ns
+relative mortality,LightGBM (Optuna),ETmax,12m,64,29,0.001,-0.002,0.0314,0.0359,*
+relative mortality,LightGBM (Optuna),ETmax,24m,64,29,0.001,-0.001,0.0187,0.023,*
+relative mortality,XGBoost (Optuna),WUE,12m,64,29,0.172,-0.29,1.22e-05,9.72e-05,***
+relative mortality,XGBoost (Optuna),WUE,24m,64,29,0.152,-0.281,2.96e-06,4.74e-05,***
+relative mortality,LightGBM (Optuna),WUE,12m,64,29,0.184,-0.258,4.74e-05,0.000163,***
+relative mortality,LightGBM (Optuna),WUE,24m,64,29,0.16,-0.269,2.3e-05,0.000123,***
+relative disturbance,XGBoost (Optuna),GPPsat,12m,65,28,1,-1.154,5.52e-05,0.000147,***
+relative disturbance,XGBoost (Optuna),GPPsat,24m,65,28,1.122,-1.191,4.78e-05,0.000147,***
+relative disturbance,LightGBM (Optuna),GPPsat,12m,65,28,1.004,-0.917,0.00192,0.00255,**
+relative disturbance,LightGBM (Optuna),GPPsat,24m,65,28,0.915,-0.732,0.000727,0.00106,**
+relative disturbance,XGBoost (Optuna),NEPmax,12m,65,28,1.289,-1.805,0.000402,0.000644,***
+relative disturbance,XGBoost (Optuna),NEPmax,24m,65,28,1.195,-1.853,0.000312,0.000554,***
+relative disturbance,LightGBM (Optuna),NEPmax,12m,65,28,1.491,-2.117,0.000204,0.000466,***
+relative disturbance,LightGBM (Optuna),NEPmax,24m,65,28,1.381,-1.867,0.000248,0.000496,***
+relative disturbance,XGBoost (Optuna),ETmax,12m,65,28,0.001,-0.002,0.217,0.217,ns
+relative disturbance,XGBoost (Optuna),ETmax,24m,65,28,0.001,-0.002,0.12,0.128,ns
+relative disturbance,LightGBM (Optuna),ETmax,12m,65,28,0.001,-0.002,0.031,0.0355,*
+relative disturbance,LightGBM (Optuna),ETmax,24m,65,28,0.001,-0.002,0.0124,0.0153,*
+relative disturbance,XGBoost (Optuna),WUE,12m,65,28,0.173,-0.284,4.32e-07,3.45e-06,***
+relative disturbance,XGBoost (Optuna),WUE,24m,65,28,0.173,-0.237,1.23e-07,1.97e-06,***
+relative disturbance,LightGBM (Optuna),WUE,12m,65,28,0.206,-0.276,2.68e-06,1.07e-05,***
+relative disturbance,LightGBM (Optuna),WUE,24m,65,28,0.18,-0.291,9.41e-07,5.02e-06,***
