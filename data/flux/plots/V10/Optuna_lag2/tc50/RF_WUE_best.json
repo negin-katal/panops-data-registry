@@ -1,0 +1,12 @@
+{
+  "learner": "RF",
+  "response": "WUE",
+  "best_value": 0.82261843,
+  "n_trials": 50,
+  "params": {
+    "mtry_frac": 0.9429862482534972,
+    "num_trees": 1500,
+    "min_node_size": 16,
+    "sample_fraction": 0.401121407829752
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "learner": "LGB",
+  "response": "GPPsat",
+  "best_value": 0.68027504,
+  "n_trials": 50,
+  "params": {
+    "learning_rate": 0.0123716405416395,
+    "nrounds": 800,
+    "num_leaves": 3,
+    "min_data_in_leaf": 13,
+    "feature_fraction": 0.9516770935112914,
+    "bagging_fraction": 0.5013938496407156,
+    "lambda_l2": 0.001016842506698009
+  }
+}

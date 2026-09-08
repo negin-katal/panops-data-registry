@@ -25,8 +25,10 @@ optuna.logging.set_verbosity(optuna.logging.WARNING)
 
 ROOT    = "/mnt/gsdata/projects/panops/panops-data-registry/data/flux"
 RSCRIPT = "/home/nk1125/miniconda3/envs/clean_r_env/bin/Rscript"
-OBJ     = os.path.join(ROOT, "scripts", "optuna_cv_objective.R")
-OUT     = os.path.join(ROOT, "plots", "V10", "Optuna")
+OBJ     = os.environ.get("V10_TUNE_OBJ",
+                        os.path.join(ROOT, "scripts", "optuna_cv_objective.R"))
+OUT     = os.environ.get("V10_TUNE_OUT",
+                        os.path.join(ROOT, "plots", "V10", "Optuna"))
 SEED    = 42
 
 learner  = sys.argv[1]

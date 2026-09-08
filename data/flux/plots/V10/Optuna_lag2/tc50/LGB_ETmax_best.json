@@ -1,0 +1,15 @@
+{
+  "learner": "LGB",
+  "response": "ETmax",
+  "best_value": 0.7231344,
+  "n_trials": 50,
+  "params": {
+    "learning_rate": 0.02242742978392079,
+    "nrounds": 600,
+    "num_leaves": 19,
+    "min_data_in_leaf": 5,
+    "feature_fraction": 0.9608820232994592,
+    "bagging_fraction": 0.7181342392023721,
+    "lambda_l2": 0.0029303864192966136
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "learner": "RF",
+  "response": "NEPmax",
+  "best_value": 0.75130897,
+  "n_trials": 50,
+  "params": {
+    "mtry_frac": 0.7747521715455856,
+    "num_trees": 250,
+    "min_node_size": 21,
+    "sample_fraction": 0.5292292119575869
+  }
+}

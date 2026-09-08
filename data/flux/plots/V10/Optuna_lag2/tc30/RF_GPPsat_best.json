@@ -1,0 +1,12 @@
+{
+  "learner": "RF",
+  "response": "GPPsat",
+  "best_value": 0.69699523,
+  "n_trials": 50,
+  "params": {
+    "mtry_frac": 0.710446105866021,
+    "num_trees": 1000,
+    "min_node_size": 8,
+    "sample_fraction": 0.7482452608420123
+  }
+}
