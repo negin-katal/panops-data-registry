@@ -12,6 +12,11 @@
 #   per var    - share / number of variables in the block; removes the fact that
 #                mortality simply contributes more columns (60 vs 30)
 #
+# Only the tree-cover-filtered datasets can answer this question: the all-sites
+# dataset has a DIFFERENT D block (135 vars, with _lag2 but WITHOUT the
+# relative_tree_loss_pct family), so forest cover change is not represented
+# there. tc>=30 is used throughout.
+#
 # Output: plots/V10/disturbance_split/   (its own folder - the report tree and
 #         the manuscript figures are never touched)
 # ============================================================================
@@ -112,7 +117,10 @@ for (L in LEARNERS) {
                            "\nDisturbance block renormalised to 100%; mean over the 93 held-out sites"),
          x = NULL, y = NULL,
          caption = paste("Top row: total share of the disturbance signal. Mortality carries more variables (60 vs 30),",
-                         "so the bottom row divides\nby block size - the fair comparison. |SHAP| is magnitude only, not direction.")) +
+                         "so the bottom row divides\nby block size - the fair comparison. |SHAP| is magnitude only, not direction.",
+                         "\nThe D block does NOT depend on the window: the 12m and 24m models see the identical 100",
+                         "disturbance columns (current + lag1),\nso the two panels are not independent evidence.",
+                         "Only the climate block grows with the window.")) +
     th + theme(panel.grid.major.x = element_blank(),
                panel.grid.major.y = element_line(colour = GRID, linewidth = 0.2),
                strip.placement = "outside",
@@ -140,7 +148,8 @@ for (L in LEARNERS) {
     scale_y_continuous(expand = expansion(mult = c(0, 0.30))) +
     labs(title = "Disturbance block, metric by metric",
          subtitle = paste0(L$lab, " · M4 · tree cover >= 30% · share of the disturbance-block |SHAP| (%)",
-                           "\nn = variables contributed by that metric (5 buffers x current+lag1)"),
+                           "\nn = variables contributed by that metric (5 buffers x current and/or lag1;",
+                           " the severity metrics exist only at lag1)"),
          x = NULL, y = "% of disturbance-block |SHAP|") +
     th
   ggsave(sprintf("%s/D_composition_family_%s.png", OUT, L$fam), p2,

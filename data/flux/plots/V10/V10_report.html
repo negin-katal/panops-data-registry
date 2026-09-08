@@ -789,16 +789,16 @@
 
     <h3 class="mini">Model families and predictor counts</h3>
     <table class="deftbl">
-      <thead><tr><th>Model</th><th>Blocks</th><th>p (12m)</th><th>p (24m)</th><th>default <code>mtry</code> 12m / 24m</th><th>Adds D vs</th></tr></thead>
+      <thead><tr><th rowspan="2">Model</th><th rowspan="2">Blocks</th><th colspan="2">all sites (112)</th><th colspan="2">tree cover &ge;30% / &ge;50%</th><th rowspan="2">Adds D vs</th></tr><tr><th>p (12m)</th><th>p (24m)</th><th>p (12m)</th><th>p (24m)</th></tr></thead>
       <tbody>
-        <tr><td class="k">M1</td><td>C</td><td>143</td><td>286</td><td>11 / 16</td><td>—</td></tr>
-        <tr class="add"><td class="k">M2</td><td>C + D</td><td>278</td><td>421</td><td>16 / 20</td><td>M1</td></tr>
-        <tr><td class="k">M3</td><td>C + T</td><td>164</td><td>307</td><td>12 / 17</td><td>—</td></tr>
-        <tr class="add"><td class="k">M4</td><td>C + T + D</td><td>299</td><td>442</td><td>17 / 21</td><td>M3</td></tr>
-        <tr><td class="k">M5 raw/anom</td><td>C + M</td><td>144</td><td>288</td><td>12 / 16</td><td>—</td></tr>
-        <tr class="add"><td class="k">M6 raw/anom</td><td>C + D + M</td><td>279</td><td>423</td><td>16 / 20</td><td>M5</td></tr>
-        <tr><td class="k">M7 raw/anom</td><td>C + T + M</td><td>165</td><td>309</td><td>12 / 17</td><td>—</td></tr>
-        <tr class="add"><td class="k">M8 raw/anom</td><td>C + T + D + M</td><td>300</td><td>444</td><td>17 / 21</td><td>M7</td></tr>
+        <tr><td class="k">M1</td><td>C</td><td>143</td><td>286</td><td>143</td><td>286</td><td>—</td></tr>
+        <tr class="add"><td class="k">M2</td><td>C + D</td><td>278</td><td>421</td><td style="background:#FFF4D6">243</td><td style="background:#FFF4D6">386</td><td>M1</td></tr>
+        <tr><td class="k">M3</td><td>C + T</td><td>164</td><td>307</td><td>164</td><td>307</td><td>—</td></tr>
+        <tr class="add"><td class="k">M4</td><td>C + T + D</td><td>299</td><td>442</td><td style="background:#FFF4D6">264</td><td style="background:#FFF4D6">407</td><td>M3</td></tr>
+        <tr><td class="k">M5 raw/anom</td><td>C + M</td><td>144</td><td>288</td><td>144</td><td style="background:#FFF4D6">287</td><td>—</td></tr>
+        <tr class="add"><td class="k">M6 raw/anom</td><td>C + D + M</td><td>279</td><td>423</td><td style="background:#FFF4D6">244</td><td style="background:#FFF4D6">387</td><td>M5</td></tr>
+        <tr><td class="k">M7 raw/anom</td><td>C + T + M</td><td>165</td><td>309</td><td>165</td><td style="background:#FFF4D6">308</td><td>—</td></tr>
+        <tr class="add"><td class="k">M8 raw/anom</td><td>C + T + D + M</td><td>300</td><td>444</td><td style="background:#FFF4D6">265</td><td style="background:#FFF4D6">408</td><td>M7</td></tr>
       </tbody>
     </table>
 
@@ -808,12 +808,12 @@
       <tbody>
         <tr><td class="k">C — climate</td><td>143 (12m) / 286 (24m)</td><td>monthly climate/meteo aggregates, <code>lag1_*</code> (+ <code>lag2_*</code> for 24m)</td></tr>
         <tr><td class="k">T — traits</td><td>21</td><td><code>P12_</code>, <code>P50_</code>, <code>P88_</code>, <code>gsmax_</code>, <code>rdmax_</code>, <code>SSD</code>, <code>SLA</code>, <code>Leaf*</code>, <code>Stem*</code></td></tr>
-        <tr class="add"><td class="k">D — disturbance</td><td><b>135</b></td><td><b>9 metrics × 5 buffers × 3 time points</b> — buffers 100/200/300/400/500&nbsp;m; times current, <code>_lag1</code>, <code>_lag2</code></td></tr>
-        <tr><td class="k">M — memory</td><td>1 (12m) / 2 (24m)</td><td><code>{resp}_lag1</code> [+ <code>{resp}_lag2</code>], or the <code>_anom_</code> variant</td></tr>
+        <tr class="add"><td class="k">D — disturbance</td><td><b>135</b> all sites<br><b>100</b> tc&ge;30 / tc&ge;50</td><td><b>The disturbance block is not the same in the two dataset families, and it never depends on the 12m/24m window</b> — <code>get_predictor_cols()</code> selects D by name prefix, not by window, so the identical D block enters the 12m and 24m models.<br><b>all sites:</b> 9 metric families × 5 buffers × <b>3 time points</b> (current, <code>_lag1</code>, <code>_lag2</code>) = 135.<br><b>tc&ge;30 / tc&ge;50:</b> 11 metric families × 5 buffers × <b>2 time points</b> (current, <code>_lag1</code>; no <code>_lag2</code>) = 45 + 55 = 100. The two extra families are <code>relative_tree_loss_pct</code> and its <code>_thresh</code> twin — the direct forest-cover-change metric, which is <b>absent from the all-sites dataset</b>. <code>mortality_loss_severity_pct</code> (+<code>_thresh</code>) exists only at <code>_lag1</code> here, which is why current (45) and <code>_lag1</code> (55) differ.</td></tr>
+        <tr><td class="k">M — memory</td><td>1 (12m)<br>2 / <b>1</b> (24m)</td><td><code>{resp}_lag1</code> [+ <code>{resp}_lag2</code>], or the <code>_anom_</code> variant. The 24m models carry two memory columns in the <b>all-sites</b> dataset but only one in <b>tc&ge;30 / tc&ge;50</b>, where <code>{resp}_lag2</code> was never generated.</td></tr>
       </tbody>
     </table>
-    <p class="itxt" style="margin-top:10px"><b>Dilution note.</b> Adding D to M1 takes p from 143 → 278 — nearly doubling
-      the model — while the default <code>mtry</code> rises only 11 → 16. With 135 largely-redundant columns (5 nested
+    <p class="itxt" style="margin-top:10px"><b>Dilution note.</b> Adding D to M1 takes p from 143 → 278 (all sites) or 143 → 243 (tc&ge;30) — a 70–95&nbsp;% larger
+      model — while the default <code>mtry</code> rises only 11 → 15–16. With 100–135 largely-redundant columns (5 nested
       buffers; <code>_thresh</code> near-duplicates), the chance that any given split is offered a <i>useful</i> predictor
       falls sharply. This is the most likely reason <b>RF — and only RF — shows negative ΔR² on the weak-signal EFPs</b>
       (uWUE, WUE): greedy learners simply ignore useless columns, whereas RF's random subsetting cannot. The lag
