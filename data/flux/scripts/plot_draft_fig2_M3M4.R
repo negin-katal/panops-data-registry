@@ -27,8 +27,7 @@ EFP_ORDER  <- c("GPPsat", "NEPmax", "ETmax", "WUE")
 EFP_LABELS <- c(GPPsat = "GPPsat  (µmol m⁻² s⁻¹)", NEPmax = "NEPmax  (µmol m⁻² s⁻¹)",
                 ETmax  = "ETmax  (mm d⁻¹)",         WUE    = "WUE  (g C mm⁻¹)")
 
-LEARNERS <- list(
-  list(lab = "Random forest (Optuna)", loo = "RF_v10_optuna",  rep = "RF_optuna_repCV",  fam = "RF"),
+LEARNERS <- list(   # random forest dropped at the user's request
   list(lab = "XGBoost (Optuna)",       loo = "XGB_v10_optuna", rep = "XGB_optuna_repCV", fam = "XGB"),
   list(lab = "LightGBM (Optuna)",      loo = "LGB_v10_optuna", rep = "LGB_optuna_repCV", fam = "LGB"))
 
@@ -39,7 +38,7 @@ site_rmse <- function(f) {
 
 rows <- list(); labs <- list(); k <- 1; lk <- 1
 for (L in LEARNERS) {
-  for (cv in c("LOSO", "Repeated CV")) {
+  for (cv in c("Repeated CV")) {   # LOO dropped at the user's request
     d <- if (cv == "LOSO") L$loo else L$rep
     sr <- site_rmse(sprintf("%s/%s/%s_predictions_LOSO.csv", B, d, L$fam))
     for (w in c("12m", "24m")) {
@@ -49,11 +48,11 @@ for (L in LEARNERS) {
         pw <- merge(a, b, by = "SITE_ID")          # pair explicitly on site
         pw <- pw[is.finite(wo) & is.finite(wd)]
         if (!nrow(pw)) next
-        grp <- sprintf("%s\n%s", w, ifelse(cv == "LOSO", "LOO", "rep"))
+        grp <- w
         rows[[k]] <- data.table(response = resp, learner = L$lab, grp = grp,
-                                model_type = "Without D (M3)", rmse = pw$wo); k <- k + 1
+                                model_type = "Without D", rmse = pw$wo); k <- k + 1
         rows[[k]] <- data.table(response = resp, learner = L$lab, grp = grp,
-                                model_type = "With D (M4)",    rmse = pw$wd); k <- k + 1
+                                model_type = "With D",    rmse = pw$wd); k <- k + 1
         pct  <- median((pw$wd - pw$wo) / pw$wo * 100)
         pval <- wilcox.test(pw$wd, pw$wo, paired = TRUE, alternative = "less", exact = FALSE)$p.value
         labs[[lk]] <- data.table(response = resp, learner = L$lab, grp = grp,
@@ -72,11 +71,11 @@ labs[, label := sprintf("%+.1f%%%s\n%.0f%%↓", pct, sig, imp)]
 
 dt[, response := factor(response, levels = EFP_ORDER)]
 labs[, response := factor(response, levels = EFP_ORDER)]
-LEV <- c("12m\nLOO", "24m\nLOO", "12m\nrep", "24m\nrep")
+LEV <- c("12m", "24m")
 dt[, grp := factor(grp, levels = LEV)]; labs[, grp := factor(grp, levels = LEV)]
 dt[, learner := factor(learner, levels = sapply(LEARNERS, `[[`, "lab"))]
 labs[, learner := factor(learner, levels = sapply(LEARNERS, `[[`, "lab"))]
-dt[, model_type := factor(model_type, levels = c("Without D (M3)", "With D (M4)"))]
+dt[, model_type := factor(model_type, levels = c("Without D", "With D"))]
 
 # view limit: p95 per EFP row, applied as a ZOOM (oob_keep) so densities and all
 # statistics are still computed on every site
@@ -109,7 +108,7 @@ p <- ggplot(dt, aes(x = grp, y = rmse, fill = model_type)) +
                outlier.shape = NA, colour = "#222222", fill = NA, linewidth = 0.3) +
   geom_text(data = labs, aes(x = grp, y = ylab, label = label, colour = lcol),
             inherit.aes = FALSE, size = 2.5, fontface = "bold") +
-  scale_fill_manual(values = setNames(c(COL_WO, COL_W), c("Without D (M3)", "With D (M4)"))) +
+  scale_fill_manual(values = setNames(c(COL_WO, COL_W), c("Without D", "With D"))) +
   scale_colour_identity() +
   facet_grid(response ~ learner, scales = "free_y",
              labeller = labeller(response = EFP_LABELS), switch = "y") +
@@ -119,7 +118,7 @@ p <- ggplot(dt, aes(x = grp, y = rmse, fill = model_type)) +
                          oob = scales::oob_keep))) +
   coord_cartesian(clip = "on") +
   labs(x = NULL, y = NULL,
-       title = "Effect of adding disturbance predictors (M3 → M4) on per-site RMSE",
+       title = "Effect of adding disturbance predictors on per-site RMSE",
        subtitle = paste0("Tree cover ≥30 % (93 sites) · C+T vs C+T+D · cyan = without D, pink = with D\n",
                          "% = median PAIRED change in per-site RMSE (negative = less error) · ",
                          "stars = one-sided paired Wilcoxon, BH-FDR across the figure (*** q<0.001, ** q<0.01, * q<0.05)\n",
