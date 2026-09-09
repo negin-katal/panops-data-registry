@@ -28,8 +28,11 @@ EFP_LABELS <- c(GPPsat = "GPPsat  (µmol m⁻² s⁻¹)", NEPmax = "NEPmax  (µm
                 ETmax  = "ETmax  (mm d⁻¹)",         WUE    = "WUE  (g C mm⁻¹)")
 
 LEARNERS <- list(   # random forest dropped at the user's request
-  list(lab = "XGBoost (Optuna)",       loo = "XGB_v10_optuna", rep = "XGB_optuna_repCV", fam = "XGB"),
-  list(lab = "LightGBM (Optuna)",      loo = "LGB_v10_optuna", rep = "LGB_optuna_repCV", fam = "LGB"))
+  # 2026-09-09: repointed to the lag2-corrected 24m data (true_24m/*) - the
+  # production dirs' 24m branch lacked disturbance lag2 entirely. 12m rows in
+  # true_24m are byte-identical to production; see scripts/build_true24m_folders.R.
+  list(lab = "XGBoost (Optuna)",       loo = "XGB_v10_true24m_optuna", rep = "XGB_optuna_repCV_true24m", fam = "XGB"),
+  list(lab = "LightGBM (Optuna)",      loo = "LGB_v10_true24m_optuna", rep = "LGB_optuna_repCV_true24m", fam = "LGB"))
 
 site_rmse <- function(f) {
   p <- fread(f)

@@ -22,8 +22,9 @@ CAT_COLS <- c("Low+Mid" = "#22C4E0", "High" = "#E8257A")
 EFP_ORDER <- c("GPPsat","NEPmax","ETmax","WUE")
 EFP_LAB <- c(GPPsat="GPPsat  (µmol m⁻² s⁻¹)", NEPmax="NEPmax  (µmol m⁻² s⁻¹)",
              ETmax="ETmax  (mm d⁻¹)", WUE="WUE  (g C mm⁻¹)")
-LEARNERS <- list(list(lab="XGBoost (Optuna)",  d="XGB_v10_optuna", fam="XGB"),
-                 list(lab="LightGBM (Optuna)", d="LGB_v10_optuna", fam="LGB"))
+# 2026-09-09: repointed to true_24m/ - see plot_draft_fig2_M3M4.R for why.
+LEARNERS <- list(list(lab="XGBoost (Optuna)",  d="XGB_v10_true24m_optuna", fam="XGB"),
+                 list(lab="LightGBM (Optuna)", d="LGB_v10_true24m_optuna", fam="LGB"))
 
 d <- rbindlist(lapply(LEARNERS, function(L) {
   f <- sprintf("%s/%s/%s_site_signed_shap_M4.csv", B, L$d, L$fam)
