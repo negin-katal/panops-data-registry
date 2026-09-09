@@ -1084,11 +1084,28 @@ let CV='loo';
 let METRICS=METRICS_BASE;
 var LOOPATH={baseline:'',tuned:'tuned_exp02/',xgb:'XGBoost/',xgbt:'XGBoost_tuned/',lgb:'LightGBM/',lgbt:'LightGBM_tuned/',rfopt:'RF_optuna/',xgbopt:'XGB_optuna/',lgbopt:'LGB_optuna/'};
 var REPPATH={baseline:'repeatedCV/RF_base/',tuned:'repeatedCV/RF_exp02/',xgb:'repeatedCV/XGB_base/',xgbt:'repeatedCV/XGB_tuned/',lgb:'repeatedCV/LGB_base/',lgbt:'repeatedCV/LGB_tuned/',rfopt:'repeatedCV/RF_optuna/',xgbopt:'repeatedCV/XGB_optuna/',lgbopt:'repeatedCV/LGB_optuna/'};
+// true_24m (2026-09-09): the 24m branch of these three Optuna-tuned learners
+// was retrained with the lag2-corrected disturbance block, for tc>=30 and
+// tc>=50 ONLY - all_sites already had lag2 correctly (see the predictor-count
+// table above) and is NOT covered by true_24m, so it must keep resolving to
+// the ORIGINAL path above. 12m content in true_24m/ is byte-identical to
+// production (verified by hash); only the 24m content actually changed.
+var TRUE24M_LOOPATH={rfopt:'true_24m/RF_optuna/',xgbopt:'true_24m/XGB_optuna/',lgbopt:'true_24m/LGB_optuna/'};
+var TRUE24M_REPPATH={rfopt:'true_24m/repeatedCV/RF_optuna/',xgbopt:'true_24m/repeatedCV/XGB_optuna/',lgbopt:'true_24m/repeatedCV/LGB_optuna/'};
 // P(): RMSE / prediction figures - these DO depend on the resampling structure.
-function P(){return (CV==='rep' ? REPPATH[CFG] : LOOPATH[CFG]) || '';}
+// true_24m only covers tc>=30 / tc>=50 (DS!=='all_sites'); all_sites always
+// falls through to the original LOOPATH/REPPATH regardless of CFG.
+function P(){
+  if (DS !== 'all_sites' && (CV==='rep' ? TRUE24M_REPPATH[CFG] : TRUE24M_LOOPATH[CFG]))
+    return CV==='rep' ? TRUE24M_REPPATH[CFG] : TRUE24M_LOOPATH[CFG];
+  return (CV==='rep' ? REPPATH[CFG] : LOOPATH[CFG]) || '';
+}
 // PS(): SHAP figures - computed from a FULL-DATA model, not from CV folds, so they
 // are identical under both structures and always resolve to the LOO copy.
-function PS(){return LOOPATH[CFG]||'';}
+function PS(){
+  if (DS !== 'all_sites' && TRUE24M_LOOPATH[CFG]) return TRUE24M_LOOPATH[CFG];
+  return LOOPATH[CFG]||'';
+}
 
 const META={
   all_sites:{sites:112,siteyears:414,igbp:'ENF 49 · DBF 26 · WET 17 · MF 6 · OSH 6 · WSA 3 · CSH 3 · EBF 2'},

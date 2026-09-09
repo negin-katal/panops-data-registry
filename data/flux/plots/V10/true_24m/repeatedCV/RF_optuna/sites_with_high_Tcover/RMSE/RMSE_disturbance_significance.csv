@@ -1,0 +1,61 @@
+response,window_memory,pair,n_sites,median_RMSE_withoutD,median_RMSE_withD,delta_pct,pct_sites_improved,p_onesided_wilcoxon,q_BH,sig
+ETmax,Anomaly / 12m,C vs C+D,93,0.0332,0.0388,0.54,48.4,0.6189,0.7427, ns
+ETmax,Anomaly / 12m,C+M vs C+M+D,93,0.0336,0.0386,0.6,47.3,0.5442,0.6948, ns
+ETmax,Anomaly / 12m,C+T vs C+T+D,93,0.036,0.034,-0.3,51.6,0.3811,0.6179, ns
+ETmax,Anomaly / 12m,C+T+M vs C+T+D+M,93,0.0356,0.0336,0.93,44.1,0.7884,0.8447, ns
+ETmax,Anomaly / 24m,C vs C+D,93,0.0341,0.0358,-0.08,51.6,0.5015,0.6948, ns
+ETmax,Anomaly / 24m,C+M vs C+M+D,93,0.0341,0.0358,-0.01,50.5,0.5229,0.6948, ns
+ETmax,Anomaly / 24m,C+T vs C+T+D,93,0.0348,0.0349,0.77,44.1,0.9219,0.9219, ns
+ETmax,Anomaly / 24m,C+T+M vs C+T+D+M,93,0.035,0.0351,0.61,43,0.8877,0.905, ns
+ETmax,Raw-lag / 12m,C+M vs C+M+D,93,0.0262,0.0252,0.64,48.4,0.4121,0.6248, ns
+ETmax,Raw-lag / 12m,C+T+M vs C+T+D+M,93,0.0276,0.0269,-0.33,51.6,0.5244,0.6948, ns
+ETmax,Raw-lag / 24m,C+M vs C+M+D,93,0.027,0.0276,-0.22,54.8,0.2029,0.3688, ns
+ETmax,Raw-lag / 24m,C+T+M vs C+T+D+M,93,0.0283,0.028,-0.43,53.8,0.3106,0.5324, ns
+GPPsat,Anomaly / 12m,C vs C+D,93,5.9237,5.4483,-8.81,62.4,0.007329,0.02748,*
+GPPsat,Anomaly / 12m,C+M vs C+M+D,93,5.9185,5.3812,-8.78,62.4,0.006875,0.02748,*
+GPPsat,Anomaly / 12m,C+T vs C+T+D,93,5.9415,5.447,-3.64,64.5,0.0008393,0.006896,**
+GPPsat,Anomaly / 12m,C+T+M vs C+T+D+M,93,5.9785,5.558,-5.59,64.5,0.000248,0.002976,**
+GPPsat,Anomaly / 24m,C vs C+D,93,5.7828,5.564,-6.76,59.1,0.005722,0.02452,*
+GPPsat,Anomaly / 24m,C+M vs C+M+D,93,5.8432,5.5871,-7.65,59.1,0.005184,0.02392,*
+GPPsat,Anomaly / 24m,C+T vs C+T+D,93,5.8644,5.6532,-3.23,63.4,0.0008728,0.006896,**
+GPPsat,Anomaly / 24m,C+T+M vs C+T+D+M,93,5.9229,5.663,-4.67,64.5,0.0009195,0.006896,**
+GPPsat,Raw-lag / 12m,C+M vs C+M+D,93,3.5468,3.5078,0.31,48.4,0.7679,0.844, ns
+GPPsat,Raw-lag / 12m,C+T+M vs C+T+D+M,93,3.4554,3.4244,-0.16,50.5,0.5397,0.6948, ns
+GPPsat,Raw-lag / 24m,C+M vs C+M+D,93,3.668,3.5407,0.8,47.3,0.7134,0.8393, ns
+GPPsat,Raw-lag / 24m,C+T+M vs C+T+D+M,93,3.5607,3.4977,-1.04,53.8,0.3972,0.6248, ns
+NEPmax,Anomaly / 12m,C vs C+D,93,5.12,4.7251,-9.49,60.2,0.003112,0.01867,*
+NEPmax,Anomaly / 12m,C+M vs C+M+D,93,5.4147,4.7369,-7.59,57,0.003076,0.01867,*
+NEPmax,Anomaly / 12m,C+T vs C+T+D,93,5.5636,4.6808,-6.9,78.5,5.802e-07,3.481e-05,***
+NEPmax,Anomaly / 12m,C+T+M vs C+T+D+M,93,5.6643,4.8767,-9.17,67.7,4.098e-06,0.000123,***
+NEPmax,Anomaly / 24m,C vs C+D,93,5.034,4.8245,-8.82,60.2,0.003786,0.01914,*
+NEPmax,Anomaly / 24m,C+M vs C+M+D,93,5.0273,4.7546,-8.81,61.3,0.003829,0.01914,*
+NEPmax,Anomaly / 24m,C+T vs C+T+D,93,5.5764,5.199,-7.99,73.1,8.285e-06,0.0001378,***
+NEPmax,Anomaly / 24m,C+T+M vs C+T+D+M,93,5.4931,5.1787,-7.69,72,9.19e-06,0.0001378,***
+NEPmax,Raw-lag / 12m,C+M vs C+M+D,93,2.6438,2.6877,-0.3,50.5,0.13,0.2689, ns
+NEPmax,Raw-lag / 12m,C+T+M vs C+T+D+M,93,2.5885,2.8284,-0.09,51.6,0.4542,0.6489, ns
+NEPmax,Raw-lag / 24m,C+M vs C+M+D,93,2.884,2.9638,-0.74,52.7,0.4436,0.6489, ns
+NEPmax,Raw-lag / 24m,C+T+M vs C+T+D+M,93,2.727,2.9447,-0.11,51.6,0.576,0.72, ns
+WUE,Anomaly / 12m,C vs C+D,93,0.7168,0.682,-3.16,54.8,0.08871,0.233, ns
+WUE,Anomaly / 12m,C+M vs C+M+D,93,0.7204,0.6849,-3.45,55.9,0.08628,0.233, ns
+WUE,Anomaly / 12m,C+T vs C+T+D,93,0.7204,0.6757,-2.88,57,0.1182,0.2566, ns
+WUE,Anomaly / 12m,C+T+M vs C+T+D+M,93,0.7118,0.6661,-1.52,52.7,0.1759,0.3298, ns
+WUE,Anomaly / 24m,C vs C+D,93,0.7125,0.67,-3.91,55.9,0.05051,0.1633, ns
+WUE,Anomaly / 24m,C+M vs C+M+D,93,0.7116,0.6666,-3.99,57,0.06128,0.1838, ns
+WUE,Anomaly / 24m,C+T vs C+T+D,93,0.701,0.6619,-1.69,54.8,0.1094,0.2566, ns
+WUE,Anomaly / 24m,C+T+M vs C+T+D+M,93,0.7076,0.658,-3.93,53.8,0.08933,0.233, ns
+WUE,Raw-lag / 12m,C+M vs C+M+D,93,0.4861,0.4714,-0.63,54.8,0.4165,0.6248, ns
+WUE,Raw-lag / 12m,C+T+M vs C+T+D+M,93,0.4734,0.4551,-1.05,52.7,0.7737,0.844, ns
+WUE,Raw-lag / 24m,C+M vs C+M+D,93,0.4866,0.4747,-1.23,59.1,0.3437,0.5729, ns
+WUE,Raw-lag / 24m,C+T+M vs C+T+D+M,93,0.4779,0.4697,-0.4,53.8,0.6175,0.7427, ns
+uWUE,Anomaly / 12m,C vs C+D,93,0.6885,0.6902,-2.53,52.7,0.1596,0.3089, ns
+uWUE,Anomaly / 12m,C+M vs C+M+D,93,0.7087,0.6888,-1.49,54.8,0.2229,0.3933, ns
+uWUE,Anomaly / 12m,C+T vs C+T+D,93,0.6847,0.6573,-2.71,54.8,0.1443,0.2885, ns
+uWUE,Anomaly / 12m,C+T+M vs C+T+D+M,93,0.6816,0.6636,-2.55,55.9,0.1123,0.2566, ns
+uWUE,Anomaly / 24m,C vs C+D,93,0.7156,0.6872,-2.99,57,0.09765,0.2441, ns
+uWUE,Anomaly / 24m,C+M vs C+M+D,93,0.7063,0.6791,-2.66,55.9,0.1197,0.2566, ns
+uWUE,Anomaly / 24m,C+T vs C+T+D,93,0.6716,0.6588,-2.64,59.1,0.05172,0.1633, ns
+uWUE,Anomaly / 24m,C+T+M vs C+T+D+M,93,0.6789,0.6603,-2.8,60.2,0.05091,0.1633, ns
+uWUE,Raw-lag / 12m,C+M vs C+M+D,93,0.4546,0.4763,0.62,46.2,0.7475,0.844, ns
+uWUE,Raw-lag / 12m,C+T+M vs C+T+D+M,93,0.4516,0.4813,0.8,47.3,0.8251,0.8685, ns
+uWUE,Raw-lag / 24m,C+M vs C+M+D,93,0.445,0.4528,0.41,43,0.8899,0.905, ns
+uWUE,Raw-lag / 24m,C+T+M vs C+T+D+M,93,0.4527,0.4591,-0.27,51.6,0.7475,0.844, ns
