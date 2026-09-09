@@ -52,12 +52,12 @@
         learner, window and CV structure.
   \item \textbf{WUE: intermediate.} 8 of 12 significant, median $-4.0$\,\% --- significant for XGBoost and
         LightGBM, not for random forest.
-  \item \textbf{Learner matters little:} XGBoost 12/12, LightGBM 12/12, random forest 8/12 significant.
+  \item Both learner perform similar to the 
   \item \textbf{Cross-validation matters not at all:} \textbf{16 significant under LOO, 16 under repeated CV} 
         identical counts, and the same tests.
   \item Roughly \textbf{60--78\,\% of sites} improve where the effect is significant; the effect is a shift in a
         broad distribution, not a uniform gain.
-  \item \decide{Should I report LOO in the main text and repeated CV in the supplement, or keep both here?}
+  
 \end{itemize}
 
 
@@ -65,10 +65,11 @@
 
 \section*{Figure 3: What the models actually use (per-site SHAP)}
 \begin{itemize}
-  \item M4, 12-month window,
-        per-site stacked driver-group composition, sites ordered by disturbance share, IGBP on the right,
-        and the three dot columns giving each site's absolute mortality, relative mortality and relative
-        disturbance. Shown here for \textbf{XGBoost--Optuna}; the random-forest and LightGBM versions exist
+  \item M4, per-site stacked driver-group composition, all four EFPs shown together (one panel each),
+        sites ordered by disturbance share (shared order across panels), IGBP on the right. Each figure
+        fixes one disturbance metric's dot column; \textbf{relative disturbance} (12- and 24-month
+        windows) is shown here, absolute mortality and relative mortality are in the Appendix.
+        Shown here for \textbf{XGBoost--Optuna}; the random-forest and LightGBM versions exist
         and are identical in structure.
   \item SHAP comes from full-data models, so these are the same under both cross-validation structures.
   \item \textbf{Disturbance (gold) is a large, consistent share} of the carbon fluxes: 29\,\% for
@@ -78,7 +79,6 @@
         null result in Figure 2, two independent lines of evidence agreeing.
   \item \textbf{WUE} draws the \emph{most} on disturbance (38\,\%) but with far less trait signal (12\,\%).
   \item Sites vary widely: the top of each panel draws little from disturbance, the bottom draws heavily.
-  \item \decide{one EFP in the main text and the rest in the supplement, or all four?}
   \item \decide{show one learner (XGBoost) or all three?}
 \end{itemize}
 
@@ -220,20 +220,13 @@ relative disturbance = (deadwood + loss×100) / (forest + loss×100) × 100 (\%)
 
 
 \begin{center}
-\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_GPPsat}\\[2pt]
-{\small \textbf{Fig.\ 3a} --- GPP$_{sat}$, M4, 12\,m, XGBoost--Optuna}
+\includegraphics[width=0.98\linewidth]{figures/fig3_rel_dist_12m}\\[2pt]
+{\small \textbf{Fig.\ 3a} --- Relative disturbance, M4, 12\,m, XGBoost--Optuna. All four EFPs shown
+together; dot colour/size = each site's relative disturbance (500\,m).}
 \end{center}
 \begin{center}
-\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_NEPmax}\\[2pt]
-{\small \textbf{Fig.\ 3b} --- NEP$_{max}$}
-\end{center}
-\begin{center}
-\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_ETmax}\\[2pt]
-{\small \textbf{Fig.\ 3c} --- ET$_{max}$ (note the much smaller disturbance share)}
-\end{center}
-\begin{center}
-\includegraphics[width=0.88\linewidth]{figures/fig3_site_shap_WUE}\\[2pt]
-{\small \textbf{Fig.\ 3d} --- WUE}
+\includegraphics[width=0.98\linewidth]{figures/fig3_rel_dist_24m}\\[2pt]
+{\small \textbf{Fig.\ 3b} --- Same, 24\,m window (lag2-corrected disturbance block).}
 \end{center}
 
 
@@ -254,6 +247,30 @@ relative disturbance = (deadwood + loss×100) / (forest + loss×100) × 100 (\%)
         \url{https://negin-katal.github.io/fluxVSmortality/v10/index.html}
     
     \end{itemize}
-    
+
+
+\section*{Appendix: Figure 3, other disturbance metrics}
+\begin{itemize}
+  \item Same design as Figure 3 (M4, XGBoost--Optuna, all four EFPs, sites ordered by disturbance
+        share, IGBP on the right) with the dot column fixed to absolute mortality or relative
+        mortality instead of relative disturbance.
+\end{itemize}
+
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/fig3_abs_mort_12m}\\[2pt]
+{\small \textbf{Fig.\ A1} --- Absolute mortality, M4, 12\,m, XGBoost--Optuna.}
+\end{center}
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/fig3_abs_mort_24m}\\[2pt]
+{\small \textbf{Fig.\ A2} --- Absolute mortality, 24\,m window (lag2-corrected disturbance block).}
+\end{center}
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/fig3_rel_mort_12m}\\[2pt]
+{\small \textbf{Fig.\ A3} --- Relative mortality, M4, 12\,m, XGBoost--Optuna.}
+\end{center}
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/fig3_rel_mort_24m}\\[2pt]
+{\small \textbf{Fig.\ A4} --- Relative mortality, 24\,m window (lag2-corrected disturbance block).}
+\end{center}
 
 \end{document}
