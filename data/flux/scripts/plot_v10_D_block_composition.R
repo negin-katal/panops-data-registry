@@ -10,7 +10,7 @@
 # questions and disagree:
 #   share      - how much of the disturbance signal the block carries in total
 #   per var    - share / number of variables in the block; removes the fact that
-#                mortality simply contributes more columns (60 vs 30)
+#                mortality simply contributes more columns (60-70 vs 30, see below)
 #
 # Only the tree-cover-filtered datasets can answer this question: the all-sites
 # dataset has a DIFFERENT D block (135 vars, with _lag2 but WITHOUT the
@@ -28,9 +28,14 @@ dir.create(OUT, showWarnings = FALSE, recursive = TRUE)
 
 BG <- "white"; GRID <- "#D9D9D9"; TXT <- "#111111"; AX <- "#444444"
 EFP_ORDER <- c("GPPsat", "NEPmax", "ETmax", "WUE")
-LEARNERS <- list(list(lab = "XGBoost (Optuna)",  d = "XGB_v10_optuna", fam = "XGB"),
-                 list(lab = "Random Forest (Optuna)", d = "RF_v10_optuna", fam = "RF"),
-                 list(lab = "LightGBM (Optuna)", d = "LGB_v10_optuna", fam = "LGB"))
+# 2026-09-09: repointed to true_24m/ - the 24m branch of the production
+# folders lacked disturbance lag2 entirely (get_predictor_cols() selected D
+# by name prefix with no window condition). 12m rows in true_24m are
+# byte-identical to production; only 24m actually changed. See
+# scripts/build_true24m_folders.R and commit f83672c.
+LEARNERS <- list(list(lab = "XGBoost (Optuna)",  d = "XGB_v10_true24m_optuna", fam = "XGB"),
+                 list(lab = "Random Forest (Optuna)", d = "RF_v10_true24m_optuna", fam = "RF"),
+                 list(lab = "LightGBM (Optuna)", d = "LGB_v10_true24m_optuna", fam = "LGB"))
 
 D_RE <- "^(absolute_|relative_|new_|mortality_|disturbance_)"
 # family = drop the buffer and lag suffix, keep the _thresh distinction
@@ -116,11 +121,12 @@ for (L in LEARNERS) {
          subtitle = paste0(L$lab, " · M4 (C+T+D) · tree cover >= 30% (93 sites, 395 site-years)",
                            "\nDisturbance block renormalised to 100%; mean over the 93 held-out sites"),
          x = NULL, y = NULL,
-         caption = paste("Top row: total share of the disturbance signal. Mortality carries more variables (60 vs 30),",
-                         "so the bottom row divides\nby block size - the fair comparison. |SHAP| is magnitude only, not direction.",
-                         "\nThe D block does NOT depend on the window: the 12m and 24m models see the identical 100",
-                         "disturbance columns (current + lag1),\nso the two panels are not independent evidence.",
-                         "Only the climate block grows with the window.")) +
+         caption = paste0("Top row: total share of the disturbance signal. Mortality carries more variables",
+                          " (60 at 12m, 70 at 24m) than cover change (30, both windows), so the bottom row divides\n",
+                          "by block size - the fair comparison. |SHAP| is magnitude only, not direction.\n",
+                          "The D block is window-dependent: 24m adds lag2 for the two mortality-STOCK metrics only",
+                          " (+10 cols); cover-change has no lag2 (undefined that far\nback for ~30 site-years).",
+                          " The two panels are partly independent evidence for mortality, not for cover change.")) +
     th + theme(panel.grid.major.x = element_blank(),
                panel.grid.major.y = element_line(colour = GRID, linewidth = 0.2),
                strip.placement = "outside",
