@@ -19,7 +19,12 @@ setwd("/mnt/gsdata/projects/panops/panops-data-registry/data/flux")
 B <- "derived_tables/outputs_afterEGU_results"
 OUT <- "manuscript_coauthor_draft/figures"; dir.create(OUT, showWarnings = FALSE, recursive = TRUE)
 
-shap_file <- sprintf("%s/XGB_v10_true24m_optuna/XGB_site_shap_M04_M08.csv", B)
+args <- commandArgs(trailingOnly = TRUE)
+LEARNER <- if (length(args) >= 1) args[1] else "XGB"   # XGB | LGB
+stopifnot(LEARNER %in% c("XGB", "LGB"))
+LEARNER_LAB <- c(XGB = "XGBoost--Optuna", LGB = "LightGBM--Optuna")[[LEARNER]]
+
+shap_file <- sprintf("%s/%s_v10_true24m_optuna/%s_site_shap_M04_M08.csv", B, LEARNER, LEARNER)
 harm_file <- sprintf("%s/v10/v10_B1_GPPsat_harmonized.csv", B)   # site-level metric values; window-independent
 
 GROUP_COLOURS <- c(Climate = "#4A90D9", Traits = "#3DBDAA", Disturbance = "#D4A017", Memory = "#9B5DE5")
@@ -120,10 +125,10 @@ make_combined_plot <- function(dt_model, metric_key, model_label) {
     plot_layout(guides = "collect") & theme(legend.position = "right")
 }
 
-MODEL_LABELS <- list(M4_12m = "M4 (C+T+D), 12m window, XGBoost--Optuna",
-                     M4_24m = "M4 (C+T+D), 24m window, XGBoost--Optuna")
+MODEL_LABELS <- list(M4_12m = sprintf("M4 (C+T+D), 12m window, %s", LEARNER_LAB),
+                     M4_24m = sprintf("M4 (C+T+D), 24m window, %s", LEARNER_LAB))
 
-cat("Generating metric-keyed Fig 3 panels (M4, XGBoost-Optuna, both windows):\n")
+cat(sprintf("Generating metric-keyed Fig 3 panels (M4, %s, both windows):\n", LEARNER_LAB))
 for (metric_key in names(DIST_META)) {
   for (this_model in names(MODEL_LABELS)) {
     win <- if (grepl("12m$", this_model)) "12m" else "24m"
@@ -134,7 +139,7 @@ for (metric_key in names(DIST_META)) {
     n_sites <- uniqueN(dt_model$test_site)
     h <- max(6, n_sites * 0.17 + 2)
 
-    stem <- file.path(OUT, sprintf("fig3_%s_%s", metric_key, win))
+    stem <- file.path(OUT, sprintf("fig3_%s_%s_%s", metric_key, win, LEARNER))
     ggsave(paste0(stem, ".png"), p, width = 20, height = h, dpi = 150, limitsize = FALSE)
     ggsave(paste0(stem, ".pdf"), p, width = 20, height = h, limitsize = FALSE)
     cat(sprintf("  OK %s (%d sites)\n", basename(stem), n_sites))

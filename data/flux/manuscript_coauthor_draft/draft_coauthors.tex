@@ -69,8 +69,9 @@
         sites ordered by disturbance share (shared order across panels), IGBP on the right. Each figure
         fixes one disturbance metric's dot column; \textbf{relative disturbance} (12- and 24-month
         windows) is shown here, absolute mortality and relative mortality are in the Appendix.
-        Shown here for \textbf{XGBoost--Optuna}; the random-forest and LightGBM versions exist
-        and are identical in structure.
+        Shown here for \textbf{LightGBM--Optuna}; the XGBoost--Optuna version (all three metrics,
+        both windows) is in the Appendix, and the random-forest version exists and is identical
+        in structure.
   \item SHAP comes from full-data models, so these are the same under both cross-validation structures.
   \item \textbf{Disturbance (gold) is a large, consistent share} of the carbon fluxes: 29\,\% for
         GPP$_{sat}$ and 31\,\% for NEP$_{max}$ on average across the three learners, and reaches
@@ -220,12 +221,12 @@ relative disturbance = (deadwood + loss×100) / (forest + loss×100) × 100 (\%)
 
 
 \begin{center}
-\includegraphics[width=0.98\linewidth]{figures/fig3_rel_dist_12m}\\[2pt]
-{\small \textbf{Fig.\ 3a} --- Relative disturbance, M4, 12\,m, XGBoost--Optuna. All four EFPs shown
+\includegraphics[width=0.98\linewidth]{figures/fig3_rel_dist_12m_LGB}\\[2pt]
+{\small \textbf{Fig.\ 3a} --- Relative disturbance, M4, 12\,m, LightGBM--Optuna. All four EFPs shown
 together; dot colour/size = each site's relative disturbance (500\,m).}
 \end{center}
 \begin{center}
-\includegraphics[width=0.98\linewidth]{figures/fig3_rel_dist_24m}\\[2pt]
+\includegraphics[width=0.98\linewidth]{figures/fig3_rel_dist_24m_LGB}\\[2pt]
 {\small \textbf{Fig.\ 3b} --- Same, 24\,m window (lag2-corrected disturbance block).}
 \end{center}
 
@@ -249,28 +250,36 @@ together; dot colour/size = each site's relative disturbance (500\,m).}
     \end{itemize}
 
 
-\section*{Appendix: Figure 3, other disturbance metrics}
+\section*{Appendix: Figure 3, XGBoost--Optuna and the other disturbance metrics}
 \begin{itemize}
-  \item Same design as Figure 3 (M4, XGBoost--Optuna, all four EFPs, sites ordered by disturbance
-        share, IGBP on the right) with the dot column fixed to absolute mortality or relative
-        mortality instead of relative disturbance.
+  \item Same design as Figure 3 (M4, all four EFPs, sites ordered by disturbance share, IGBP on
+        the right), all three metrics, both windows, for \textbf{XGBoost--Optuna} (the main text
+        shows LightGBM--Optuna, relative disturbance only).
 \end{itemize}
 
 \begin{center}
-\includegraphics[width=0.98\linewidth]{figures/fig3_abs_mort_12m}\\[2pt]
-{\small \textbf{Fig.\ A1} --- Absolute mortality, M4, 12\,m, XGBoost--Optuna.}
+\includegraphics[width=0.98\linewidth]{figures/fig3_rel_dist_12m_XGB}\\[2pt]
+{\small \textbf{Fig.\ A1} --- Relative disturbance, M4, 12\,m, XGBoost--Optuna.}
 \end{center}
 \begin{center}
-\includegraphics[width=0.98\linewidth]{figures/fig3_abs_mort_24m}\\[2pt]
-{\small \textbf{Fig.\ A2} --- Absolute mortality, 24\,m window (lag2-corrected disturbance block).}
+\includegraphics[width=0.98\linewidth]{figures/fig3_rel_dist_24m_XGB}\\[2pt]
+{\small \textbf{Fig.\ A2} --- Relative disturbance, 24\,m window (lag2-corrected disturbance block).}
 \end{center}
 \begin{center}
-\includegraphics[width=0.98\linewidth]{figures/fig3_rel_mort_12m}\\[2pt]
-{\small \textbf{Fig.\ A3} --- Relative mortality, M4, 12\,m, XGBoost--Optuna.}
+\includegraphics[width=0.98\linewidth]{figures/fig3_abs_mort_12m_XGB}\\[2pt]
+{\small \textbf{Fig.\ A3} --- Absolute mortality, M4, 12\,m, XGBoost--Optuna.}
 \end{center}
 \begin{center}
-\includegraphics[width=0.98\linewidth]{figures/fig3_rel_mort_24m}\\[2pt]
-{\small \textbf{Fig.\ A4} --- Relative mortality, 24\,m window (lag2-corrected disturbance block).}
+\includegraphics[width=0.98\linewidth]{figures/fig3_abs_mort_24m_XGB}\\[2pt]
+{\small \textbf{Fig.\ A4} --- Absolute mortality, 24\,m window (lag2-corrected disturbance block).}
+\end{center}
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/fig3_rel_mort_12m_XGB}\\[2pt]
+{\small \textbf{Fig.\ A5} --- Relative mortality, M4, 12\,m, XGBoost--Optuna.}
+\end{center}
+\begin{center}
+\includegraphics[width=0.98\linewidth]{figures/fig3_rel_mort_24m_XGB}\\[2pt]
+{\small \textbf{Fig.\ A6} --- Relative mortality, 24\,m window (lag2-corrected disturbance block).}
 \end{center}
 
 \end{document}
