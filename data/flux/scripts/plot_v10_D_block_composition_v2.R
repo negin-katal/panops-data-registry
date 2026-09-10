@@ -1,29 +1,43 @@
 #!/usr/bin/env Rscript
 # ============================================================================
-# Composition of the disturbance block: how much of the D-block SHAP comes from
-# tree-cover-change information vs standing-mortality information?
+# Composition of the disturbance block, ALTERNATIVE 3-way split (v2).
+#
+# v1 (plot_v10_D_block_composition.R) grouped by CONCEPT (any mortality-stock
+# metric vs the one cover-loss metric vs the combined index). This version
+# groups by MEASUREMENT TYPE instead:
+#
+#   Mortality (deadwood)  - absolute_mortality, relative_mortality (stock),
+#                            new_deadwood_gain_pp (new die-off, raw pp),
+#                            new_mortality_rate_pct (new die-off, normalised
+#                            by prior tree cover - same signal as
+#                            new_deadwood_gain_pp, differently scaled; placed
+#                            here since it is not a cover-loss or combined
+#                            metric - CONFIRM if a different bucket is meant)
+#                            (+ each metric's _thresh twin)
+#   Tree cover loss        - relative_tree_loss_pct (+ _thresh)
+#   Combined                - relative_disturbance, mortality_loss_severity_pct
+#                            (+ _thresh) - both explicitly blend deadwood AND
+#                            cover-loss signal into one index
+#
+# Variable counts (12m / 24m): Mortality 60/70, Tree cover loss 20/20,
+# Combined 20/20 - unlike v1, cover loss and combined are now BALANCED (20
+# each), so their per-variable and raw-share bars are directly comparable
+# without needing the per-variable correction (mortality still needs it).
 #
 # No retraining. Re-aggregates the variable-level TreeSHAP already written by
 # the M4 runs ({FAM}_site_shap_M04_M08.csv), renormalised so the D block = 100%.
 #
-# Two normalisations are plotted side by side, because they answer different
-# questions and disagree:
-#   share      - how much of the disturbance signal the block carries in total
-#   per var    - share / number of variables in the block; removes the fact that
-#                mortality simply contributes more columns (60-70 vs 30, see below)
-#
 # Only the tree-cover-filtered datasets can answer this question: the all-sites
 # dataset has a DIFFERENT D block (135 vars, with _lag2 but WITHOUT the
-# relative_tree_loss_pct family), so tree cover change is not represented
-# there. tc>=30 is used throughout.
+# relative_tree_loss_pct family), so tree cover loss is not represented there.
+# tc>=30 is used throughout.
 #
-# Output: plots/V10/disturbance_split/   (its own folder - the report tree and
-#         the manuscript figures are never touched)
+# Output: plots/V10/disturbance_split_v2/   (separate from v1 - both kept)
 # ============================================================================
 suppressMessages({library(data.table); library(ggplot2)})
 setwd("/mnt/gsdata/projects/panops/panops-data-registry/data/flux")
 B   <- "derived_tables/outputs_afterEGU_results"
-OUT <- "plots/V10/disturbance_split"
+OUT <- "plots/V10/disturbance_split_v2"
 dir.create(OUT, showWarnings = FALSE, recursive = TRUE)
 
 BG <- "white"; GRID <- "#D9D9D9"; TXT <- "#111111"; AX <- "#444444"
@@ -41,12 +55,12 @@ D_RE <- "^(absolute_|relative_|new_|mortality_|disturbance_)"
 # family = drop the buffer and lag suffix, keep the _thresh distinction
 famof <- function(v) sub("_[0-9]+00m(_lag[12])?$", "", v)
 concept <- function(f)
-  fifelse(grepl("^absolute_mortality|^relative_mortality|^new_mortality_rate|^new_deadwood_gain", f),
-          "Standing mortality / deadwood",
-  fifelse(grepl("^relative_tree_loss|^mortality_loss_severity", f),
-          "Tree cover change",
-          "Combined index (rho = 0.97 with rel. mortality)"))
-CC_ORDER <- c("Standing mortality / deadwood", "Tree cover change",
+  fifelse(grepl("^relative_tree_loss", f),
+          "Tree cover loss",
+  fifelse(grepl("^relative_disturbance|^mortality_loss_severity", f),
+          "Combined index (rho = 0.97 with rel. mortality)",
+          "Mortality (deadwood)"))   # absolute/relative_mortality, new_deadwood_gain_pp, new_mortality_rate_pct
+CC_ORDER <- c("Mortality (deadwood)", "Tree cover loss",
               "Combined index (rho = 0.97 with rel. mortality)")
 CC_COLS  <- c("#D1495B", "#2A9D8F", "#9AA0A6"); names(CC_COLS) <- CC_ORDER
 
@@ -117,16 +131,17 @@ for (L in LEARNERS) {
     facet_grid(norm ~ window, scales = "free_y", switch = "y") +
     scale_fill_manual(values = CC_COLS) +
     scale_y_continuous(expand = expansion(mult = c(0, 0.14))) +
-    labs(title = "What kind of disturbance information does the model use?",
+    labs(title = "What kind of disturbance information does the model use? (v2 split)",
          subtitle = paste0(L$lab, " · M4 (C+T+D) · tree cover >= 30% (93 sites, 395 site-years)",
                            "\nDisturbance block renormalised to 100%; mean over the 93 held-out sites"),
          x = NULL, y = NULL,
          caption = paste0("Top row: total share of the disturbance signal. Mortality carries more variables",
-                          " (60 at 12m, 70 at 24m) than tree cover change (30, both windows), so the bottom row divides\n",
-                          "by block size - the fair comparison. |SHAP| is magnitude only, not direction.\n",
-                          "The D block is window-dependent: 24m adds lag2 for the two mortality-STOCK metrics only",
-                          " (+10 cols); tree-cover-change has no lag2 (undefined that far\nback for ~30 site-years).",
-                          " The two panels are partly independent evidence for mortality, not for tree cover change.")) +
+                          " (60 at 12m, 70 at 24m) than tree cover loss OR the combined index\n",
+                          "(20 each, both windows) - tree cover loss and combined are balanced against each other,",
+                          " so only mortality needs the per-variable correction below.\n",
+                          "|SHAP| is magnitude only, not direction. The D block is window-dependent: 24m adds lag2",
+                          " for the two mortality-STOCK metrics only (+10 cols);\ntree cover loss and the combined",
+                          " index have no lag2 (undefined that far back for ~30 site-years).")) +
     th + theme(panel.grid.major.x = element_blank(),
                panel.grid.major.y = element_line(colour = GRID, linewidth = 0.2),
                strip.placement = "outside",
