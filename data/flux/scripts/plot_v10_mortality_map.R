@@ -48,25 +48,23 @@ p <- ggplot() +
                         name = sprintf("Relative Mortality\n(%%)  NB=%.1f", nb_high)) +
   scale_size_continuous(range = c(1.2, 5.5), limits = c(0, max_val), guide = "none") +
   coord_fixed(1.3, xlim = c(-170, 175), ylim = c(-55, 75), expand = FALSE) +
-  labs(title = "Relative mortality across the tree-cover >=30% network",
-       subtitle = sprintf("%d sites | colour + size = per-site relative mortality (500 m, max across years) | midpoint = natural-break High cut",
-                          nrow(sites)),
-       x = NULL, y = NULL) +
+  labs(x = NULL, y = NULL) +
   theme_void(base_size = 10) +
   theme(
-    plot.background = element_rect(fill = "white", colour = NA),
-    panel.background = element_rect(fill = "white", colour = NA),
-    plot.title = element_text(face = "bold", size = 13, hjust = 0),
-    plot.subtitle = element_text(size = 9, colour = "#444444", hjust = 0),
+    # same dark theme as Fig 1's map panel (plot_v10_fig1_site_map.R)
+    plot.background = element_rect(fill = "#0D1117", colour = NA),
+    panel.background = element_rect(fill = "#0D1117", colour = NA),
     legend.position = "right",
-    legend.title = element_text(size = 8.5),
-    legend.text = element_text(size = 8),
+    legend.title = element_text(colour = "#C9D1D9", size = 8.5),
+    legend.text = element_text(colour = "#C9D1D9", size = 8),
+    legend.key = element_rect(fill = NA, colour = NA),
+    legend.background = element_rect(fill = NA, colour = NA),
     legend.key.height = unit(1.1, "cm")
   )
 
 stem <- file.path(OUT, "mortality_map_tc30_natural_breaks")
-ggsave(paste0(stem, ".png"), p, width = 11, height = 6, dpi = 300, bg = "white")
-ggsave(paste0(stem, ".pdf"), p, width = 11, height = 6, bg = "white")
+ggsave(paste0(stem, ".png"), p, width = 11, height = 6, dpi = 300, bg = "#0D1117")
+ggsave(paste0(stem, ".pdf"), p, width = 11, height = 6, bg = "#0D1117")
 fwrite(sites[order(-rel_mort)], file.path(OUT, "mortality_map_tc30_site_values.csv"))
 cat("\nSaved:", stem, ".png/.pdf\n")
 cat(sprintf("Sites above the High cut (%.1f): %d / %d\n", nb_high, sum(sites$rel_mort > nb_high, na.rm=TRUE), nrow(sites)))
