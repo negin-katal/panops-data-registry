@@ -133,9 +133,11 @@ Which \emph{direction} does disturbance push? (signed SHAP)
 \textbf{Does it depend on ecosystem type or tree cover?}
 \begin{itemize}
   \item The report's Section-9 board, without uWUE, XGBoost--Optuna, M4, both windows.
-        \textbf{Panels B and D now show the net signed disturbance SHAP} (as Figure 4), not the
+        \textbf{Panels B, D and E now show the net signed disturbance SHAP} (as Figure 4), not the
         $|$SHAP$|$ share. \textbf{A} $\Delta$RMSE by IGBP, \textbf{B} direction by IGBP,
-        \textbf{C} tree cover vs benefit, \textbf{D} tree cover vs direction.
+        \textbf{C} tree cover vs benefit, \textbf{D} tree cover vs direction,
+        \textbf{E} relative disturbance vs direction. C/D/E: linear fit (not LOESS) with a
+        Spearman correlation test annotated per panel, BH-FDR across all 12 tests in the board.
   \item \textbf{This reverses what the magnitude version showed.} On $|$SHAP$|$ the disturbance share
         was unrelated to tree cover (Spearman $\rho = 0.04$, $p = 0.65$). On the \emph{signed} value the
         relationship is strong and highly significant:
@@ -144,6 +146,14 @@ Which \emph{direction} does disturbance push? (signed SHAP)
         ET$_{max}$ $\rho = +0.31$ ($p = 0.003$).
   \item \textbf{Panel D, read plainly:} at low tree cover disturbance pulls predicted carbon uptake
         \emph{down}; at high tree cover it pushes it \emph{up}. The sign flips at roughly 50\,\% cover.
+  \item \textbf{Panel E asks the more direct question: does the SIZE of the disturbance itself
+        (relative disturbance, 500\,m) predict the direction, not just tree cover as a proxy?}
+        Yes, and more strongly, with the sign reversed as expected --- more disturbance pushes
+        predicted carbon uptake \emph{down}: 24\,m window, GPP$_{sat}$ $\rho = -0.58$
+        ($p = 9.5\times10^{-10}$), NEP$_{max}$ $\rho = -0.66$ ($p = 4.3\times10^{-13}$),
+        ET$_{max}$ $\rho = -0.61$ ($p = 7.9\times10^{-11}$), WUE $\rho = -0.52$
+        ($p = 9.5\times10^{-8}$); 12\,m window gives the same sign and significance at every EFP.
+        This is the more mechanistically direct test of Panel D's tree-cover relationship.
   \item \textbf{Panel B says the same by class} (median net signed SHAP, GPP$_{sat}$):
         open and wet classes negative --- OSH $-4.84$, WET $-4.16$, CSH $-2.91$, WSA $-1.46$;
         forest classes positive --- MF $+1.94$, DBF $+1.06$, EBF $+0.60$, ENF $+0.26$.

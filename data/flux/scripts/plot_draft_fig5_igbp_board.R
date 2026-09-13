@@ -34,14 +34,17 @@ EFP_LAB <- as_labeller(setNames(EFP_ORDER, EFP_ORDER))
 if (dataset_type == "filtered") {
   pred_file <- "derived_tables/outputs_afterEGU_results/RF_v10/RF_predictions_LOSO.csv"
   shap_file <- "derived_tables/outputs_afterEGU_results/RF_v10/RF_site_shap_M04_M08.csv"
+  harm_file <- "derived_tables/outputs_afterEGU_results/v10/v10_B1_GPPsat_harmonized.csv"
   out_dir   <- "plots/V10/sites_with_high_Tcover/IGBP_boards"
 } else if (dataset_type == "tc50") {
   pred_file <- "derived_tables/outputs_afterEGU_results/RF_v10_tc50/RF_predictions_LOSO.csv"
   shap_file <- "derived_tables/outputs_afterEGU_results/RF_v10_tc50/RF_site_shap_M04_M08.csv"
+  harm_file <- "derived_tables/outputs_afterEGU_results/v10_tc50/v10_tc50_B1_GPPsat_harmonized.csv"
   out_dir   <- "plots/V10/sites_tc50/IGBP_boards"
 } else if (dataset_type == "all_sites") {
   pred_file <- "derived_tables/outputs_afterEGU_results/RF_v10_all_sites/RF_predictions_LOSO.csv"
   shap_file <- "derived_tables/outputs_afterEGU_results/RF_v10_all_sites/RF_site_shap_M04_M08.csv"
+  harm_file <- "derived_tables/outputs_afterEGU_results/v10_all_sites/v10_all_B1_GPPsat_harmonized.csv"
   out_dir   <- "plots/V10/all_sites/IGBP_boards"
 } else stop("Invalid dataset_type")
 ## --- optional model-family override (XGBoost etc.); no-op when unset ---
@@ -76,6 +79,14 @@ main <- fread("derived_tables/outputs_afterEGU_results/EFP_mortality_trait_hydro
 site_meta <- main[, .(tree_cover = mean(forest_mean_pct_500m, na.rm = TRUE)), by = .(SITE_ID, IGBP)]
 site_meta <- site_meta[, .SD[1], by = SITE_ID]
 site_meta[, IGBP := factor(IGBP, levels = IGBP_ORDER)]
+
+# relative_disturbance (500m) is only in the harmonized dataset, not in `main`
+# above. Per-site value = max across years, same convention as Fig 3 / the
+# mortality world map (site_dist aggregation).
+na_inf <- function(x) { x[!is.finite(x)] <- NA; x }
+harm_dist <- fread(harm_file, select = c("SITE_ID", "relative_disturbance_500m"))
+dist_meta <- harm_dist[, .(rel_disturbance = na_inf(max(relative_disturbance_500m, na.rm = TRUE))), by = SITE_ID]
+site_meta <- merge(site_meta, dist_meta, by = "SITE_ID", all.x = TRUE)
 
 # ── per-site RMSE ────────────────────────────────────────────
 preds <- fread(pred_file)
@@ -131,15 +142,15 @@ violin_igbp <- function(d, yvar, ytitle, ptitle, subtitle, dashed0) {
     theme(axis.text.x = element_text(colour = AXIS_COL, size = 6, face = "bold", angle = 45, hjust = 1))
 }
 
-# Spearman correlation (tree cover vs y), one test per EFP panel. Returns NA
+# Spearman correlation (xvar vs y), one test per EFP panel. Returns NA
 # rho/p rather than erroring when a facet has too little data (e.g. all-NA
-# dist_signed for a response, or a constant tree_cover within a subset).
-cor_stats <- function(d, yvar) {
+# dist_signed for a response, or a constant x within a subset).
+cor_stats <- function(d, xvar, yvar) {
   d[, {
-    ok <- is.finite(tree_cover) & is.finite(get(yvar))
+    ok <- is.finite(get(xvar)) & is.finite(get(yvar))
     if (sum(ok) < 4) list(rho = NA_real_, p = NA_real_, n = sum(ok))
     else {
-      ct <- tryCatch(cor.test(tree_cover[ok], get(yvar)[ok], method = "spearman", exact = FALSE),
+      ct <- tryCatch(cor.test(get(xvar)[ok], get(yvar)[ok], method = "spearman", exact = FALSE),
                      error = function(e) NULL)
       if (is.null(ct)) list(rho = NA_real_, p = NA_real_, n = sum(ok))
       else list(rho = unname(ct$estimate), p = ct$p.value, n = sum(ok))
@@ -151,8 +162,8 @@ stars <- function(q) fifelse(is.na(q), "",
                     fifelse(q < 0.01,  "**",
                     fifelse(q < 0.05,  "*", " ns"))))
 
-scatter_tc <- function(d, yvar, ytitle, ptitle, subtitle, dashed0, show_leg, stat_lab) {
-  p <- ggplot(d, aes_string(x = "tree_cover", y = yvar, colour = "IGBP"))
+scatter_tc <- function(d, xvar, xlabel, yvar, ytitle, ptitle, subtitle, dashed0, show_leg, stat_lab) {
+  p <- ggplot(d, aes_string(x = xvar, y = yvar, colour = "IGBP"))
   if (dashed0) p <- p + geom_hline(yintercept = 0, colour = "#888888", linewidth = 0.35, linetype = "dashed")
   p <- p +
     geom_point(size = 1.3, alpha = 0.7) +
@@ -162,7 +173,7 @@ scatter_tc <- function(d, yvar, ytitle, ptitle, subtitle, dashed0, show_leg, sta
               hjust = -0.05, vjust = 1.4, size = 2.6, colour = TEXT_COL, fontface = "bold") +
     scale_colour_manual(values = IGBP_COL, name = "IGBP") +
     facet_wrap(~response, nrow = 1, scales = "free_y", labeller = EFP_LAB) +
-    labs(x = "Tree cover — forest_mean_pct_500m (%)", y = ytitle, title = ptitle, subtitle = subtitle) +
+    labs(x = xlabel, y = ytitle, title = ptitle, subtitle = subtitle) +
     dark_theme
   if (show_leg) p <- p + guides(colour = guide_legend(override.aes = list(size = 2.5, alpha = 1), nrow = 1)) +
     theme(legend.position = "bottom")
@@ -200,28 +211,37 @@ for (s in sets) {
   pB <- violin_igbp(sh, "dist_signed", "Net signed disturbance SHAP\n(effect on PREDICTED value)",
                     "B · Direction of the disturbance effect by IGBP class",
                     "Net signed SHAP of the disturbance block | below zero = model predicts a LOWER EFP value (not worse accuracy)", TRUE)
-  # Spearman correlation, tree cover vs y, one test per EFP panel; BH-FDR
-  # across all 8 tests in this board (4 EFPs x panels C+D), same convention
-  # as the other figures' significance tests.
-  statC <- cor_stats(dR, "delta_rmse")[,  panel := "C"]
-  statD <- cor_stats(sh, "dist_signed")[, panel := "D"]
-  stat_all <- rbindlist(list(statC, statD))
+  # Spearman correlation, one test per EFP panel; BH-FDR across all 12 tests
+  # in this board (4 EFPs x panels C+D+E), same convention as the other
+  # figures' significance tests. E is D repeated with relative_disturbance
+  # (500m, max across years) on the x axis instead of tree cover.
+  statC <- cor_stats(dR, "tree_cover",      "delta_rmse")[,  panel := "C"]
+  statD <- cor_stats(sh, "tree_cover",      "dist_signed")[, panel := "D"]
+  statE <- cor_stats(sh, "rel_disturbance", "dist_signed")[, panel := "E"]
+  stat_all <- rbindlist(list(statC, statD, statE))
   stat_all[, q := p.adjust(p, method = "BH")]
   stat_all[, lab := ifelse(is.na(rho), "",
                            sprintf("rho=%.2f%s\nn=%d", rho, stars(q), n))]
   stat_all[, response := factor(response, levels = EFP_ORDER)]
-  labC <- stat_all[panel == "C"]; labD <- stat_all[panel == "D"]
+  labC <- stat_all[panel == "C"]; labD <- stat_all[panel == "D"]; labE <- stat_all[panel == "E"]
 
-  pC <- scatter_tc(dR, "delta_rmse", expression(Delta*"RMSE (with D - without D)"),
+  pC <- scatter_tc(dR, "tree_cover", "Tree cover — forest_mean_pct_500m (%)",
+                   "delta_rmse", expression(Delta*"RMSE (with D - without D)"),
                    "C · Tree cover vs. disturbance benefit",
                    "Each point = one site | Linear fit with 95% CI | Spearman rho, BH-FDR within this board (*** q<0.001, ** q<0.01, * q<0.05)",
                    TRUE, FALSE, labC)
-  pD <- scatter_tc(sh, "dist_signed", "Net signed disturbance SHAP\n(effect on PREDICTED value)",
+  pD <- scatter_tc(sh, "tree_cover", "Tree cover — forest_mean_pct_500m (%)",
+                   "dist_signed", "Net signed disturbance SHAP\n(effect on PREDICTED value)",
                    "D · Tree cover vs. direction of the disturbance effect",
                    "Each point = one site | Linear fit with 95% CI | below zero = model predicts a LOWER EFP value",
                    TRUE, TRUE, labD)
+  pE <- scatter_tc(sh, "rel_disturbance", "Relative disturbance (500m, %, max across years)",
+                   "dist_signed", "Net signed disturbance SHAP\n(effect on PREDICTED value)",
+                   "E · Relative disturbance vs. direction of the disturbance effect",
+                   "Each point = one site | Linear fit with 95% CI | below zero = model predicts a LOWER EFP value",
+                   TRUE, TRUE, labE)
 
-  board <- (pA / pB / pC / pD) +
+  board <- (pA / pB / pC / pD / pE) +
     plot_annotation(
       title = sprintf("IGBP board — %s | %s window  (%s dataset)", s$label, s$win, dataset_type),
       theme = theme(plot.title = element_text(colour = TEXT_COL, size = 14, face = "bold"),
@@ -229,8 +249,8 @@ for (s in sets) {
     ) & theme(plot.background = element_rect(fill = DARK_BG, colour = NA))
 
   stem <- file.path(out_dir, sprintf("board_IGBP_%s", s$wd))
-  ggsave(paste0(stem, ".png"), board, width = 14, height = 20, dpi = 190, bg = DARK_BG, limitsize = FALSE)
-  ggsave(paste0(stem, ".pdf"), board, width = 14, height = 20, bg = DARK_BG, limitsize = FALSE)
+  ggsave(paste0(stem, ".png"), board, width = 14, height = 25, dpi = 190, bg = DARK_BG, limitsize = FALSE)
+  ggsave(paste0(stem, ".pdf"), board, width = 14, height = 25, bg = DARK_BG, limitsize = FALSE)
   cat(sprintf("  ✓ %s\n", basename(stem)))
 }
 cat("\n✅ V10 IGBP BOARDS COMPLETE\n")
