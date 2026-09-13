@@ -131,13 +131,35 @@ violin_igbp <- function(d, yvar, ytitle, ptitle, subtitle, dashed0) {
     theme(axis.text.x = element_text(colour = AXIS_COL, size = 6, face = "bold", angle = 45, hjust = 1))
 }
 
-scatter_tc <- function(d, yvar, ytitle, ptitle, subtitle, dashed0, show_leg) {
+# Spearman correlation (tree cover vs y), one test per EFP panel. Returns NA
+# rho/p rather than erroring when a facet has too little data (e.g. all-NA
+# dist_signed for a response, or a constant tree_cover within a subset).
+cor_stats <- function(d, yvar) {
+  d[, {
+    ok <- is.finite(tree_cover) & is.finite(get(yvar))
+    if (sum(ok) < 4) list(rho = NA_real_, p = NA_real_, n = sum(ok))
+    else {
+      ct <- tryCatch(cor.test(tree_cover[ok], get(yvar)[ok], method = "spearman", exact = FALSE),
+                     error = function(e) NULL)
+      if (is.null(ct)) list(rho = NA_real_, p = NA_real_, n = sum(ok))
+      else list(rho = unname(ct$estimate), p = ct$p.value, n = sum(ok))
+    }
+  }, by = response]
+}
+stars <- function(q) fifelse(is.na(q), "",
+                    fifelse(q < 0.001, "***",
+                    fifelse(q < 0.01,  "**",
+                    fifelse(q < 0.05,  "*", " ns"))))
+
+scatter_tc <- function(d, yvar, ytitle, ptitle, subtitle, dashed0, show_leg, stat_lab) {
   p <- ggplot(d, aes_string(x = "tree_cover", y = yvar, colour = "IGBP"))
   if (dashed0) p <- p + geom_hline(yintercept = 0, colour = "#888888", linewidth = 0.35, linetype = "dashed")
   p <- p +
     geom_point(size = 1.3, alpha = 0.7) +
-    geom_smooth(aes(group = 1), method = "loess", span = 0.9, colour = "#222222",
+    geom_smooth(aes(group = 1), method = "lm", formula = y ~ x, colour = "#222222",
                 fill = "#444444", linewidth = 0.7, se = TRUE) +
+    geom_text(data = stat_lab, aes(x = -Inf, y = Inf, label = lab), inherit.aes = FALSE,
+              hjust = -0.05, vjust = 1.4, size = 2.6, colour = TEXT_COL, fontface = "bold") +
     scale_colour_manual(values = IGBP_COL, name = "IGBP") +
     facet_wrap(~response, nrow = 1, scales = "free_y", labeller = EFP_LAB) +
     labs(x = "Tree cover — forest_mean_pct_500m (%)", y = ytitle, title = ptitle, subtitle = subtitle) +
@@ -178,12 +200,26 @@ for (s in sets) {
   pB <- violin_igbp(sh, "dist_signed", "Net signed disturbance SHAP\n(effect on PREDICTED value)",
                     "B · Direction of the disturbance effect by IGBP class",
                     "Net signed SHAP of the disturbance block | below zero = model predicts a LOWER EFP value (not worse accuracy)", TRUE)
+  # Spearman correlation, tree cover vs y, one test per EFP panel; BH-FDR
+  # across all 8 tests in this board (4 EFPs x panels C+D), same convention
+  # as the other figures' significance tests.
+  statC <- cor_stats(dR, "delta_rmse")[,  panel := "C"]
+  statD <- cor_stats(sh, "dist_signed")[, panel := "D"]
+  stat_all <- rbindlist(list(statC, statD))
+  stat_all[, q := p.adjust(p, method = "BH")]
+  stat_all[, lab := ifelse(is.na(rho), "",
+                           sprintf("rho=%.2f%s\nn=%d", rho, stars(q), n))]
+  stat_all[, response := factor(response, levels = EFP_ORDER)]
+  labC <- stat_all[panel == "C"]; labD <- stat_all[panel == "D"]
+
   pC <- scatter_tc(dR, "delta_rmse", expression(Delta*"RMSE (with D - without D)"),
                    "C · Tree cover vs. disturbance benefit",
-                   "Each point = one site | Loess trend with 95% CI", TRUE, FALSE)
+                   "Each point = one site | Linear fit with 95% CI | Spearman rho, BH-FDR within this board (*** q<0.001, ** q<0.01, * q<0.05)",
+                   TRUE, FALSE, labC)
   pD <- scatter_tc(sh, "dist_signed", "Net signed disturbance SHAP\n(effect on PREDICTED value)",
                    "D · Tree cover vs. direction of the disturbance effect",
-                   "Each point = one site | Loess trend with 95% CI | below zero = model predicts a LOWER EFP value", TRUE, TRUE)
+                   "Each point = one site | Linear fit with 95% CI | below zero = model predicts a LOWER EFP value",
+                   TRUE, TRUE, labD)
 
   board <- (pA / pB / pC / pD) +
     plot_annotation(
