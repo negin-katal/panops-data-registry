@@ -23,10 +23,14 @@ cov[, quadrant := fifelse(rel_dist_max > nb_dist & morans_i > nb_moran, "High di
                   fifelse(rel_dist_max > nb_dist & morans_i <= nb_moran, "High disturbance only",
                   fifelse(rel_dist_max <= nb_dist & morans_i > nb_moran, "High clustering only",
                           "Neither")))]
-QCOL <- c("High disturbance + High clustering" = "#C41E3A",
-         "High disturbance only" = "#E5820B",
-         "High clustering only" = "#2A6F97",
-         "Neither" = "#9AA0A6")
+QUAD_ORDER <- c("High disturbance + High clustering", "High disturbance only",
+                "High clustering only", "Neither")
+qn <- cov[, .N, by = quadrant]
+qn[, pct := 100 * N / sum(N)]
+qn[, lab_q := sprintf("%s (%.1f%%, n=%d)", quadrant, pct, N)]
+lab_map <- setNames(qn$lab_q, qn$quadrant)
+cov[, quadrant_lab := factor(lab_map[quadrant], levels = lab_map[QUAD_ORDER])]
+QCOL <- setNames(c("#C41E3A", "#E5820B", "#2A6F97", "#9AA0A6"), lab_map[QUAD_ORDER])
 
 th <- theme_bw(base_size = 11) + theme(
   plot.background = element_rect(fill = BG, colour = NA),
@@ -47,10 +51,11 @@ p <- ggplot(cov, aes(rel_dist_max, morans_i)) +
   geom_hline(yintercept = nb_moran, colour = "#888888", linewidth = 0.4, linetype = "dashed") +
   geom_smooth(method = "lm", formula = y ~ x, colour = "#222222", fill = "#444444",
               linewidth = 0.7, se = TRUE) +
-  geom_point(aes(colour = quadrant), size = 2.2, alpha = 0.85) +
+  geom_point(aes(colour = quadrant_lab), size = 2.2, alpha = 0.85) +
   annotate("text", x = -Inf, y = Inf, label = lab, hjust = -0.08, vjust = 1.3,
            size = 3.2, colour = TXT, fontface = "bold") +
   scale_colour_manual(values = QCOL) +
+  guides(colour = guide_legend(nrow = 2, override.aes = list(size = 3))) +
   labs(title = "Relative disturbance vs. spatial clustering of mortality",
        subtitle = "tc >= 30% (93 sites) | each point = one site (max relative disturbance across years vs mean Moran's I across years)\ndashed lines = natural-break High threshold for each variable",
        x = "Relative disturbance (500m, %, max across years)",
@@ -61,4 +66,4 @@ p <- ggplot(cov, aes(rel_dist_max, morans_i)) +
 ggsave(file.path(OUT, "disturbance_vs_clustering.png"), p, width = 9, height = 7, dpi = 300, bg = BG)
 ggsave(file.path(OUT, "disturbance_vs_clustering.pdf"), p, width = 9, height = 7, bg = BG)
 cat("Saved:", file.path(OUT, "disturbance_vs_clustering.png"), "\n")
-print(cov[, .N, by = quadrant][order(-N)])
+print(qn[order(-N), .(quadrant, N, pct = round(pct, 1))])
